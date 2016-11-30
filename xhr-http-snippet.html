@@ -1,0 +1,103 @@
+<!--
+@license
+Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="http-code-snippet-behavior.html">
+<link rel="import" href="highlight-style.html">
+<!--
+A snippet for raw HTTP request.
+-->
+<dom-module id="xhr-http-snippet">
+  <template strip-whitespace>
+    <style include="highlight-style">
+    :host {
+      display: block;
+      width: 100%;
+      @apply(--http-code-snippet);
+    }
+
+    .code {
+      display: block;
+      @apply(--http-code-snippet-container);
+      @apply(--http-code-snippet-container-highlighted);
+    }
+
+    .label {
+      font-weight: 500;
+    }
+
+    .value {
+      margin-left: 8px;
+    }
+
+    .line {
+      @apply(--http-code-snippet-line);
+    }
+    </style>
+    <code class="code language-">
+      <div class="line"><span class="token keyword">var</span> xhr <span class="token operator">=</span><span class="token keyword"> new</span> XMLHttpRequest<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      <div class="line">xhr.<span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'load'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator"> =&gt; </span> <span class="token punctuation">{</span></div>
+      <div class="line"><span class="token keyword">  var</span> response <span class="token operator">=</span> e.target.responseText<span class="token punctuation">;</span></div>
+      <div class="line">})<span class="token punctuation">;</span></div>
+      <div class="line">xhr.<span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator"> =&gt; </span> <span class="token punctuation">{</span></div>
+      <div class="line"><span class="token keyword">  var</span> message <span class="token operator">=</span> e.message<span class="token punctuation">;</span></div>
+      <div class="line">})<span class="token punctuation">;</span></div>
+      <div class="line">xhr.open<span class="token punctuation">(</span><span class="token string">'[[method]]'</span><span class="token punctuation">,</span> <span class="token string">'[[url]]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      <template is="dom-repeat" items="[[headers]]">
+        <div class="line">xhr.<span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">'[[item.name]]'</span><span class="token punctuation">,</span> <span class="token string">'[[item.value]]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      </template>
+      <template is="dom-if" if="[[hasPayloadLines]]">
+        <div class="line"><span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span></div>
+        <template is="dom-repeat" items="[[payloadLines]]" index-as="index">
+          <div class="line">body <span class="token operator">+=</span> <span class="token string">'[[item]]\n'</span><span class="token punctuation">;</span></div>
+        </template>
+        <div class="line">xhr.<span class="token function">send</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      </template>
+      <template is="dom-if" if="[[!hasPayloadLines]]">
+        <div class="line">xhr.<span class="token function">send</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      </template>
+    </code>
+  </template>
+  <script>
+  Polymer({
+    is: 'xhr-http-snippet',
+    behaviors: [window.RamlBehaviors.httpCodeSnippetBehavior],
+    properties: {
+      payloadLines: {
+        type: Array,
+        readOnly: true
+      },
+      hasPayloadLines: {
+        type: Boolean,
+        readOnly: true,
+        value: false
+      }
+    },
+
+    observers: ['_payloadChanged(payload)'],
+
+    _payloadChanged: function(payload) {
+      if (!payload) {
+        this._setHasPayloadLines(false);
+        return this._setPayloadLines([]);
+      }
+      var re = /'/g;
+      var lines = payload.split('\n').map(function(line) {
+        return line.replace(re, '\\\'');
+      });
+      this._setPayloadLines(lines);
+      this._setHasPayloadLines(true);
+    }
+  });
+  </script>
+</dom-module>
