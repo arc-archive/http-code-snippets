@@ -15,17 +15,17 @@ the License.
 <link rel="import" href="../paper-tabs/paper-tabs.html">
 <link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
-<link rel="import" href="xhr-http-snippet.html">
-<link rel="import" href="fetch-js-http-snippet.html">
-<link rel="import" href="node-http-snippet.html">
+<link rel="import" href="requests-python-http-snippet.html">
+<link rel="import" href="python-27-http-snippet.html">
+<link rel="import" href="python-31-http-snippet.html">
 <!--
-A set of code snippets for JavaScript requests.
+A set of code snippets for Python requests.
 
 @group UI Elements
-@element javascript-http-snippets
-@demo demo/javascript.html
+@element python-http-snippets
+@demo demo/python.html
 -->
-<dom-module id="javascript-http-snippets">
+<dom-module id="python-http-snippets">
   <template strip-whitespace>
     <style>
     :host {
@@ -34,19 +34,19 @@ A set of code snippets for JavaScript requests.
 
     </style>
     <paper-tabs selected="{{selectedFramework}}">
-      <paper-tab>XHR</paper-tab>
-      <paper-tab>Node</paper-tab>
-      <paper-tab>Fetch</paper-tab>
+      <paper-tab>Requests</paper-tab>
+      <paper-tab>Python 2.7</paper-tab>
+      <paper-tab>Python 3.1</paper-tab>
     </paper-tabs>
     <iron-pages selected="[[selectedFramework]]">
-      <xhr-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></xhr-http-snippet>
-      <node-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></node-http-snippet>
-      <fetch-js-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></fetch-js-http-snippet>
+      <requests-python-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></requests-python-http-snippet>
+      <python-27-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></python-27-http-snippet>
+      <python-31-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></python-31-http-snippet>
     </iron-pages>
   </template>
   <script>
   Polymer({
-    is: 'javascript-http-snippets',
+    is: 'python-http-snippets',
     behaviors: [ArcBehaviors.HttpCodeSnippetBehavior],
     properties: {
       selectedFramework: {

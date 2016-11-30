@@ -19,16 +19,19 @@ the License.
 <link rel="import" href="raw-http-snippet.html">
 <link rel="import" href="curl-http-snippet.html">
 <link rel="import" href="javascript-http-snippets.html">
-
+<link rel="import" href="python-http-snippets.html">
+<link rel="import" href="c-curl-http-snippet.html">
 <!--
 `<http-code-snippets>` Code snippets to display a snippets of making a HTTP request
 
-It required at least URL and HTTP method to be set in order to display any data.
+It requires at least URL and HTTP method to display any data.
 
 ### Example
 ```
 <http-code-snippets></http-code-snippets>
 ```
+
+See demo for usage.
 
 ### Styling
 `<http-code-snippets>` provides the following custom properties and mixins for styling:
@@ -36,6 +39,11 @@ It required at least URL and HTTP method to be set in order to display any data.
 Custom property | Description | Default
 ----------------|-------------|----------
 `--http-code-snippets` | Mixin applied to the element | `{}`
+`--http-code-snippet-container` | Mixin applied to the code container. | `{background-color: #e0e0e0; padding: 12px;}`
+`--http-code-snippet-container-highlighted` | Mixin applied to the code container that has own syntax highlighting | `{background-color: #f5f5f5;}`
+`--http-code-snippet-line` | Mixin applied to each line of code | `{word-break: break-all; white-space: pre-wrap;}`
+`--http-code-snippet-indent` | Margin left of the indented code | `12px`
+`--http-code-snippet-indent-2` | Margin left of the indented code on level 2 | `24px`
 
 @group UI Elements
 @element http-code-snippets
@@ -46,10 +54,9 @@ Custom property | Description | Default
     <style>
     :host {
       display: none;
+      @apply(--http-code-snippet);
 
       --http-code-snippet-container: {
-        /*font-family: monospace;*/
-        /*font-size: 13px;*/
         background-color: #e0e0e0;
         padding: 12px;
       }
@@ -61,7 +68,6 @@ Custom property | Description | Default
       --http-code-snippet-line: {
         word-break: break-all;
         white-space: pre-wrap;
-        /*margin: 4px 0;*/
       }
     }
 
@@ -69,23 +75,26 @@ Custom property | Description | Default
       display: block;
     }
     </style>
-    <paper-tabs selected="{{selectedPlatform}}">
+    <paper-tabs selected="{{selectedPlatform}}" scrollable fit-container>
       <paper-tab>HTTP</paper-tab>
       <paper-tab>Shell</paper-tab>
       <paper-tab>JavaScript</paper-tab>
+      <paper-tab>Python</paper-tab>
+      <paper-tab>C</paper-tab>
     </paper-tabs>
     <iron-pages selected="[[selectedPlatform]]">
       <raw-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></raw-http-snippet>
       <curl-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></curl-http-snippet>
-      <javascript-http-snippets  url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></javascript-http-snippets>
+      <javascript-http-snippets url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></javascript-http-snippets>
+      <python-http-snippets url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></python-http-snippets>
+      <c-curl-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></c-curl-http-snippet>
     </iron-pages>
-
   </template>
   <script>
   Polymer({
     is: 'http-code-snippets',
 
-    behaviors: [window.RamlBehaviors.httpCodeSnippetBehavior],
+    behaviors: [ArcBehaviors.HttpCodeSnippetBehavior],
 
     observers: ['_headersChanged(headers)'],
 
@@ -116,6 +125,9 @@ Custom property | Description | Default
 
     _headersChanged: function(headers) {
       var list = this.headersToList(headers);
+      if (!list.length) {
+        list = false;
+      }
       this._setHeadersList(list);
     }
   });

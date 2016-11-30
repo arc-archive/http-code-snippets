@@ -7,10 +7,69 @@ Based on dabblet (http://dabblet.com)
 
 Medified for ARC.
 -->
-<dom-module id="highlight-style">
+<dom-module id="http-code-snippets-style">
   <template>
     <style>
 
+    :host {
+      display: block;
+      width: 100%;
+    }
+
+    .code {
+      display: block;
+      position: relative;
+
+      @apply(--http-code-snippet-container);
+      padding-top: 24px; /* Padding for the copy button. */
+    }
+
+    paper-icon-button {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
+    .label {
+      font-weight: 500;
+    }
+
+    .value {
+      margin-left: 8px;
+    }
+
+    .line {
+      @apply(--http-code-snippet-line);
+    }
+
+    .line.indent {
+      margin-left: var(--http-code-snippet-indent, 12px);
+    }
+
+    .line.indent-2 {
+      margin-left: var(--http-code-snippet-indent-2, 24px);
+    }
+
+    .end-line-marker::before {
+      content: "\A";
+      white-space: pre-line;
+    }
+
+    .end-line-marker.icon::before {
+      content: "⏎";
+    }
+
+    .copy-button {
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -ms-flex-pack: end;
+      -webkit-justify-content: flex-end;
+      justify-content: flex-end;
+      -ms-flex-direction: row;
+      -webkit-flex-direction: row;
+      flex-direction: row;
+    }
 
     code[class*="language-"],
     pre[class*="language-"] {

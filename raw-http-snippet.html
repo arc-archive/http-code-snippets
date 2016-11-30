@@ -12,66 +12,55 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="uri.js.html">
 <link rel="import" href="http-code-snippet-behavior.html">
+<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="http-code-snippets-icons.html">
 <!--
 A snippet for raw HTTP request.
+
+@group UI Elements
+@element raw-http-snippets
+@demo demo/raw.html
 -->
 <dom-module id="raw-http-snippet">
   <template strip-whitespace>
-    <style>
-    :host {
-      display: block;
-      width: 100%;
-      @apply(--http-code-snippet);
-    }
-
+    <style include="http-code-snippets-style">
     .code {
-      display: block;
-      @apply(--http-code-snippet-container);
-    }
-
-    .label {
-      font-weight: 500;
-    }
-
-    .value {
-      margin-left: 8px;
-    }
-
-    .line {
-      @apply(--http-code-snippet-line);
-    }
-
-    .end-line-marker::after {
-      /*content: '␤';*/
-      content: "\A"; white-space: pre-line;
+      @apply(--http-code-snippet-container-highlighted);
     }
     </style>
-    <code class="code">
-      <div class="line">
-        <span class="label">[[method]]</span><span class="value">[[path]]</span><span class="value">HTTP/1.1</span>
+    <code class="code language-http">
+      <paper-icon-button icon="httpsnippets:content-copy" title="copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
+      <div class="token line">
+        <span class="token property">[[method]]</span> [[path]] <span class="value">HTTP/1.1</span>
       </div>
-      <div class="line">
-        <span class="label">Host:</span><span class="value">[[hostValue]]</span>
+      <div class="token line">
+        <span class="token header-name keyword">Host:</span> [[hostValue]]<span class="token attr-name">:[[port]]</span>
       </div>
-      <template is="dom-repeat" items="[[headers]]"><div class="line"><span class="label">[[item.name]]</span>:<span class="value">[[item.value]]</span></div></template>
-      <div class="line">
-        <span class="end-line-marker" title="New line">&#13;&#10;</span>
-      </div>
-      <template is="dom-if" if="[[payload]]"><div class="line">[[payload]]</div></template>
-      <template is="dom-if" if="[[!payload]]"><div class="line"><span class="end-line-marker" title="New line">&#9252;</span></div></template>
+      <template is="dom-repeat" items="[[headers]]">
+        <div class="token line"><span class="token header-name keyword">[[item.name]]:</span> [[item.value]]</div>
+      </template>
+
+      <template is="dom-if" if="[[payload]]">
+        <div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div>
+        <div class="line">[[payload]]</div>
+      </template>
+      <template is="dom-if" if="[[!payload]]"><div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div><div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div></template>
     </code>
   </template>
   <script>
   Polymer({
     is: 'raw-http-snippet',
-    behaviors: [window.RamlBehaviors.httpCodeSnippetBehavior],
+    behaviors: [ArcBehaviors.HttpCodeSnippetBehavior],
     properties: {
       // HTTP path value
       path: String,
       // HTTP host name
-      hostValue: String
+      hostValue: String,
+      // Connection port value
+      port: Number
     },
 
     observers: [
@@ -79,28 +68,10 @@ A snippet for raw HTTP request.
     ],
 
     _urlChanged: function(url) {
-      if (!url) {
-        this.path = '';
-        return;
-      }
-      var uri = new URI(url);
-      var host = uri.host();
-      if (host.indexOf(':') === -1) {
-        if (uri.protocol() === 'https') {
-          host += ':443';
-        }
-      }
-      this.hostValue = host;
-
-      var query = uri.query();
-      var path = uri.path();
-      if (!path) {
-        path = '/';
-      }
-      if (query) {
-        path += '?' + query;
-      }
-      this.path = path;
+      var data = this.urlDetails(url);
+      this.path = data.path;
+      this.port = data.port;
+      this.hostValue = data.hostValue;
     }
   });
   </script>

@@ -1,0 +1,124 @@
+<!--
+@license
+Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="http-code-snippet-behavior.html">
+<link rel="import" href="http-code-snippets-style.html">
+<!--
+A snippet for requests made in C using curl library.
+
+@group UI Elements
+@element c-curl-http-snippet
+@demo demo/c-curl.html
+-->
+<dom-module id="c-curl-http-snippet">
+  <template strip-whitespace>
+    <style include="http-code-snippets-style">
+    .code {
+      @apply(--http-code-snippet-container-highlighted);
+    }
+    </style>
+    <code class="code language-c">
+      <paper-icon-button icon="httpsnippets:content-copy" title="copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
+
+      <div class="token line"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span></div>
+      <div class="token line"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;curl/curl.h&gt;</span></span></div>
+      <div class="line"><span class="end-line-marker"></span></div>
+      <div class="token line"><span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token punctuation">)</span></div>
+      <div class="token line"><span class="token punctuation">{</span></div>
+      <div class="token line indent"><span class="token keyword">CURL</span> *curl<span class="token punctuation">;</span></div>
+      <div class="token line indent"><span class="token keyword">CURLcode</span> res<span class="token punctuation">;</span></div>
+      <div class="line"><span class="end-line-marker"></span></div>
+      <div class="token line indent">curl <span class="token operator">=</span> <span class="token function"> curl_easy_init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_URL<span class="token punctuation">,</span> <span class="token string">"[[url]]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_CUSTOMREQUEST<span class="token punctuation">,</span> <span class="token string">"[[method]]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      <div class="token line indent"><span class="token comment">/* if redirected, tell libcurl to follow redirection */</span></div>
+      <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_FOLLOWLOCATION<span class="token punctuation">,</span> 1L<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+
+      <!-- Headers -->
+      <template is="dom-if" if="[[headers]]">
+        <div class="line"><span class="end-line-marker"></span></div>
+        <div class="token line indent"><span class="token keyword">struct</span> curl_slist *headers <span class="token operator">=</span> NULL<span class="token punctuation">;</span></div>
+        <template is="dom-repeat" items="[[headers]]">
+          <div class="token line indent">headers <span class="token operator">=</span> <span class="token function"> curl_slist_append</span><span class="token punctuation">(</span>headers<span class="token punctuation">,</span> <span class="token string">"[[item.name]]: [[item.value]]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+        </template>
+        <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_HTTPHEADER<span class="token punctuation">,</span> headers<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      </template>
+
+      <!-- Payload -->
+      <template is="dom-if" if="[[hasPayloadLines]]">
+        <div class="line"><span class="end-line-marker"></span></div>
+        <div class="token line indent"><span class="token keyword">char</span> *body <span class="token operator">=</span> <span class="token string">"<template is="dom-repeat" items="[[payloadLines]]"><template is="dom-if" if="[[_isFirst(index)]]">[[item]]\<br/></template><template is="dom-if" if="[[!_isFirstOrLast(index, payloadLines)]]"><div class="token line">[[item]]\</div></template><template is="dom-if" if="[[_isLast(index, payloadLines)]]">[[item]]</template></template>"<span class="token punctuation">;</span></div>
+        <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_POSTFIELDS<span class="token punctuation">,</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      </template>
+
+      <div class="line"><span class="end-line-marker"></span></div>
+      <div class="token line indent"><span class="token comment">/* Perform the request, res will get the return code */</span></div>
+      <div class="token line indent">res = <span class="token function">curl_easy_perform</span><span class="token punctuation">(</span>curl<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+
+      <div class="token line indent"><span class="token keyword">if</span><span class="token punctuation">(</span>res <span class="token operator">!=</span> CURLE_OK<span class="token punctuation">)</span><span class="token punctuation"> {</span></div>
+      <div class="token line indent-2"><span class="token function">fprintf</span><span class="token punctuation">(</span>stderr<span class="token punctuation">,</span> <span class="token string"> "curl_easy_perform() failed: %s\n"</span><span class="token punctuation">,</span><span class="token function"> curl_easy_strerror</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      <div class="token line indent"><span class="token punctuation">}</span></div>
+
+      <div class="token line indent"><span class="token comment">/* Clean up after yourself */</span></div>
+      <div class="token line indent"><span class="token function">curl_easy_cleanup</span><span class="token punctuation">(</span>curl<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
+      <div class="token line"><span class="token punctuation">}</span></div>
+      <div class="token line indent"><span class="token comment">/* See: http://stackoverflow.com/a/2329792/1127848 of how to read data from the response. */</span></div>
+    </code>
+  </template>
+  <script>
+  Polymer({
+    is: 'c-curl-http-snippet',
+    behaviors: [ArcBehaviors.HttpCodeSnippetBehavior],
+
+    properties: {
+      payloadLines: {
+        type: Array,
+        readOnly: true
+      },
+      hasPayloadLines: {
+        type: Boolean,
+        readOnly: true,
+        value: false
+      }
+    },
+
+    observers: ['_payloadChanged(payload)'],
+
+    _payloadChanged: function(payload) {
+      if (!payload) {
+        this._setHasPayloadLines(false);
+        return this._setPayloadLines([]);
+      }
+      var re = /"/g;
+      var lines = payload.split('\n').map(function(line) {
+        return line.replace(re, '\\"');
+      });
+      this._setPayloadLines(lines);
+      this._setHasPayloadLines(true);
+    },
+
+    _isFirst: function(i) {
+      return i === 0;
+    },
+
+    _isFirstOrLast: function(i, arr) {
+      return i === 0 || i + 1 === arr.length;
+    },
+
+    _isLast: function(i, arr) {
+      return i + 1 === arr.length;
+    }
+  });
+  </script>
+</dom-module>

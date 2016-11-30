@@ -1,0 +1,101 @@
+<!--
+@license
+Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="http-code-snippet-behavior.html">
+<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="uri.js.html">
+<!--
+A snippet for requests made in Python 2.7 using native library.
+
+@group UI Elements
+@element python-27-http-snippets
+@demo demo/python-27.html
+-->
+<dom-module id="python-27-http-snippet">
+  <template strip-whitespace>
+    <style include="http-code-snippets-style">
+    .code {
+      @apply(--http-code-snippet-container-highlighted);
+    }
+    </style>
+    <code class="code language-python">
+      <paper-icon-button icon="httpsnippets:content-copy" title="copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
+      <div class="token line"><span class="token keyword">import</span> httplib</div>
+
+      <template is="dom-if" if="[[headers]]">
+        <div class="line"><span class="end-line-marker"></span></div>
+        <div class="token line">headers <span class="token operator">=</span><span class="token punctuation"> {</span><template is="dom-repeat" items="[[headers]]"><span class="token string">'[[item.name]]'<span class="token punctuation">:</span> <span class="token string">'[[item.value]]'</span><span class="token punctuation" hidden$="[[_isLast(index, headers)]]">, </span></template><span class="token punctuation">}</span></div>
+      </template>
+      <template is="dom-if" if="[[payload]]">
+        <template is="dom-if" if="[[!headers]]">
+          <div class="line"><span class="end-line-marker"></span></div>
+        </template>
+        <div class="token line">body <span class="token operator">=</span> <span class="token triple-quoted-string string">"""[[payload]]"""</span></div>
+      </template>
+
+      <div class="line"><span class="end-line-marker"></span></div>
+
+      <div class="token line">conn <span class="token operator">=</span> httplib<span class="token punctuation">.</span>HTTP<template is="dom-if" if="[[isTls]]">S</template>Connection<span class="token punctuation">(</span><span class="token string">'[[hostValue]]'</span><span class="token punctuation">)</span></div>
+      <div class="token line">conn<span class="token punctuation">.</span>request<span class="token punctuation">(</span><span class="token string">'[[method]]'</span><span class="token punctuation">,</span> <span class="token string">'[[path]]'</span><template is="dom-if" if="[[payload]]"><span class="token punctuation">,</span> body</template><template is="dom-if" if="[[headers]]"><span class="token punctuation">,</span> headers</template><span class="token punctuation">)</span></div>
+
+      <div class="token line">res <span class="token operator">=</span> conn<span class="token punctuation">.</span>getresponse<span class="token punctuation">(</span><span class="token punctuation">)</span></div>
+
+      <div class="line"><span class="end-line-marker"></span></div>
+
+      <div class="token line">print<span class="token punctuation">(</span>res<span class="token punctuation">.</span>status<span class="token punctuation">, </span>res<span class="token punctuation">.</span>reason<span class="token punctuation">)</span></div>
+      <div class="token line">print<span class="token punctuation">(</span>res<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></div>
+      <div class="token line">print<span class="token punctuation">(</span>res<span class="token punctuation">.</span>getheaders<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></div>
+
+    </code>
+  </template>
+  <script>
+  Polymer({
+    is: 'python-27-http-snippet',
+    behaviors: [ArcBehaviors.HttpCodeSnippetBehavior],
+    properties: {
+      // True if this is a SSL based request
+      isTls: {
+        type: String,
+        readOnly: true
+      },
+      // HTTP path value
+      path: String,
+      // HTTP host name
+      hostValue: String,
+      // Connection port value
+      port: Number
+    },
+
+    observers: [
+      '_urlChanged(url)'
+    ],
+
+    _urlChanged: function(url) {
+      var data = this.urlDetails(url);
+      this.path = data.path;
+      this.port = data.port;
+      this.hostValue = data.hostValue;
+      if (data.port === 443 || data.port === '443') {
+        this._setIsTls(true);
+      } else {
+        this._setIsTls(false);
+      }
+    },
+
+    _isLast: function(index, array) {
+      return index + 1 === array.length;
+    }
+  });
+  </script>
+</dom-module>
