@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Copyright 2018 The Advanced REST client authors <arc@mulesoft.com>
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
 the License at
@@ -11,21 +11,17 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 -->
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="http-code-snippet-behavior.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/elements/dom-if.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../arc-icons/arc-icons.html">
+<link rel="import" href="code-snippets-mixin.html">
 <link rel="import" href="http-code-snippets-style.html">
-<!--
-A snippet for requests made in Python using the Requests library.
-
-@group UI Elements
-@element requests-python-http-snippets
-@demo demo/requests-python.html
--->
 <dom-module id="requests-python-http-snippet">
   <template strip-whitespace>
     <style include="http-code-snippets-style">
     .code {
-      @apply(--http-code-snippet-container-highlighted);
+      @apply --http-code-snippet-container-highlighted;
     }
     </style>
     <code class="code language-python">
@@ -52,32 +48,53 @@ A snippet for requests made in Python using the Requests library.
     </code>
   </template>
   <script>
-  Polymer({
-    is: 'requests-python-http-snippet',
-    behaviors: [ArcBehaviors.HttpCodeSnippetBehavior],
-    properties: {
-      // Lower case method name
-      lowerMethod: {
-        type: String,
-        readOnly: true
-      }
-    },
+  /**
+   * `raw-http-snippet`
+   *
+   * A snippet for requests made in Python using the Requests library.
+   *
+   * ## Styling
+   *
+   * Custom property | Description | Default
+   * ----------------|-------------|----------
+   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   *
+   * @customElement
+   * @polymer
+   * @demo demo/requests-python.html Python > request demo
+   * @memberof ApiElements
+   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   */
+  class RequestsPythonHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
+    static get is() { return 'requests-python-http-snippet'; }
+    static get properties() {
+      return {
+        // Lower case method name
+        lowerMethod: {
+          type: String,
+          readOnly: true
+        }
+      };
+    }
 
-    observers: [
-      '_methodChanged(method)'
-    ],
+    static get observers() {
+      return [
+        '_methodChanged(method)'
+      ];
+    }
 
-    _methodChanged: function(method) {
+    _methodChanged(method) {
       if (!method || typeof method !== 'string') {
         this._setLowerMethod('');
       } else {
         this._setLowerMethod(method.toLowerCase());
       }
-    },
+    }
 
-    _isLast: function(index, array) {
+    _isLast(index, array) {
       return index + 1 === array.length;
     }
-  });
+  }
+  window.customElements.define(RequestsPythonHttpSnippet.is, RequestsPythonHttpSnippet);
   </script>
 </dom-module>

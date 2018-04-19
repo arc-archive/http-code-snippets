@@ -1,80 +1,20 @@
-<!--
-@license
-Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
-Licensed under the Apache License, Version 2.0 (the "License"); you may not
-use this file except in compliance with the License. You may obtain a copy of
-the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
--->
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-tabs/paper-tabs.html">
 <link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
-<link rel="import" href="http-code-snippet-behavior.html">
 <link rel="import" href="raw-http-snippet.html">
 <link rel="import" href="curl-http-snippet.html">
 <link rel="import" href="javascript-http-snippets.html">
 <link rel="import" href="python-http-snippets.html">
 <link rel="import" href="c-curl-http-snippet.html">
-<!--
-`<http-code-snippets>` Code snippets to display a snippets of making a HTTP request
+<link rel="import" href="code-snippets-mixin.html">
 
-It requires at least URL and HTTP method to display any data.
-
-### Example
-```
-<http-code-snippets></http-code-snippets>
-```
-
-See demo for usage.
-
-### Styling
-`<http-code-snippets>` provides the following custom properties and mixins for styling:
-
-Custom property | Description | Default
-----------------|-------------|----------
-`--http-code-snippets` | Mixin applied to the element | `{}`
-`--http-code-snippet-container` | Mixin applied to the code container. | `{background-color: #e0e0e0; padding: 12px;}`
-`--http-code-snippet-container-highlighted` | Mixin applied to the code container that has own syntax highlighting | `{background-color: #f5f5f5;}`
-`--http-code-snippet-line` | Mixin applied to each line of code | `{word-break: break-all; white-space: pre-wrap;}`
-`--http-code-snippet-indent` | Margin left of the indented code | `12px`
-`--http-code-snippet-indent-2` | Margin left of the indented code on level 2 | `24px`
-
-Use `<paper-tabs>` variables and mixins to style the tabs.
-
-@group UI Elements
-@element http-code-snippets
-@demo demo/index.html
--->
 <dom-module id="http-code-snippets">
   <template>
     <style>
     :host {
-      display: none;
-      @apply(--http-code-snippet);
-
-      --http-code-snippet-container: {
-        background-color: #e0e0e0;
-        padding: 12px;
-      }
-
-      --http-code-snippet-container-highlighted: {
-        background-color: #f5f5f5;
-      }
-
-      --http-code-snippet-line: {
-        word-break: break-all;
-        white-space: pre-wrap;
-      }
-    }
-
-    :host([has-data]) {
       display: block;
+      @apply --http-code-snippets;
     }
     </style>
     <paper-tabs selected="{{selectedPlatform}}" scrollable fit-container>
@@ -93,45 +33,42 @@ Use `<paper-tabs>` variables and mixins to style the tabs.
     </iron-pages>
   </template>
   <script>
-  Polymer({
-    is: 'http-code-snippets',
-
-    behaviors: [ArcBehaviors.HttpCodeSnippetBehavior],
-
-    observers: ['_headersChanged(headers)'],
-
-    properties: {
-      // True if URL and method is set.
-      hasData: {
-        type: Boolean,
-        value: false,
-        computed: '_computeHasValue(url, method)',
-        notify: true,
-        reflectToAttribute: true
-      },
-      // Currently selected tab for the platform row.
-      selectedPlatform: {
-        type: Number,
-        value: 0
-      },
-      // A list of HTTP headers from the headers string
-      headersList: {
-        type: Array,
-        readOnly: true
-      }
-    },
-
-    _computeHasValue: function(url, method) {
-      return !!(url && method);
-    },
-
-    _headersChanged: function(headers) {
-      var list = this.headersToList(headers);
-      if (!list.length) {
-        list = false;
-      }
-      this._setHeadersList(list);
+  /**
+   * `http-code-snippets`
+   *
+   * Code snippets to display code implementatyion examples for a HTTP request
+   *
+   * ## Styling
+   *
+   * `<http-code-snippets>` provides the following custom properties and mixins for styling:
+   *
+   * Custom property | Description | Default
+   * ----------------|-------------|----------
+   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   *
+   * @customElement
+   * @polymer
+   * @demo demo/index.html
+   * @memberof ApiElements
+   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   */
+  class HttpCodeSnippets extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
+    static get is() { return 'http-code-snippets'; }
+    static get properties() {
+      return {
+        // Currently selected tab for the platform row.
+        selectedPlatform: {
+          type: Number,
+          value: 0
+        },
+        // A list of HTTP headers from the headers string
+        headersList: {
+          type: Array,
+          computed: 'headersToList(headers)'
+        }
+      };
     }
-  });
+  }
+  window.customElements.define(HttpCodeSnippets.is, HttpCodeSnippets);
   </script>
 </dom-module>

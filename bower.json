@@ -1,7 +1,10 @@
 {
   "name": "http-code-snippets",
   "description": "Code snippets to display a snippets of making a HTTP request",
+  "version": "2.0.0-preview",
+  "license": "Apache-2.0",
   "authors": [
+    "Pawel Psztyc",
     "The Advanced REST client authors <arc@mulesoft.com>"
   ],
   "keywords": [
@@ -9,38 +12,32 @@
     "polymer"
   ],
   "private": true,
-  "main": [
-    "http-code-snippets.html"
-  ],
+  "main": "http-code-snippets.html",
   "repository": {
     "type": "git",
     "url": "git@github.com:advanced-rest-client/http-code-snippets.git"
   },
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.0.0",
-    "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
-    "iron-pages": "PolymerElements/iron-pages#^1.0.8",
-    "urijs": "uri.js#^1.18.3",
-    "iron-icon": "PolymerElements/iron-icon#^1.0.12",
-    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
-    "paper-icon-button": "PolymerElements/paper-icon-button#^1.1.4"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^2.1.1",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^2.2.0",
+    "iron-pages": "PolymerElements/iron-pages#^2.1.1",
+    "iron-icon": "PolymerElements/iron-icon#^2.1.0",
+    "arc-icons": "advanced-rest-client/arc-icons#^2.0.0"
   },
   "devDependencies": {
-    "iron-component-page": "polymerelements/iron-component-page#1.0.0",
-    "web-component-tester": "^4.0.0",
-    "paper-styles": "polymerelements/paper-styles#^1.0.2",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "iron-test-helpers": "PolymerElements/iron-test-helpers#^1.0.0",
-    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+    "iron-component-page": "PolymerElements/iron-component-page#^3.0.1",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "iron-test-helpers": "PolymerElements/iron-test-helpers#^2.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
   "ignore": [
     "**/.*",
-    "dependencyci.yml",
     "node_modules",
     "bower_components",
     "test",
     "tasks"
-  ],
-  "version": "0.1.0"
+  ]
 }
