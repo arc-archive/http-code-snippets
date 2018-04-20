@@ -95,7 +95,16 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
       if (!url) {
         return result;
       }
-      const uri = new URL(url);
+      let uri;
+      try {
+        uri = new URL(url);
+      } catch (e) {
+        if (url[0] === '/') {
+          result.path = url;
+          result.post = 80;
+        }
+        return result;
+      }
       const host = uri.hostname;
       let port = uri.port;
       if (!port) {
