@@ -31,6 +31,7 @@ the License.
           <template is="dom-repeat" items="[[headers]]">
             <div class="line">headers.<span class="token function">append</span><span class="token punctuation">(</span><span class="token string">'[[item.name]]'</span><span class="token punctuation">,</span> <span class="token string">'[[item.value]]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
           </template>
+          <div class="line"><span class="end-line-marker"></span></div>
         </template>
 
         <template is="dom-if" if="[[payload]]">
@@ -38,24 +39,19 @@ the License.
             <div class="line"><span class="end-line-marker"></span></div>
           </template>
           <div class="line"><span class="token keyword">let</span> body <span class="token operator">=</span> <span class="token string">`[[payload]]`</span><span class="token punctuation">;</span></div>
+          <div class="line"><span class="end-line-marker"></span></div>
         </template>
-
-        <div class="line"><span class="end-line-marker"></span></div>
 
         <div class="line"><span class="token keyword">let</span> init <span class="token operator">=</span><span class="token punctuation"> {</span></div>
 
-        <template is="dom-if" if="[[!headers]]">
-          <div class="line indent">method<span class="token punctuation">:</span> <span class="token string">'[[method]]'</span><span class="token punctuation">,</span></div>
-        </template>
+        <div class="line indent">method<span class="token punctuation">:</span> <span class="token string">'[[method]]'</span><span class="token punctuation">,</span></div>
         <template is="dom-if" if="[[headers]]">
           <div class="line indent">headers<span class="token punctuation">:</span> headers</span><template is="dom-if" if="[[payload]]"><span class="token punctuation">,</span></template></div>
         </template>
         <template is="dom-if" if="[[payload]]">
           <div class="line indent">body<span class="token punctuation">:</span> body</span></div>
         </template>
-
         <div class="line"><span class="token punctuation">}</span><span class="token punctuation">;</span></div>
-
         <div class="line"><span class="end-line-marker"></span></div>
       </template>
       <div class="line"><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'[[url]]'</span><template is="dom-if" if="[[hasParams]]"><span class="token punctuation">,</span> init</template><span class="token punctuation">)</span></div>
@@ -99,12 +95,12 @@ the License.
         hasParams: {
           type: Boolean,
           value: false,
-          computed: '_computeHasParams(headers, payload)'
+          computed: '_computeHasParams(headers, payload, method)'
         }
       };
     }
-    _computeHasParams(headers, payload) {
-      return !!(headers || payload);
+    _computeHasParams(headers, payload, method) {
+      return !!(headers || payload || (method && method !== 'GET'));
     }
   }
   window.customElements.define(FetchJsHttpSnippet.is, FetchJsHttpSnippet);
