@@ -17,7 +17,7 @@
       @apply --http-code-snippets;
     }
     </style>
-    <paper-tabs selected="{{selectedPlatform}}" scrollable fit-container>
+    <paper-tabs selected="{{selectedPlatform}}" scrollable="[[scrollable]]" fit-container>
       <paper-tab>HTTP</paper-tab>
       <paper-tab>Shell</paper-tab>
       <paper-tab>JavaScript</paper-tab>
@@ -73,7 +73,9 @@
         headersList: {
           type: Array,
           computed: 'headersToList(headers)'
-        }
+        },
+        // Passed to `paper-tabs` `scrollable` property
+        scrollable: Boolean
       };
     }
   }
