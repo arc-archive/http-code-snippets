@@ -25,9 +25,9 @@ the License.
     </style>
     <code class="code language-bash">
       <paper-icon-button icon="arc:content-copy" title="Copy to clipboard"></paper-icon-button>
-      <div class="line"><span class="token function">curl</span> -i -X [[method]] <span class="token operator">\</span></div>
-      <template is="dom-if" if="[[payload]]"><div class="line indent">-d <span class="token string">"[[payload]]"</span> <span class="token operator">\</span></div></template>
-      <template is="dom-repeat" items="[[headers]]"><div class="line indent">-H <span class="token string">"[[item.name]]: [[item.value]]"</span> <span class="token operator">\</span></div></template>
+      <div class="line"><span class="token function">curl</span> -i -X [[method]] <span class="token operator"> \</span></div>
+      <template is="dom-if" if="[[payload]]"><div class="line indent">-d <span class="token string">"[[payload]]"</span> <span class="token operator"> \</span></div></template>
+      <template is="dom-repeat" items="[[headers]]"><div class="line indent">-H <span class="token string">"[[item.name]]: [[item.value]]"</span> <span class="token operator"> \</span></div></template>
       <div class="line indent">[[url]]</div>
     </code>
   </template>

@@ -99,7 +99,7 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
       const host = uri.hostname;
       let port = uri.port;
       if (!port) {
-        if (uri.protocol === 'https') {
+        if (uri.protocol === 'https:') {
           port = 443;
         } else {
           port = 80;
@@ -114,7 +114,7 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
         path = '/';
       }
       if (query) {
-        path += '?' + query;
+        path += query;
       }
       result.path = path;
       return result;

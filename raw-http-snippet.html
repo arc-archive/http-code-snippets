@@ -36,9 +36,8 @@ the License.
       <template is="dom-repeat" items="[[headers]]">
         <div class="token line"><span class="token header-name keyword">[[item.name]]:</span> [[item.value]]</div>
       </template>
-
       <template is="dom-if" if="[[payload]]">
-        <div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div>
+        <div class="line"><span class="end-line-marker" title="New line">&#13;&#10;</span></div>
         <div class="line">[[payload]]</div>
       </template>
       <template is="dom-if" if="[[!payload]]"><div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div><div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div></template>

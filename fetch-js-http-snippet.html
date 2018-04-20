@@ -59,15 +59,15 @@ the License.
         <div class="line"><span class="end-line-marker"></span></div>
       </template>
       <div class="line"><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'[[url]]'</span><template is="dom-if" if="[[hasParams]]"><span class="token punctuation">,</span> init</template><span class="token punctuation">)</span></div>
-      <div class="line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation"> {</span></div>
-      <div class="line indent"><span class="token keyword">return</span> response.<span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation style-scope demo-snippet">;</span></div>
+      <div class="line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token keyword"> =></span><span class="token punctuation"> {</span></div>
+      <div class="line indent"><span class="token keyword">return</span> response.<span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation style-scope demo-snippet">;</span><span class="token comment" spellcheck="true"> // or .json() or .blob() ...</span></div>
       <div class="line"><span class="token punctuation">}</span><span class="token punctuation">)</span></div>
 
-      <div class="line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation"> {</span></div>
+      <div class="line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token keyword"> =></span><span class="token punctuation"> {</span></div>
       <div class="line indent"><span class="token comment" spellcheck="true">// text is the response body</span></div>
       <div class="line"><span class="token punctuation">}</span><span class="token punctuation">)</span></div>
 
-      <div class="line"><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation"> {</span></div>
+      <div class="line"><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token keyword"> =></span><span class="token punctuation"> {</span></div>
       <div class="line indent"><span class="token comment" spellcheck="true">// error in e.message</span></div>
       <div class="line"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
 
