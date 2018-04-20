@@ -128,6 +128,44 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
       result.path = path;
       return result;
     }
+
+    _copyToClipboard(e) {
+      const button = e.currentTarget || e.target;
+      const path = e.composedPath();
+      let code;
+      let node;
+      let i = 0;
+      while ((node = path[i])) {
+        i++;
+        if (!node || !node.nodeName) {
+          continue;
+        }
+        if (node.nodeName === 'CODE') {
+          code = node;
+          break;
+        }
+      }
+      if (!code) {
+        return;
+      }
+      // From https://github.com/google/material-design-lite/blob/master/docs/_assets/snippets.js
+      const snipRange = document.createRange();
+      snipRange.selectNodeContents(code);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(snipRange);
+      let result = false;
+      try {
+        result = document.execCommand('copy');
+        button.icon = 'arc:done';
+      } catch (err) {
+        button.icon = 'arc:error';
+      }
+      setTimeout(() => {
+        button.icon = 'arc:content-copy';
+      }, 1000);
+      selection.removeAllRanges();
+    }
   }
   return CSmixin;
 });
