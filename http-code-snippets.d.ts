@@ -55,6 +55,11 @@ declare namespace ApiElements {
      * A list of HTTP headers from the headers string
      */
     readonly headersList: any[]|null|undefined;
+
+    /**
+     * Passed to `paper-tabs` `scrollable` property
+     */
+    scrollable: boolean|null|undefined;
   }
 }
 

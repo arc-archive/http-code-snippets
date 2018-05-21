@@ -57,5 +57,6 @@ declare namespace ArcBehaviors {
      * include this library from bower_components if the element want to use it.
      */
     urlDetails(url: any): any;
+    _copyToClipboard(e: any): void;
   }
 }

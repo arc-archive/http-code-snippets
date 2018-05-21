@@ -35,7 +35,7 @@ declare namespace ApiElements {
      * True if has either headers or payload or both.
      */
     readonly hasParams: boolean|null|undefined;
-    _computeHasParams(headers: any, payload: any): any;
+    _computeHasParams(headers: any, payload: any, method: any): any;
   }
 }
 
