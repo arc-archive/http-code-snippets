@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>http-code-snippets test</title>
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <!-- IE11, Safari 9 polyfill -->
+  <script src="../../url-polyfill/url.js"></script>
+  <link rel="import" href="../http-code-snippets.html">
+</head>
+<body>
+  <test-fixture id="Basic">
+    <template>
+      <http-code-snippets headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>
+    </template>
+  </test-fixture>
+
+  <script>
+  suite('http-code-snippets', () => {
+    let element;
+    setup(() => {
+      element = fixture('Basic');
+    });
+
+    test('selectedPlatform is 0 by default', () => {
+      assert.equal(element.selectedPlatform, 0);
+    });
+
+    test('computes headers list', () => {
+      assert.typeOf(element.headersList, 'array');
+      assert.lengthOf(element.headersList, 1);
+      const header = element.headersList[0];
+      assert.equal(header.name, 'Content-Type');
+      assert.equal(header.value, 'application/json');
+    });
+
+    test('Computes URL details', () => {
+      const result = element.urlDetails('https://domain.com/path?a=b');
+      assert.equal(result.path, '/path?a=b');
+      assert.equal(result.port, 443);
+      assert.equal(result.hostValue, 'domain.com');
+    });
+  });
+  </script>
+</body>
+</html>
