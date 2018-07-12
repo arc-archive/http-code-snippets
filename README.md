@@ -18,7 +18,7 @@ Code snippets to display code implementatyion examples for a HTTP request
 -->
 
 ```html
-<http-code-snippets></http-code-snippets>
+<http-code-snippets url="https://api.github.com/authorizations" method="POST" payload='{"scopes": ["public_repo"]}'></http-code-snippets>
 ```
 
 ### API components
