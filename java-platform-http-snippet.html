@@ -1,0 +1,91 @@
+<!--
+@license
+Copyright 2018 The Advanced REST client authors <arc@mulesoft.com>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../arc-icons/arc-icons.html">
+<link rel="import" href="code-snippets-mixin.html">
+<link rel="import" href="http-code-snippets-style.html">
+<dom-module id="java-platform-http-snippet">
+  <template strip-whitespace>
+    <style include="http-code-snippets-style">
+    .code {
+      @apply --http-code-snippet-container-highlighted;
+    }
+    </style>
+    <code class="code language-javascript">
+      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
+
+      <div class="line"><span class="token constant">URL</span> url = <span class="token keyword">new</span><span class="token constant"> URL</span>("<span class="token string">[[url]]</span>");</div>
+      <div class="line"><span class="token constant">HttpURLConnection</span> con = (<span class="token constant">HttpURLConnection</span>) url.<span class="token function">openConnection</span>();</div>
+      <div class="line">con.<span class="token function">setRequestMethod</span>("<span class="token string">[[method]]</span>");</div>
+
+      <template is="dom-if" if="[[headers]]">
+        <template is="dom-repeat" items="[[headers]]">
+          <div class="line">con.<span class="token function">setRequestProperty</span>("<span class="token string">[[item.name]]</span>", "<span class="token string">[[item.value]]</span>");</div>
+        </template>
+      </template>
+
+      <template is="dom-if" if="[[payload]]">
+        <div class="line"><span class="end-line-marker"></span></div>
+        <div class="line">con.<span class="token function">setDoOutput</span>(<span class="token keyword">true</span>);</div>
+        <div class="line"><span class="token constant">DataOutputStream</span> out = <span class="token function">new</span><span class="token constant"> DataOutputStream</span>(con.<span class="token function">getOutputStream</span>());</div>
+        <template is="dom-repeat" items="[[_payloadToList(payload)]]">
+          <div class="line">out.<span class="token function">writeBytes("<span class="token string">[[item]]\n</span>");</div>
+        </template>
+        <div class="line">out.<span class="token function">flush</span>();</div>
+        <div class="line">out.<span class="token function">close</span>();</div>
+      </template>
+      <div class="line"><span class="end-line-marker"></span></div>
+      <div class="line"><span class="token constant">int</span> status = con.<span class="token function">getResponseCode</span>();</div>
+      <div class="line"><span class="token constant">BufferedReader</span> in = <span class="token function">new</span><span class="token constant"> BufferedReader</span>(<span class="token function">new</span><span class="token constant"> InputStreamReader</span>(con.<span class="token function">getInputStream</span>()));</div>
+      <div class="line"><span class="token keyword">String</span> inputLine;</div>
+      <div class="line"><span class="token constant">StringBuffer</span> content = <span class="token function">new</span><span class="token constant"> StringBuffer</span>();</div>
+      <div class="line"><span class="token keyword">while</span> <span class="token punctuation">((</span>inputLine = in.<span class="token function">readLine</span>()<span class="token punctuation">)</span> != null<span class="token punctuation">)</span> {</div>
+      <div class="line indent">content.<span class="token function">append</span>(inputLine);</div>
+      <div class="line">}</div>
+      <div class="line">in.<span class="token function">close</span>();</div>
+      <div class="line">con.<span class="token function">disconnect</span>();</div>
+      <div class="line">System.out.<span class="token function">println</span>("<span class="token string">Response status:</span> " + status);</div>
+      <div class="line">System.out.<span class="token function">println</span>(content.<span class="token function">toString</span>());</div>
+    </code>
+  </template>
+  <script>
+  /**
+   * `java-platform-http-snippet`
+   *
+   * A snippet for requests made in Java using the platform functions
+   *
+   * ## Styling
+   *
+   * Custom property | Description | Default
+   * ----------------|-------------|----------
+   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   *
+   * @customElement
+   * @polymer
+   * @demo demo/java-platform.html Java Platform demo
+   * @demo demo/java.html Java demo
+   * @memberof ApiElements
+   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   */
+  class JavaPlatformHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
+    static get is() { return 'java-platform-http-snippet'; }
+
+    _payloadToList(payload) {
+      return payload.split('\n').map((item) => item.replace(/"/g, '\\"'));
+    }
+  }
+  window.customElements.define(JavaPlatformHttpSnippet.is, JavaPlatformHttpSnippet);
+  </script>
+</dom-module>

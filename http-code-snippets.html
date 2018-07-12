@@ -7,6 +7,7 @@
 <link rel="import" href="javascript-http-snippets.html">
 <link rel="import" href="python-http-snippets.html">
 <link rel="import" href="c-curl-http-snippet.html">
+<link rel="import" href="java-http-snippets.html">
 <link rel="import" href="code-snippets-mixin.html">
 
 <dom-module id="http-code-snippets">
@@ -19,10 +20,11 @@
     </style>
     <paper-tabs selected="{{selectedPlatform}}" scrollable="[[scrollable]]" fit-container>
       <paper-tab>HTTP</paper-tab>
-      <paper-tab>Shell</paper-tab>
+      <paper-tab>cURL</paper-tab>
       <paper-tab>JavaScript</paper-tab>
       <paper-tab>Python</paper-tab>
       <paper-tab>C</paper-tab>
+      <paper-tab>Java</paper-tab>
     </paper-tabs>
     <iron-pages selected="[[selectedPlatform]]">
       <raw-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></raw-http-snippet>
@@ -30,6 +32,7 @@
       <javascript-http-snippets url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></javascript-http-snippets>
       <python-http-snippets url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></python-http-snippets>
       <c-curl-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></c-curl-http-snippet>
+      <java-http-snippets url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headersList]]"></java-http-snippets>
     </iron-pages>
   </template>
   <script>

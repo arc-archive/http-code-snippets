@@ -15,10 +15,9 @@ the License.
 <link rel="import" href="../paper-tabs/paper-tabs.html">
 <link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
-<link rel="import" href="xhr-http-snippet.html">
-<link rel="import" href="fetch-js-http-snippet.html">
-<link rel="import" href="node-http-snippet.html">
-<dom-module id="javascript-http-snippets">
+<link rel="import" href="java-platform-http-snippet.html">
+<link rel="import" href="java-spring-http-snippet.html">
+<dom-module id="java-http-snippets">
   <template strip-whitespace>
     <style>
     :host {
@@ -26,21 +25,19 @@ the License.
     }
     </style>
     <paper-tabs selected="{{selectedFramework}}">
-      <paper-tab>Fetch</paper-tab>
-      <paper-tab>XHR</paper-tab>
-      <paper-tab>Node</paper-tab>
+      <paper-tab>Platform</paper-tab>
+      <paper-tab>Spring</paper-tab>
     </paper-tabs>
     <iron-pages selected="[[selectedFramework]]">
-      <fetch-js-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></fetch-js-http-snippet>
-      <xhr-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></xhr-http-snippet>
-      <node-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></node-http-snippet>
+      <java-platform-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></java-platform-http-snippet>
+      <java-spring-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></java-spring-http-snippet>
     </iron-pages>
   </template>
   <script>
   /**
    * `javascript-http-snippet`
    *
-   * A set of code snippets for JavaScript requests.
+   * A set of code snippets for Java requests.
    *
    * ## Styling
    *
@@ -50,12 +47,12 @@ the License.
    *
    * @customElement
    * @polymer
-   * @demo demo/javascript.html JavaScript demo
+   * @demo demo/java.html Java demo
    * @memberof ApiElements
    * @appliesMixin ArcBehaviors.CodeSnippetsMixin
    */
-  class JavascriptHttpSnippets extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'javascript-http-snippets'; }
+  class JavatHttpSnippets extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
+    static get is() { return 'java-http-snippets'; }
     static get properties() {
       return {
         selectedFramework: {
@@ -65,6 +62,6 @@ the License.
       };
     }
   }
-  window.customElements.define(JavascriptHttpSnippets.is, JavascriptHttpSnippets);
+  window.customElements.define(JavatHttpSnippets.is, JavatHttpSnippets);
   </script>
 </dom-module>
