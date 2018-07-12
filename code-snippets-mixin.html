@@ -13,6 +13,8 @@ the License.
 -->
 <link rel="import" href="../polymer/lib/utils/mixin.html">
 <script>
+(function() {
+const URI_CACHE = {};
 if (!window.ArcBehaviors) {
   /**
    * @namespace ArcBehaviors
@@ -86,6 +88,9 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
      * include this library from bower_components if the element want to use it.
      */
     urlDetails(url) {
+      if (URI_CACHE[url]) {
+        return URI_CACHE[url];
+      }
       url = url || this.url;
       const result = {
         path: '',
@@ -105,7 +110,10 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
         }
         return result;
       }
-      const host = uri.hostname;
+      let host = uri.hostname;
+      if (host) {
+        host = decodeURIComponent(host);
+      }
       let port = uri.port;
       if (!port) {
         if (uri.protocol === 'https:') {
@@ -121,11 +129,14 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
       let path = uri.pathname;
       if (!path) {
         path = '/';
+      } else {
+        path = decodeURIComponent(path);
       }
       if (query) {
         path += query;
       }
       result.path = path;
+      URI_CACHE[url] = result;
       return result;
     }
 
@@ -169,4 +180,5 @@ ArcBehaviors.CodeSnippetsMixin = Polymer.dedupingMixin((base) => {
   }
   return CSmixin;
 });
+})();
 </script>
