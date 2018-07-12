@@ -17,6 +17,7 @@
 /// <reference path="javascript-http-snippets.d.ts" />
 /// <reference path="python-http-snippets.d.ts" />
 /// <reference path="c-curl-http-snippet.d.ts" />
+/// <reference path="java-http-snippets.d.ts" />
 /// <reference path="code-snippets-mixin.d.ts" />
 
 declare namespace ApiElements {
