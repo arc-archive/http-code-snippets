@@ -29,7 +29,7 @@ declare namespace ApiElements {
    *
    * ## Polyfills
    *
-   * This component requires `github/url-polyfill` (or other) polyfill for
+   * This component requires `advanced-rest-client/URL` (or other) polyfill for
    * URL object. This spec is not supported in Safari 9 and IE 11.
    * If you are targeting this browsers install ind include this dependency.
    *
