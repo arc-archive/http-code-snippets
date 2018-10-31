@@ -9,7 +9,7 @@
  */
 
 /// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="prism-http-import.d.ts" />
+/// <reference path="../prism-common/prism-http-import.d.ts" />
 /// <reference path="base-code-snippet.d.ts" />
 
 declare namespace ApiElements {

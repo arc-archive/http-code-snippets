@@ -9,8 +9,8 @@
  */
 
 /// <reference path="../polymer/types/polymer-element.d.ts" />
+/// <reference path="../prism-common/prism-java-import.d.ts" />
 /// <reference path="base-code-snippet.d.ts" />
-/// <reference path="prism-java-import.d.ts" />
 
 declare namespace ApiElements {
 
