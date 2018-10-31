@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>http-code-snippets test</title>
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <!-- IE11, Safari 9 polyfill -->
+  <link rel="import" href="../../url-polyfill/url-polyfill.html">
+  <link rel="import" href="../../prism-element/prism-highlighter.html">
+  <link rel="import" href="../base-code-snippet.html">
+</head>
+<body>
+  <prism-highlighter></prism-highlighter>
+
+  <test-fixture id="Basic">
+    <template>
+      <base-code-snippet headers='[{"Content-Type": "application/json"}]' method="GET" url="http://domain.com"></base-code-snippet>
+    </template>
+  </test-fixture>
+
+  <script>
+  suite('base-code-snippet', () => {
+    suite('urlDetails()', () => {
+      test('Computes URL details', () => {
+        const element = fixture('Basic');
+        const result = element.urlDetails('https://domain.com/path?a=b');
+        assert.equal(result.path, '/path?a=b');
+        assert.equal(result.port, 443);
+        assert.equal(result.hostValue, 'domain.com');
+      });
+
+      test('Adds code to the DOM', (done) => {
+        const element = fixture('Basic');
+        element._computeCommand = function() {
+          return 'test-command';
+        };
+        setTimeout(() => {
+          const code = element.shadowRoot.querySelector('code').innerText.trim();
+          assert.equal(code, 'test-command');
+          done();
+        }, 40);
+      });
+    });
+
+    suite('_highlight()', () => {
+      test('Element eventually dispatches syntax-highlight event', (done) => {
+        const element = fixture('Basic');
+        element._computeCommand = function() {
+          return 'test-command';
+        };
+        element.addEventListener('syntax-highlight', function f(e) {
+          element.removeEventListener('syntax-highlight', f);
+          assert.isTrue(e.cancelable, 'Event is cancelable');
+          assert.typeOf(e.detail.code, 'string', 'Code property is set');
+          done();
+        });
+      });
+
+      test('Dispatches syntax-highlight event', () => {
+        const element = fixture('Basic');
+        element._computeCommand = function() {
+          return 'test-command';
+        };
+        const spy = sinon.spy();
+        element.addEventListener('syntax-highlight', spy);
+        element._highlight('test', 'c');
+        assert.isTrue(spy.called);
+      });
+    });
+  });
+  </script>
+</body>
+</html>

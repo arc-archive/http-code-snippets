@@ -12,12 +12,7 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../polymer/lib/elements/dom-if.html">
-<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="base-code-snippet.html">
 <!--
 A snippet for requests made in JavaScript (Node) using native library.
 
@@ -26,102 +21,91 @@ A snippet for requests made in JavaScript (Node) using native library.
 @demo demo/node.html
 -->
 <dom-module id="node-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-    <code class="code language-javascript">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-      <div class="line"><span class="token keyword">const</span> http <span class="token operator">=</span><span class="token function"> require</span><span class="token punctuation">(</span><span class="token string">'http'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-
-      <template is="dom-if" if="[[payload]]">
-        <div class="line"><span class="end-line-marker"></span></div>
-        <div class="line"><span class="token keyword">let</span> body <span class="token operator">=</span> <span class="token string">`[[payload]]`</span><span class="token punctuation">;</span></div>
-      </template>
-
-      <div class="line"><span class="end-line-marker"></span></div>
-
-      <div class="line"><span class="token keyword">let</span> init <span class="token operator">=</span><span class="token punctuation"> {</span></div>
-      <div class="line indent">host<span class="token punctuation">:</span> <span class="token string">'[[hostValue]]'</span><span class="token punctuation">,</span></div>
-      <div class="line indent">path<span class="token punctuation">:</span> <span class="token string">'[[path]]'</span><span class="token punctuation">,</span></div>
-      <div class="line indent">port<span class="token punctuation">:</span> <span class="token string">'[[port]]'</span><span class="token punctuation">,</span></div>
-      <div class="line indent">method<span class="token punctuation">:</span> <span class="token string">'[[method]]'</span><span class="token punctuation">,</span></div>
-      <template is="dom-if" if="[[headers]]">
-        <div class="line indent">headers<span class="token punctuation">:</span><span class="token punctuation"> {</span></div>
-        <template is="dom-repeat" items="[[headers]]">
-          <div class="line indent-2"><span class="token string">'[[item.name]]'</span><span class="token punctuation">:</span> <span class="token string">'[[item.value]]'</span><span class="token punctuation">,</span></div>
-        </template>
-        <div class="line indent"><span class="token punctuation">}</span><template is="dom-if" if="[[payload]]"><span class="token punctuation">,</span></template></div>
-      </template>
-      <div class="line"><span class="token punctuation">}</span><span class="token punctuation">;</span></div>
-
-      <div class="line"><span class="end-line-marker"></span></div>
-
-      <div class="line"><span class="token keyword">const</span> callback <span class="token operator">=</span><span class="token keyword"> function</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation"> {</span></div>
-      <div class="line indent"><span class="token keyword">var</span> str <span class="token operator">=</span><span class="token string"> ''</span><span class="token punctuation">;</span></div>
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="line indent">response.on<span class="token punctuation">(</span><span class="token string">'data'</span>, <span class="token keyword">function</span><span class="token punctuation">(</span>chunk<span class="token punctuation">)</span> <span class="token punctuation"> {</span></div>
-      <div class="line indent-2">str <span class="token operator">+=</span> chunk<span class="token punctuation">;</span></div>
-      <div class="line indent"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="line indent">response.on<span class="token punctuation">(</span><span class="token string">'end'</span>, <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation"> {</span></div>
-      <div class="line indent-2"><span class="token comment">// str has response body</span></div>
-      <div class="line indent"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="line"><span class="token punctuation">}</span><span class="token punctuation">;</span></div>
-
-      <div class="line"><span class="end-line-marker"></span></div>
-
-      <div class="line"><span class="token keyword">const</span> req <span class="token operator">=</span> http.<span class="token function">request</span><span class="token punctuation">(</span>init, callback<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <template is="dom-if" if="[[payload]]">
-        <div class="line">req.<span class="token function">write</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      </template>
-      <div class="line">req.<span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-    </code>
-  </template>
   <script>
   /**
    * `node-http-snippet`
    *
    * A set of code snippets for Python requests.
    *
-   * ## Styling
+   * ### Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/python.html Python demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class NodeHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'node-http-snippet'; }
-    static get properties() {
-      return {
-        // HTTP path value
-        path: String,
-        // HTTP host name
-        hostValue: String,
-        // Connection port value
-        port: Number
-      };
+  class NodeHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'node-http-snippet';
     }
 
-    static get observers() {
-      return [
-        '_urlChanged(url)'
-      ];
+    get lang() {
+      return 'javascript';
     }
 
-    _urlChanged(url) {
+    /**
+     * Computes code for JavaScript (Node).
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String} payload
+     * @return {String} Complete code for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      if (!url || !method) {
+        return '';
+      }
+      let result = 'const http = require(\'http\');\n';
+      const hasHeaders = !!(headers && headers instanceof Array && headers.length);
+      const hasPayload = !!payload;
+      if (hasPayload) {
+        result += this._createPayload(payload);
+      }
+      result += '\n';
       const data = this.urlDetails(url);
-      this.path = data.path;
-      this.port = data.port;
-      this.hostValue = data.hostValue;
+      result += 'const init = {\n';
+      result += `  host: '${data.hostValue}'\n`;
+      result += `  path: '${data.path}'\n`;
+      result += `  port: ${data.port}\n`;
+      result += `  method: '${method}'\n`;
+      if (hasHeaders) {
+        result += '  headers: {\n';
+        for (let i = 0, len = headers.length; i < len; i++) {
+          const h = headers[i];
+          result += `    '${h.name}': '${h.value}'`;
+          if (i + 1 !== len) {
+            result += ',';
+          }
+          result += '\n';
+        }
+        result += '  }\n';
+      }
+      result += '};\n';
+      result += 'const callback = function(response) {\n';
+      result += '  let str = \'\';\n';
+      result += '  response.on(\'data\', function(chunk) {\n';
+      result += '    str += chunk;\n';
+      result += '  });\n';
+      result += '  \n';
+      result += '  response.on(\'end\', function() {\n';
+      result += '    // str has response body\n';
+      result += '    console.log(str);\n';
+      result += '  });\n';
+      result += '};\n';
+      result += '\n';
+      result += 'const req = http.request(init, callback);\n';
+      if (hasPayload) {
+        result += 'req.write(body);\n';
+      }
+      result += 'req.end();\n';
+      return result;
+    }
+
+    _createPayload(payload) {
+      return `\nconst body = \`${payload}\`;\n`;
     }
   }
   window.customElements.define(NodeHttpSnippet.is, NodeHttpSnippet);

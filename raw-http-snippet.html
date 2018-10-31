@@ -12,79 +12,63 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../polymer/lib/elements/dom-if.html">
-<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="prism-http-import.html">
+<link rel="import" href="base-code-snippet.html">
 <dom-module id="raw-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-    <code class="code language-http">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-      <div class="token line">
-        <span class="token property">[[method]]</span> [[path]] <span class="value">HTTP/1.1</span>
-      </div>
-      <div class="token line">
-        <span class="token header-name keyword">Host:</span> [[hostValue]]<span class="token attr-name">:[[port]]</span>
-      </div>
-      <template is="dom-repeat" items="[[headers]]">
-        <div class="token line"><span class="token header-name keyword">[[item.name]]:</span> [[item.value]]</div>
-      </template>
-      <template is="dom-if" if="[[payload]]">
-        <div class="line"><span class="end-line-marker" title="New line">&#13;&#10;</span></div>
-        <div class="line">[[payload]]</div>
-      </template>
-      <template is="dom-if" if="[[!payload]]"><div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div><div class="line"><span class="end-line-marker icon" title="New line">&#13;&#10;</span></div></template>
-    </code>
-  </template>
   <script>
   /**
    * `raw-http-snippet`
    *
    * Code snippet to display raw HTTP message
    *
-   * ## Styling
+   * ### Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/raw.html Raw demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class RawHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'raw-http-snippet'; }
-    static get properties() {
-      return {
-        // HTTP path value
-        path: String,
-        // HTTP host name
-        hostValue: String,
-        // Connection port value
-        port: Number
-      };
+  class RawHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'raw-http-snippet';
     }
 
-    static get observers() {
-      return [
-        '_urlChanged(url)'
-      ];
+    get lang() {
+      return 'http';
     }
 
-    _urlChanged(url) {
-      const data = this.urlDetails(url);
-      this.path = data.path;
-      this.port = data.port;
-      this.hostValue = data.hostValue;
+    /**
+     * Computes bas command for cURL.
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String} payload
+     * @return {String} Complete cURL command for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      if (!url || !method) {
+        return '';
+      }
+      const urlData = this.urlDetails(url);
+      let result = `${method} ${urlData.path} HTTP/1.1\n`;
+      if (urlData.hostValue) {
+        result += `Host: ${urlData.hostValue}:${urlData.port}\n`;
+      }
+      if (headers && headers instanceof Array) {
+        for (let i = 0, len = headers.length; i < len; i++) {
+          const h = headers[i];
+          result += `${h.name}: ${h.value}\n`;
+        }
+      }
+      if (payload) {
+        result += '\n';
+        result += payload;
+        result += '\n\n';
+      }
+      return result;
     }
   }
   window.customElements.define(RawHttpSnippet.is, RawHttpSnippet);

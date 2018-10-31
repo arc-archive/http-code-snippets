@@ -12,41 +12,9 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../polymer/lib/elements/dom-if.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="base-code-snippet.html">
+<link rel="import" href="prism-python-import.html">
 <dom-module id="requests-python-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-    <code class="code language-python">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-
-      <div class="token line"><span class="token keyword">import</span> requests</div>
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="token line">url <span class="token operator">=</span><span class="token string"> '[[url]]'</span></div>
-      <template is="dom-if" if="[[headers]]">
-        <div class="token line">headers <span class="token operator">=</span><span class="token punctuation"> {</span><template is="dom-repeat" items="[[headers]]"><span class="token string">'[[item.name]]'<span class="token punctuation">:</span> <span class="token string">'[[item.value]]'</span><span class="token punctuation" hidden$="[[_isLast(index, headers)]]">, </span></template><span class="token punctuation">}</span></div>
-      </template>
-      <template is="dom-if" if="[[payload]]">
-        <div class="token line">body <span class="token operator">=</span> <span class="token triple-quoted-string string"> """[[payload]]"""</span></div>
-      </template>
-
-      <div class="token line">req <span class="token operator">=</span> requests<span class="token punctuation">.</span>[[lowerMethod]]<span class="token punctuation">(</span>url<template is="dom-if" if="[[headers]]"><span class="token punctuation">,</span> headers=headers</template><template is="dom-if" if="[[payload]]">, data=body</template><span class="token punctuation">)</span></div>
-
-      <div class="line"><span class="end-line-marker"></span></div>
-
-      <div class="token line">print<span class="token punctuation">(</span>req<span class="token punctuation">.</span>status_code<span class="token punctuation">)</span></div>
-      <div class="token line">print<span class="token punctuation">(</span>req<span class="token punctuation">.</span>headers<span class="token punctuation">)</span></div>
-      <div class="token line">print<span class="token punctuation">(</span>req<span class="token punctuation">.</span>text<span class="token punctuation">)</span></div>
-
-    </code>
-  </template>
   <script>
   /**
    * `raw-http-snippet`
@@ -55,44 +23,109 @@ the License.
    *
    * ## Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * ### Styling
+   *
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/requests-python.html Python > request demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class RequestsPythonHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'requests-python-http-snippet'; }
-    static get properties() {
-      return {
-        // Lower case method name
-        lowerMethod: {
-          type: String,
-          readOnly: true
-        }
-      };
+  class RequestsPythonHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'requests-python-http-snippet';
     }
 
-    static get observers() {
-      return [
-        '_methodChanged(method)'
-      ];
+    get lang() {
+      return 'python';
     }
 
-    _methodChanged(method) {
-      if (!method || typeof method !== 'string') {
-        this._setLowerMethod('');
-      } else {
-        this._setLowerMethod(method.toLowerCase());
+    /**
+     * Computes code for Python (Request lib).
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String|undefined} payload
+     * @return {String} Complete code for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      if (!url || !method) {
+        return '';
       }
+      let result = 'import requests\n\n';
+      const hasHeaders = !!(headers && headers instanceof Array && headers.length);
+      const hasPayload = !!payload;
+      result += `url = '${url}'\n`;
+      if (hasHeaders) {
+        result += this._getHeaders(headers);
+        if (!hasPayload) {
+          result += '\n';
+        }
+      }
+      if (hasPayload) {
+        result += this._getPayload(payload);
+      }
+      result += this._getConnection(method, hasPayload, hasHeaders);
+      result += this._getFooter();
+      return result;
     }
 
-    _isLast(index, array) {
-      return index + 1 === array.length;
+    /**
+     * @param {Array<Object>} headers List of headers
+     * @return {String} Headers variable definition
+     */
+    _getHeaders(headers) {
+      let result = 'headers = {';
+      for (let i = 0, len = headers.length; i < len; i++) {
+        const h = headers[i];
+        result += `'${h.name}': '${h.value}'`;
+        if (i + 1 !== len) {
+          result += ',';
+        }
+      }
+      result += '}\n';
+      return result;
+    }
+    /**
+     * @param {String} payload HTTP body
+     * @return {String} Body variable definition
+     */
+    _getPayload(payload) {
+      let result = 'body = """';
+      result += payload;
+      result += '"""\n\n';
+      return result;
+    }
+
+    /**
+     * Computes value of connection definition
+     * @param {String} method HTTP request method
+     * @param {Boolean} hasPayload True if the request contains payload message
+     * @param {Boolean} hasHeaders True if the request contains headers
+     * @return {String}
+     */
+    _getConnection(method, hasPayload, hasHeaders) {
+      const lowerMethod = String(method).toLowerCase();
+      let result = `req = requests.${lowerMethod}(url`;
+      if (hasHeaders) {
+        result += ', headers=headers';
+      }
+      if (hasPayload) {
+        result += ', data=body';
+      }
+      result += ')\n\n';
+      return result;
+    }
+    /**
+     * @return {String} Returns ending of the code definition
+     */
+    _getFooter() {
+      let result = 'print(req.status_code)\n';
+      result += 'print(req.headers)\n';
+      result += 'print(req.text)';
+      return result;
     }
   }
   window.customElements.define(RequestsPythonHttpSnippet.is, RequestsPythonHttpSnippet);

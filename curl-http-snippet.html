@@ -12,45 +12,71 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="prism-bash-import.html">
+<link rel="import" href="base-code-snippet.html">
 <dom-module id="curl-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-    <code class="code language-bash">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-      <div class="line"><span class="token function">curl</span> -i -X [[method]] <span class="token operator"> \</span></div>
-      <template is="dom-if" if="[[payload]]"><div class="line indent">-d <span class="token string">"[[payload]]"</span> <span class="token operator"> \</span></div></template>
-      <template is="dom-repeat" items="[[headers]]"><div class="line indent">-H <span class="token string">"[[item.name]]: [[item.value]]"</span> <span class="token operator"> \</span></div></template>
-      <div class="line indent">[[url]]</div>
-    </code>
-  </template>
   <script>
   /**
    * `curl-http-snippet`
    *
    * A snippet for curl command in bash.
    *
-   * ## Styling
+   * ### Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/curl.html cURL demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class CurlHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'curl-http-snippet'; }
+  class CurlHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'curl-http-snippet';
+    }
+
+    get lang() {
+      return 'bash';
+    }
+    /**
+     * Computes command for cURL.
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String} payload
+     * @return {String} Complete cURL command for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      url = url || '';
+      method = method || 'GET';
+      let result = `curl "${url}" \\\n`;
+      if (method !== 'GET') {
+        result += `\t-X ${method} \\\n`;
+      }
+      if (payload) {
+        let quot = '';
+        try {
+          payload = JSON.stringify(payload);
+        } catch (_) {
+          quot = '"';
+        }
+        result += `\t-d ${quot}${payload}${quot} \\\n`;
+      }
+      if (headers && headers instanceof Array) {
+        for (let i = 0, len = headers.length; i < len; i++) {
+          const h = headers[i];
+          result += `\t-H "${h.name}: ${h.value}" `;
+          if (i + 1 !== len) {
+            result += '\\\n';
+          }
+        }
+      }
+      if (result.substr(-2) === '\\\n') {
+        result = result.substr(0, result.length - 3);
+      }
+      return result;
+    }
   }
   window.customElements.define(CurlHttpSnippet.is, CurlHttpSnippet);
   </script>

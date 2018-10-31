@@ -12,95 +12,98 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="base-code-snippet.html">
 <dom-module id="fetch-js-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-    <code class="code language-javascript">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-      <template is="dom-if" if="[[hasParams]]">
-        <template is="dom-if" if="[[headers]]">
-          <div class="line"><span class="token keyword">let</span> headers <span class="token operator">=</span><span class="token keyword"> new</span> Headers<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-          <template is="dom-repeat" items="[[headers]]">
-            <div class="line">headers.<span class="token function">append</span><span class="token punctuation">(</span><span class="token string">'[[item.name]]'</span><span class="token punctuation">,</span> <span class="token string">'[[item.value]]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-          </template>
-          <div class="line"><span class="end-line-marker"></span></div>
-        </template>
-
-        <template is="dom-if" if="[[payload]]">
-          <template is="dom-if" if="[[headers]]">
-            <div class="line"><span class="end-line-marker"></span></div>
-          </template>
-          <div class="line"><span class="token keyword">let</span> body <span class="token operator">=</span> <span class="token string">`[[payload]]`</span><span class="token punctuation">;</span></div>
-          <div class="line"><span class="end-line-marker"></span></div>
-        </template>
-
-        <div class="line"><span class="token keyword">let</span> init <span class="token operator">=</span><span class="token punctuation"> {</span></div>
-
-        <div class="line indent">method<span class="token punctuation">:</span> <span class="token string">'[[method]]'</span><span class="token punctuation">,</span></div>
-        <template is="dom-if" if="[[headers]]">
-          <div class="line indent">headers<span class="token punctuation">:</span> headers</span><template is="dom-if" if="[[payload]]"><span class="token punctuation">,</span></template></div>
-        </template>
-        <template is="dom-if" if="[[payload]]">
-          <div class="line indent">body<span class="token punctuation">:</span> body</span></div>
-        </template>
-        <div class="line"><span class="token punctuation">}</span><span class="token punctuation">;</span></div>
-        <div class="line"><span class="end-line-marker"></span></div>
-      </template>
-      <div class="line"><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'[[url]]'</span><template is="dom-if" if="[[hasParams]]"><span class="token punctuation">,</span> init</template><span class="token punctuation">)</span></div>
-      <div class="line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token keyword"> =></span><span class="token punctuation"> {</span></div>
-      <div class="line indent"><span class="token keyword">return</span> response.<span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation style-scope demo-snippet">;</span><span class="token comment" spellcheck="true"> // or .json() or .blob() ...</span></div>
-      <div class="line"><span class="token punctuation">}</span><span class="token punctuation">)</span></div>
-
-      <div class="line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token keyword"> =></span><span class="token punctuation"> {</span></div>
-      <div class="line indent"><span class="token comment" spellcheck="true">// text is the response body</span></div>
-      <div class="line"><span class="token punctuation">}</span><span class="token punctuation">)</span></div>
-
-      <div class="line"><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token keyword"> =></span><span class="token punctuation"> {</span></div>
-      <div class="line indent"><span class="token comment" spellcheck="true">// error in e.message</span></div>
-      <div class="line"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-
-    </code>
-  </template>
   <script>
   /**
    * `fetch-js-http-snippet`
    *
    * A snippet for requests made in JavaScript using Fetch API.
    *
-   * ## Styling
+   * ### Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/fetch-js.html Fetch (JavaScript) demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class FetchJsHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'fetch-js-http-snippet'; }
-    static get properties() {
-      return {
-        // True if has either headers or payload or both.
-        hasParams: {
-          type: Boolean,
-          value: false,
-          computed: '_computeHasParams(headers, payload, method)'
-        }
-      };
+  class FetchJsHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'fetch-js-http-snippet';
     }
-    _computeHasParams(headers, payload, method) {
-      return !!(headers || payload || (method && method !== 'GET'));
+
+    get lang() {
+      return 'javascript';
+    }
+
+    /**
+     * Computes code for JavaScript (Fetch API).
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String} payload
+     * @return {String} Complete code for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      if (!url || !method) {
+        return '';
+      }
+      const hasHeaders = !!(headers && headers instanceof Array && headers.length);
+      const hasPayload = !!payload;
+      const hasInit = hasHeaders || hasPayload || !!(method && method !== 'GET');
+      let result = '';
+
+      if (hasInit) {
+        if (hasHeaders) {
+          result += this._createHeaders(headers);
+        }
+        if (hasPayload) {
+          result += this._createPayload(payload);
+        }
+        result += 'const init = {\n';
+        result += `\tmethod: '${method}'`;
+        if (hasHeaders) {
+          result += `,\n\theaders`;
+        }
+        if (hasPayload) {
+          result += `,\n\tbody`;
+        }
+        result += '\n';
+        result += '}\n\n';
+      }
+
+      result += `fetch('${url}'`;
+      if (hasInit) {
+        result += ', init';
+      }
+      result += ')\n';
+      result += '.then((response) => {\n';
+      result += '\treturn response.text(); // or .json() or .blob() ...\n';
+      result += '})\n';
+      result += '.then((text) => {\n';
+      result += '\t// text is the response body\n';
+      result += '})\n';
+      result += '.catch((e) => {\n';
+      result += '\t// error in e.message\n';
+      result += '});\n';
+      return result;
+    }
+
+    _createHeaders(headers) {
+      let result = 'const headers = new Headers();\n';
+      for (let i = 0, len = headers.length; i < len; i++) {
+        const h = headers[i];
+        result += `headers.append('${h.name}', '${h.value}');\n`;
+      }
+      result += '\n';
+      return result;
+    }
+
+    _createPayload(payload) {
+      return `const body = \`${payload}\`;\n\n`;
     }
   }
   window.customElements.define(FetchJsHttpSnippet.is, FetchJsHttpSnippet);

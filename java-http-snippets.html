@@ -39,26 +39,39 @@ the License.
    *
    * A set of code snippets for Java requests.
    *
-   * ## Styling
-   *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
-   *
    * @customElement
    * @polymer
    * @demo demo/java.html Java demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
    */
-  class JavatHttpSnippets extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'java-http-snippets'; }
+  class JavatHttpSnippets extends Polymer.Element {
+    static get is() {
+      return 'java-http-snippets';
+    }
     static get properties() {
       return {
         selectedFramework: {
           type: Number,
           value: 0
-        }
+        },
+        /**
+         * Request URL
+         */
+        url: String,
+        /**
+         * HTTP method
+         */
+        method: String,
+        /**
+         * Parsed HTTP headers.
+         * Each item contains `name` and `value` properties.
+         * @type {Array<Object>}
+         */
+        headers: Array,
+        /**
+         * HTTP body (the message)
+         */
+        payload: String
       };
     }
   }

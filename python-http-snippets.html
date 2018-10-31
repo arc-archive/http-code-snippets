@@ -18,7 +18,6 @@ the License.
 <link rel="import" href="requests-python-http-snippet.html">
 <link rel="import" href="python-27-http-snippet.html">
 <link rel="import" href="python-31-http-snippet.html">
-<link rel="import" href="code-snippets-mixin.html">
 
 <dom-module id="python-http-snippets">
   <template strip-whitespace>
@@ -54,16 +53,35 @@ the License.
    * @polymer
    * @demo demo/python.html Python demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
    */
-  class PythonHttpSnippets extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'python-http-snippets'; }
+  class PythonHttpSnippets extends Polymer.Element {
+    static get is() {
+      return 'python-http-snippets';
+    }
     static get properties() {
       return {
         selectedFramework: {
           type: Number,
           value: 0
-        }
+        },
+        /**
+         * Request URL
+         */
+        url: String,
+        /**
+         * HTTP method
+         */
+        method: String,
+        /**
+         * Parsed HTTP headers.
+         * Each item contains `name` and `value` properties.
+         * @type {Array<Object>}
+         */
+        headers: Array,
+        /**
+         * HTTP body (the message)
+         */
+        payload: String
       };
     }
   }

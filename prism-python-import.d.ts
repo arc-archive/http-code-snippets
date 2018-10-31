@@ -5,6 +5,6 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   http-code-snippets-style.html
+ *   prism-python-import.html
  */
 
