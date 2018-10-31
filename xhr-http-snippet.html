@@ -12,101 +12,73 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../polymer/lib/elements/dom-if.html">
-<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="base-code-snippet.html">
 
 <dom-module id="xhr-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-    <code class="code language-javascript">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-      <div class="line"><span class="token keyword">var</span> xhr <span class="token operator">=</span><span class="token keyword"> new</span> XMLHttpRequest<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="line">xhr.<span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'load'</span><span class="token punctuation">,</span><span class="token keyword"> function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation"> {</span></div>
-      <div class="line indent"><span class="token keyword">  var</span> response <span class="token operator">=</span> e.target.responseText<span class="token punctuation">;</span></div>
-      <div class="line">})<span class="token punctuation">;</span></div>
-      <div class="line">xhr.<span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span><span class="token keyword"> function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation"> {</span></div>
-      <div class="line indent"><span class="token keyword">  var</span> message <span class="token operator">=</span> e.message<span class="token punctuation">;</span></div>
-      <div class="line">})<span class="token punctuation">;</span></div>
-      <div class="line">xhr.open<span class="token punctuation">(</span><span class="token string">'[[method]]'</span><span class="token punctuation">,</span> <span class="token string">'[[url]]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <template is="dom-repeat" items="[[headers]]">
-        <div class="line">xhr.<span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">'[[item.name]]'</span><span class="token punctuation">,</span> <span class="token string">'[[item.value]]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      </template>
-      <template is="dom-if" if="[[hasPayloadLines]]">
-        <div class="line"><span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span></div>
-        <template is="dom-repeat" items="[[payloadLines]]" index-as="index">
-          <div class="line">body <span class="token operator">+=</span> <span class="token string"> '[[item]]\n'</span><span class="token punctuation">;</span></div>
-        </template>
-        <div class="line">xhr.<span class="token function">send</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      </template>
-      <template is="dom-if" if="[[!hasPayloadLines]]">
-        <div class="line">xhr.<span class="token function">send</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      </template>
-    </code>
-  </template>
   <script>
   /**
    * `raw-http-snippet`
    *
    * A snippet for requests made in JavaScript using XHR object.
    *
-   * ## Styling
+   * ### Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/xhr.html XHR demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class XhrHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'xhr-http-snippet'; }
-    static get properties() {
-      return {
-        payloadLines: {
-          type: Array,
-          readOnly: true
-        },
-        hasPayloadLines: {
-          type: Boolean,
-          readOnly: true,
-          value: false
-        },
-
-        _re: {
-          type: Object,
-          value: function() {
-            return /'/g;
-          }
-        }
-      };
+  class XhrHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'xhr-http-snippet';
     }
 
-    static get observers() {
-      return [
-        '_payloadChanged(payload)'
-      ];
+    get lang() {
+      return 'javascript';
     }
 
-    _payloadChanged(payload) {
-      if (!payload) {
-        this._setHasPayloadLines(false);
-        return this._setPayloadLines([]);
+    /**
+     * Computes code for JavaScript (XHR API).
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String} payload
+     * @return {String} Complete code for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      if (!url || !method) {
+        return '';
       }
-      const re = this._re;
-      const lines = payload.split('\n').map((line) => line.replace(re, '\\\''));
-      this._setPayloadLines(lines);
-      this._setHasPayloadLines(true);
+      const hasHeaders = !!(headers && headers instanceof Array && headers.length);
+      const hasPayload = !!payload;
+      let result = 'var xhr = new XMLHttpRequest();\n';
+      result += 'xhr.addEventListener(\'load\', function(e) {\n';
+      result += '  var response = e.target.responseText;\n';
+      result += '  console.log(response);\n';
+      result += '});\n';
+      result += 'xhr.addEventListener(\'error\', function(e) {\n';
+      result += '  console.error(\'Request errored with status\', e.target.status);\n';
+      result += '});\n';
+      result += `xhr.open('${method}', '${url}');\n`;
+      if (hasHeaders) {
+        headers.forEach((h) => {
+          result += `xhr.setRequestHeader('${h.name}','${h.value}');\n`;
+        });
+      }
+      if (hasPayload) {
+        result += 'var body = \'\';\n';
+        const re = /'/g;
+        payload.split('\n').forEach((line) => {
+          result += 'body += \'' + line.replace(re, '\\\'') + '\\n\';\n';
+        });
+        result += 'xhr.send(body);\n';
+      } else {
+        result += 'xhr.send();\n';
+      }
+      return result;
     }
   }
   window.customElements.define(XhrHttpSnippet.is, XhrHttpSnippet);

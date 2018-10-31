@@ -27,13 +27,13 @@ the License.
     </style>
     <paper-tabs selected="{{selectedFramework}}">
       <paper-tab>Fetch</paper-tab>
-      <paper-tab>XHR</paper-tab>
       <paper-tab>Node</paper-tab>
+      <paper-tab>XHR</paper-tab>
     </paper-tabs>
     <iron-pages selected="[[selectedFramework]]">
       <fetch-js-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></fetch-js-http-snippet>
-      <xhr-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></xhr-http-snippet>
       <node-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></node-http-snippet>
+      <xhr-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]" headers="[[headers]]"></xhr-http-snippet>
     </iron-pages>
   </template>
   <script>
@@ -52,16 +52,35 @@ the License.
    * @polymer
    * @demo demo/javascript.html JavaScript demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
    */
-  class JavascriptHttpSnippets extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'javascript-http-snippets'; }
+  class JavascriptHttpSnippets extends Polymer.Element {
+    static get is() {
+      return 'javascript-http-snippets';
+    }
     static get properties() {
       return {
         selectedFramework: {
           type: Number,
           value: 0
-        }
+        },
+        /**
+         * Request URL
+         */
+        url: String,
+        /**
+         * HTTP method
+         */
+        method: String,
+        /**
+         * Parsed HTTP headers.
+         * Each item contains `name` and `value` properties.
+         * @type {Array<Object>}
+         */
+        headers: Array,
+        /**
+         * HTTP body (the message)
+         */
+        payload: String
       };
     }
   }

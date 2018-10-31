@@ -12,71 +12,74 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="base-code-snippet.html">
+<link rel="import" href="prism-java-import.html">
 <dom-module id="java-spring-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-
-    <code class="code language-javascript">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-
-      <div class="line"><span class="token constant">RestTemplate</span> rest = <span class="token keyword">new</span><span class="token constant"> RestTemplate</span>();</div>
-      <div class="line"><span class="token constant">HttpHeaders</span> headers = <span class="token keyword">new</span><span class="token constant"> HttpHeaders</span>();</div>
-
-      <template is="dom-if" if="[[headers]]">
-        <template is="dom-repeat" items="[[headers]]">
-          <div class="line">headers.<span class="token function">add</span>("<span class="token string">[[item.name]]</span>", "<span class="token string">[[item.value]]</span>");</div>
-        </template>
-      </template>
-
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="line"><span class="token constant">String</span> body = "";</div>
-      <template is="dom-if" if="[[payload]]">
-        <div class="line"><span class="token constant">StringBuilder</span> sb = <span class="token keyword">new</span><span class="token constant"> StringBuilder</span>();</div>
-        <template is="dom-repeat" items="[[_payloadToList(payload)]]">
-          <div class="line">sb.<span class="token function">append("<span class="token string">[[item]]\n</span>");</div>
-        </template>
-        <div class="line">body = sb.<span class="token function">toString</span>();</div>
-      </template>
-
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="line"><span class="token constant">HttpEntity&lt;String&gt;</span> requestEntity = <span class="token keyword">new</span><span class="token constant"> HttpEntity&lt;String&gt;</span>(body, headers);</div>
-      <div class="line"><span class="token constant">ResponseEntity&lt;String&gt;</span> responseEntity = rest.exchange("<span class="token string">[[url]]</span>", HttpMethod.[[method]], requestEntity, String.class);</div>
-      <div class="line"><span class="token constant">int</span> status = responseEntity.<span class="token function">getStatusCode</span>();</div>
-      <div class="line"><span class="token constant">String</span> response = responseEntity.<span class="token function">getBody</span>();</div>
-
-      <div class="line">System.out.<span class="token function">println</span>("<span class="token string">Response status:</span> " + status);</div>
-      <div class="line">System.out.<span class="token function">println</span>(response);</div>
-    </code>
-  </template>
   <script>
   /**
    * `java-spring-http-snippet`
    *
    * A snippet for requests made in Java using the spring functions
    *
-   * ## Styling
+   * ### Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/java-spring.html Java Spring demo
    * @demo demo/java.html Java demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class JavaSpringHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'java-spring-http-snippet'; }
+  class JavaSpringHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'java-spring-http-snippet';
+    }
+
+    get lang() {
+      return 'java';
+    }
+
+    /**
+     * Computes code for Java (Spring).
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String} payload
+     * @return {String} Complete code for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      if (!url || !method) {
+        return '';
+      }
+      let result = `RestTemplate rest = new RestTemplate();\n`;
+      result += 'HttpHeaders headers = new HttpHeaders();\n';
+      if (headers && headers.length) {
+        headers.forEach((h) => {
+          result += `headers.add("${h.name}", "${h.value}");\n`;
+        });
+      }
+      if (payload) {
+        result += '\nStringBuilder sb = new StringBuilder();\n';
+        const list = this._payloadToList(payload);
+        list.forEach((line) => {
+          result += `sb.append("${line}\\n");\n`;
+        });
+        result += 'String body = sb.toString();\n';
+      } else {
+        result += 'String body = "";\n';
+      }
+      result += '\n';
+      result += 'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);\n';
+      result += 'ResponseEntity<String> responseEntity = rest.exchange(';
+      result += `"${url}", HttpMethod.${method}, requestEntity, String.class);\n`;
+      result += 'int status = responseEntity.getStatusCode();\n';
+      result += 'String response = responseEntity.getBody();\n';
+      result += 'System.out.println("Response status: " + status);\n';
+      result += 'System.out.println(response);';
+      return result;
+    }
 
     _payloadToList(payload) {
       return payload.split('\n').map((item) => item.replace(/"/g, '\\"'));

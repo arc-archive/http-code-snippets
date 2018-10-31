@@ -12,131 +12,88 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../polymer/lib/elements/dom-if.html">
-<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../arc-icons/arc-icons.html">
-<link rel="import" href="code-snippets-mixin.html">
-<link rel="import" href="http-code-snippets-style.html">
+<link rel="import" href="base-code-snippet.html">
 <dom-module id="c-curl-http-snippet">
-  <template strip-whitespace>
-    <style include="http-code-snippets-style">
-    .code {
-      @apply --http-code-snippet-container-highlighted;
-    }
-    </style>
-    <code class="code language-c">
-      <paper-icon-button class="action-icon copy-icon" icon="arc:content-copy" title="Copy to clipboard" on-tap="_copyToClipboard"></paper-icon-button>
-
-      <div class="token line"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string"> &lt;stdio.h&gt;</span></span></div>
-      <div class="token line"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string"> &lt;curl/curl.h&gt;</span></span></div>
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="token line"><span class="token keyword">int</span><span class="token function"> main</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token punctuation">)</span></div>
-      <div class="token line"><span class="token punctuation">{</span></div>
-      <div class="token line indent"><span class="token keyword">CURL</span> *curl<span class="token punctuation">;</span></div>
-      <div class="token line indent"><span class="token keyword">CURLcode</span> res<span class="token punctuation">;</span></div>
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="token line indent">curl <span class="token operator">=</span> <span class="token function"> curl_easy_init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_URL<span class="token punctuation">,</span> <span class="token string">"[[url]]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_CUSTOMREQUEST<span class="token punctuation">,</span> <span class="token string">"[[method]]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="token line indent"><span class="token comment">/* if redirected, tell libcurl to follow redirection */</span></div>
-      <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_FOLLOWLOCATION<span class="token punctuation">,</span> 1L<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-
-      <!-- Headers -->
-      <template is="dom-if" if="[[headers]]">
-        <div class="line"><span class="end-line-marker"></span></div>
-        <div class="token line indent"><span class="token keyword">struct</span> curl_slist *headers <span class="token operator">=</span> NULL<span class="token punctuation">;</span></div>
-        <template is="dom-repeat" items="[[headers]]">
-          <div class="token line indent">headers <span class="token operator">=</span> <span class="token function"> curl_slist_append</span><span class="token punctuation">(</span>headers<span class="token punctuation">,</span> <span class="token string">"[[item.name]]: [[item.value]]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-        </template>
-        <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_HTTPHEADER<span class="token punctuation">,</span> headers<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      </template>
-
-      <!-- Payload -->
-      <template is="dom-if" if="[[hasPayloadLines]]">
-        <div class="line"><span class="end-line-marker"></span></div>
-        <div class="token line indent"><span class="token keyword">char</span> *body <span class="token operator">=</span> <span class="token string">"<template is="dom-repeat" items="[[payloadLines]]"><template is="dom-if" if="[[_isFirst(index)]]">[[item]]\<br/></template><template is="dom-if" if="[[!_isFirstOrLast(index, payloadLines)]]"><div class="token line">[[item]]\</div></template><template is="dom-if" if="[[_isLast(index, payloadLines)]]">[[item]]</template></template>"<span class="token punctuation">;</span></div>
-        <div class="token line indent"><span class="token function">curl_easy_setopt</span><span class="token punctuation">(</span>curl<span class="token punctuation">,</span> CURLOPT_POSTFIELDS<span class="token punctuation">,</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      </template>
-
-      <div class="line"><span class="end-line-marker"></span></div>
-      <div class="token line indent"><span class="token comment">/* Perform the request, res will get the return code */</span></div>
-      <div class="token line indent">res = <span class="token function">curl_easy_perform</span><span class="token punctuation">(</span>curl<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-
-      <div class="token line indent"><span class="token keyword">if</span><span class="token punctuation">(</span>res <span class="token operator">!=</span> CURLE_OK<span class="token punctuation">)</span><span class="token punctuation"> {</span></div>
-      <div class="token line indent-2"><span class="token function">fprintf</span><span class="token punctuation">(</span>stderr<span class="token punctuation">,</span> <span class="token string"> "curl_easy_perform() failed: %s\n"</span><span class="token punctuation">,</span><span class="token function"> curl_easy_strerror</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="token line indent"><span class="token punctuation">}</span></div>
-
-      <div class="token line indent"><span class="token comment">/* Clean up after yourself */</span></div>
-      <div class="token line indent"><span class="token function">curl_easy_cleanup</span><span class="token punctuation">(</span>curl<span class="token punctuation">)</span><span class="token punctuation">;</span></div>
-      <div class="token line indent"><span class="token keyword">return</span> 0<span class="token punctuation">;</span></div>
-      <div class="token line"><span class="token punctuation">}</span></div>
-      <div class="token line indent"><span class="token comment">/* See: http://stackoverflow.com/a/2329792/1127848 of how to read data from the response. */</span></div>
-    </code>
-  </template>
   <script>
   /**
    * `c-curl-http-snippet`
    *
    * A snippet for requests made in C using curl library.
    *
-   * ## Styling
+   * ### Styling
    *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
+   * See `http-code-snippets` for styling documentation.
    *
    * @customElement
    * @polymer
    * @demo demo/c-curl.html C curl demo
    * @memberof ApiElements
-   * @appliesMixin ArcBehaviors.CodeSnippetsMixin
+   * @extends BaseCodeSnippet
    */
-  class CcurlHttpSnippet extends ArcBehaviors.CodeSnippetsMixin(Polymer.Element) {
-    static get is() { return 'c-curl-http-snippet'; }
-    static get properties() {
-      return {
-        payloadLines: {
-          type: Array,
-          readOnly: true
-        },
-        hasPayloadLines: {
-          type: Boolean,
-          readOnly: true,
-          value: false
-        }
-      };
+  class CcurlHttpSnippet extends BaseCodeSnippet {
+    static get is() {
+      return 'c-curl-http-snippet';
     }
 
-    static get observers() {
-      return [
-        '_payloadChanged(payload)'
-      ];
+    get lang() {
+      return 'clike';
     }
 
-    _payloadChanged(payload) {
-      if (!payload) {
-        this._setHasPayloadLines(false);
-        return this._setPayloadLines([]);
+    get _codeHeaders() {
+      return '#include <stdio.h>\n#include <curl/curl.h>\n\n';
+    }
+
+    /**
+     * Computes code for C with curl.
+     * @param {String} url
+     * @param {String} method
+     * @param {Array<Object>|undefined} headers
+     * @param {String} payload
+     * @return {String} Complete code for given arguments
+     */
+    _computeCommand(url, method, headers, payload) {
+      if (!url || !method) {
+        return '';
       }
-      var re = /"/g;
-      var lines = payload.split('\n').map(function(line) {
-        return line.replace(re, '\\"');
-      });
-      this._setPayloadLines(lines);
-      this._setHasPayloadLines(true);
-    }
-
-    _isFirst(i) {
-      return i === 0;
-    }
-
-    _isFirstOrLast(i, arr) {
-      return i === 0 || i + 1 === arr.length;
-    }
-
-    _isLast(i, arr) {
-      return i + 1 === arr.length;
+      let result = this._codeHeaders;
+      result += 'int main(void)\n{\n';
+      result += '\tCURL *curl;\n\tCURLcode res;\n\n';
+      result += '\tcurl = curl_easy_init();\n';
+      result += `\tcurl_easy_setopt(curl, CURLOPT_URL, "${url}");\n`;
+      result += `\tcurl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "${method}");\n`;
+      result += '\t/* if redirected, tell libcurl to follow redirection */\n';
+      result += '\tcurl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);\n\n';
+      if (headers && headers instanceof Array) {
+        result += '\tstruct curl_slist *headers = NULL;\n';
+        headers.forEach((h) => {
+          result += `\theaders = curl_slist_append(headers, "${h.name}: ${h.value}");\n`;
+        });
+        result += '\tcurl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);\n';
+      }
+      if (payload) {
+        result += '\n';
+        payload = String(payload);
+        const re = /"/g;
+        result += '\tchar *body ="';
+        payload.split('\n').map(function(line) {
+          result += line.replace(re, '\\"');
+        });
+        result += '";\n';
+        result += '\tcurl_easy_setopt(curl, CURLOPT_POSTFIELDS, body);\n';
+      }
+      result += '\n\t/* Perform the request, res will get the return code */\n';
+      result += '\tres = curl_easy_perform(curl);\n';
+      result += '\tif (res != CURLE_OK) {\n';
+      result += '\t\tfprintf(stderr, "curl_easy_perform() failed: %s\\n"';
+      result += ', curl_easy_strerror(res));\n';
+      result += '\t}\n';
+      result += '\t/* Clean up after yourself */\n';
+      result += '\tcurl_easy_cleanup(curl);\n';
+      result += '\treturn 0;\n';
+      result += '}\n';
+      result += '/* See: http://stackoverflow.com/a/2329792/1127848 of how ';
+      result += 'to read data from the response. */';
+      return result;
     }
   }
   window.customElements.define(CcurlHttpSnippet.is, CcurlHttpSnippet);

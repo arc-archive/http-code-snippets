@@ -37,17 +37,14 @@
     <h3>Java platform example</h3>
     <demo-snippet>
       <template>
-        <java-platform-http-snippet url="https://api.github.com/authorizations" method="POST"></java-platform-http-snippet>
+        <java-platform-http-snippet
+          url="https://api.github.com/authorizations"
+          method="POST"
+          headers='[{"name": "accept", "value": "application/vnd.github.v3+json"},{"name": "content-type", "value": "application/json"}]'></java-platform-http-snippet>
         <script>
         {
-          let headers = [{
-            name: 'accept', value: 'application/vnd.github.v3+json'
-          },{
-            name: 'content-type', value: 'application/json'
-          }];
-          let payload = {'scopes': ['public_repo']};
-          let snippet = document.querySelectorAll('java-platform-http-snippet')[0];
-          snippet.headers = headers;
+          const payload = {'scopes': ['public_repo']};
+          const snippet = document.querySelectorAll('java-platform-http-snippet')[0];
           snippet.payload = JSON.stringify(payload, null, 2);
         }
         </script>
@@ -57,15 +54,10 @@
     <h3>GET request</h3>
     <demo-snippet>
       <template>
-        <java-platform-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&sort=pushed" method="GET"></java-platform-http-snippet>
-        <script>
-        {
-          let headers = [{
-            name: 'accept', value: 'application/vnd.github.v3+json'
-          }];
-          let snippet = document.querySelectorAll('java-platform-http-snippet')[1];
-          snippet.headers = headers;
-        }
+        <java-platform-http-snippet
+          url="https://api.github.com/users/advanced-rest-client/repos?type=all&sort=pushed"
+          method="GET"
+          headers='[{"name": "accept", "value": "application/vnd.github.v3+json"}]'></java-platform-http-snippet>
         </script>
       </template>
     </demo-snippet>

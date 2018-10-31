@@ -10,24 +10,36 @@ Medified for ARC.
 <dom-module id="http-code-snippets-style">
   <template>
     <style>
-
     :host {
       display: block;
+      position: relative;
       width: 100%;
     }
 
     .code {
       display: block;
       position: relative;
+      white-space: pre-wrap;
+      word-break: break-all;
+      padding-top: 20px; /* Padding for the copy button. */
 
       @apply --http-code-snippet-container;
-      padding-top: 24px; /* Padding for the copy button. */
+      @apply --http-code-snippet-container-highlighted;
     }
 
+    .copy-button,
     paper-icon-button {
       position: absolute;
       top: 0px;
       right: 0px;
+      z-index: 1;
+    }
+
+    .copy-button {
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      background: #e0e0e0;
     }
 
     .label {
@@ -48,15 +60,6 @@ Medified for ARC.
 
     .line.indent-2 {
       margin-left: var(--http-code-snippet-indent-2, 24px);
-    }
-
-    .end-line-marker::before {
-      content: "\A";
-      white-space: pre-line;
-    }
-
-    .end-line-marker.icon::before {
-      content: "⏎";
     }
 
     .copy-button {

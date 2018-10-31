@@ -17,30 +17,261 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="Raw">
+    <template>
+      <http-code-snippets selected-platform="1" headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Javascript">
+    <template>
+      <http-code-snippets selected-platform="2" headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Python">
+    <template>
+      <http-code-snippets selected-platform="3" headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Ccurl">
+    <template>
+      <http-code-snippets selected-platform="4" headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Java">
+    <template>
+      <http-code-snippets selected-platform="5" headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Payload">
+    <template>
+      <http-code-snippets headers="Content-Type: application/json" method="POST" url="http://domain.com" payload="test"></http-code-snippets>
+    </template>
+  </test-fixture>
+
   <script>
   suite('http-code-snippets', () => {
-    let element;
-    setup(() => {
-      element = fixture('Basic');
-    });
-
     test('selectedPlatform is 0 by default', () => {
+      const element = fixture('Basic');
       assert.equal(element.selectedPlatform, 0);
     });
 
-    test('computes headers list', () => {
-      assert.typeOf(element.headersList, 'array');
-      assert.lengthOf(element.headersList, 1);
-      const header = element.headersList[0];
+    test('computes _headersList', () => {
+      const element = fixture('Basic');
+      assert.typeOf(element._headersList, 'array');
+      assert.lengthOf(element._headersList, 1);
+      const header = element._headersList[0];
       assert.equal(header.name, 'Content-Type');
       assert.equal(header.value, 'application/json');
     });
 
-    test('Computes URL details', () => {
-      const result = element.urlDetails('https://domain.com/path?a=b');
-      assert.equal(result.path, '/path?a=b');
-      assert.equal(result.port, 443);
-      assert.equal(result.hostValue, 'domain.com');
+    test('Adds curl snippets by default', (done) => {
+      const element = fixture('Basic');
+      flush(() => {
+        const node = element.shadowRoot.querySelector('curl-http-snippet');
+        assert.ok(node);
+        done();
+      });
+    });
+
+    test('_panel is set', (done) => {
+      const element = fixture('Basic');
+      flush(() => {
+        assert.ok(element._panel);
+        assert.equal(element._panel.nodeName, 'CURL-HTTP-SNIPPET');
+        done();
+      });
+    });
+
+    test('url is set on the panel', (done) => {
+      const element = fixture('Basic');
+      flush(() => {
+        assert.equal(element._panel.url, 'http://domain.com');
+        done();
+      });
+    });
+
+    test('method is set on the panel', (done) => {
+      const element = fixture('Basic');
+      flush(() => {
+        assert.equal(element._panel.method, 'GET');
+        done();
+      });
+    });
+
+    test('headers are set on the panel', (done) => {
+      const element = fixture('Basic');
+      flush(() => {
+        assert.typeOf(element._panel.headers, 'array');
+        assert.lengthOf(element._panel.headers, 1);
+        done();
+      });
+    });
+
+    test('payload is set on the panel', (done) => {
+      const element = fixture('Payload');
+      flush(() => {
+        assert.equal(element._panel.method, 'POST');
+        assert.equal(element._panel.payload, 'test');
+        done();
+      });
+    });
+
+    test('Adds raw snippets to the DOM', (done) => {
+      const element = fixture('Raw');
+      flush(() => {
+        const node = element.shadowRoot.querySelector('raw-http-snippet');
+        assert.ok(node);
+        done();
+      });
+    });
+
+    test('Adds javascript snippets to the DOM', (done) => {
+      const element = fixture('Javascript');
+      flush(() => {
+        const node = element.shadowRoot.querySelector('javascript-http-snippets');
+        assert.ok(node);
+        done();
+      });
+    });
+
+    test('Adds python snippets to the DOM', (done) => {
+      const element = fixture('Python');
+      flush(() => {
+        const node = element.shadowRoot.querySelector('python-http-snippets');
+        assert.ok(node);
+        done();
+      });
+    });
+
+    test('Adds c-curl snippet to the DOM', (done) => {
+      const element = fixture('Ccurl');
+      flush(() => {
+        const node = element.shadowRoot.querySelector('c-curl-http-snippet');
+        assert.ok(node);
+        done();
+      });
+    });
+
+    test('Adds java snippet to the DOM', (done) => {
+      const element = fixture('Java');
+      flush(() => {
+        const node = element.shadowRoot.querySelector('java-http-snippets');
+        assert.ok(node);
+        done();
+      });
+    });
+    // test('Computes URL details', () => {
+    //   const result = element.urlDetails('https://domain.com/path?a=b');
+    //   assert.equal(result.path, '/path?a=b');
+    //   assert.equal(result.port, 443);
+    //   assert.equal(result.hostValue, 'domain.com');
+    // });
+  });
+
+  suite('_removeCurrentSnippet()', () => {
+    let element;
+    setup((done) => {
+      element = fixture('Basic');
+      flush(() => done());
+    });
+
+    test('Removes current panel from DOM', (done) => {
+      element._removeCurrentSnippet();
+      flush(() => {
+        const node = element.shadowRoot.querySelector('curl-http-snippet');
+        assert.notOk(node);
+        done();
+      });
+    });
+
+    test('Clears _panel property', (done) => {
+      element._removeCurrentSnippet();
+      flush(() => {
+        assert.notOk(element._panel);
+        done();
+      });
+    });
+  });
+
+  suite('_urlChanged()', () => {
+    let element;
+    const url = 'https://other.url.com';
+    setup((done) => {
+      element = fixture('Basic');
+      flush(() => done());
+    });
+
+    test('Updates url value on the panel', () => {
+      element.url = url;
+      assert.equal(element._panel.url, url);
+    });
+
+    test('Does nothing when no panel', () => {
+      element._removeCurrentSnippet();
+      element.url = url;
+    });
+  });
+
+  suite('_methodChanged()', () => {
+    let element;
+    const method = 'https://other.url.com';
+    setup((done) => {
+      element = fixture('Basic');
+      flush(() => done());
+    });
+
+    test('Updates method value on the panel', () => {
+      element.method = method;
+      assert.equal(element._panel.method, method);
+    });
+
+    test('Does nothing when no panel', () => {
+      element._removeCurrentSnippet();
+      element.method = method;
+    });
+  });
+
+  suite('_headersChanged()', () => {
+    let element;
+    const headers = 'x-a: b';
+    setup((done) => {
+      element = fixture('Basic');
+      flush(() => done());
+    });
+
+    test('Updates method value on the panel', () => {
+      element.headers = headers;
+      const header = element._panel.headers[0];
+      assert.equal(header.name, 'x-a');
+    });
+
+    test('Does nothing when no panel', () => {
+      element._removeCurrentSnippet();
+      element.headers = headers;
+    });
+  });
+
+  suite('_payloadChanged()', () => {
+    let element;
+    const payload = 'other';
+    setup((done) => {
+      element = fixture('Payload');
+      flush(() => done());
+    });
+
+    test('Updates method value on the panel', () => {
+      element.payload = payload;
+      assert.equal(element._panel.payload, payload);
+    });
+
+    test('Does nothing when no panel', () => {
+      element._removeCurrentSnippet();
+      element.payload = payload;
     });
   });
   </script>
