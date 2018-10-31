@@ -605,6 +605,27 @@
           "inheritedFrom": "Polymer.ElementMixin"
         },
         {
+          "name": "_code",
+          "type": "?",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 86,
+              "column": 4
+            },
+            "end": {
+              "line": 88,
+              "column": 5
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          }
+        },
+        {
           "name": "url",
           "type": "string | null | undefined",
           "description": "Request URL",
@@ -2734,47 +2755,43 @@
         },
         {
           "name": "connectedCallback",
-          "description": "Provides a default implementation of the standard Custom Elements\n`connectedCallback`.\n\nThe default implementation enables the property effects system and\nflushes any pending properties, and updates shimmed CSS properties\nwhen using the ShadyCSS scoping/custom properties polyfill.",
+          "description": "",
           "privacy": "public",
           "sourceRange": {
-            "file": "../polymer/lib/mixins/element-mixin.html",
             "start": {
-              "line": 540,
-              "column": 6
+              "line": 90,
+              "column": 4
             },
             "end": {
-              "line": 545,
-              "column": 7
+              "line": 95,
+              "column": 5
             }
           },
           "metadata": {},
           "params": [],
           "return": {
             "type": "void"
-          },
-          "inheritedFrom": "Polymer.ElementMixin"
+          }
         },
         {
           "name": "disconnectedCallback",
-          "description": "Called when the element is removed from a document",
+          "description": "",
           "privacy": "public",
           "sourceRange": {
-            "file": "../polymer/lib/mixins/properties-mixin.html",
             "start": {
-              "line": 216,
-              "column": 6
+              "line": 97,
+              "column": 4
             },
             "end": {
-              "line": 220,
-              "column": 7
+              "line": 100,
+              "column": 5
             }
           },
           "metadata": {},
           "params": [],
           "return": {
             "type": "void"
-          },
-          "inheritedFrom": "Polymer.PropertiesMixin"
+          }
         },
         {
           "name": "_attachDom",
@@ -2868,32 +2885,56 @@
           "inheritedFrom": "Polymer.ElementMixin"
         },
         {
-          "name": "_valuesChanged",
-          "description": "",
+          "name": "_clearValueTimeout",
+          "description": "Clears timeout from the debouncer if set.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 86,
+              "line": 104,
               "column": 4
             },
             "end": {
-              "line": 94,
+              "line": 109,
+              "column": 5
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_valuesChanged",
+          "description": "Computes code value with debouncer set to 25 ms.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 117,
+              "column": 4
+            },
+            "end": {
+              "line": 123,
               "column": 5
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "url"
+              "name": "url",
+              "type": "String"
             },
             {
-              "name": "method"
+              "name": "method",
+              "type": "String"
             },
             {
-              "name": "headers"
+              "name": "headers",
+              "type": "(Array.<Object> | undefined)"
             },
             {
-              "name": "payload"
+              "name": "payload",
+              "type": "(String | undefined)"
             }
           ],
           "return": {
@@ -2902,33 +2943,57 @@
         },
         {
           "name": "_processCommand",
-          "description": "",
+          "description": "Processes command by calling, respectively, `_computeCommand()` and\n`_highlight()`. The result is added to the `<code>` block in the template.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 96,
+              "line": 132,
               "column": 4
             },
             "end": {
-              "line": 100,
+              "line": 140,
               "column": 5
             }
           },
           "metadata": {},
           "params": [
             {
-              "name": "url"
+              "name": "url",
+              "type": "String"
             },
             {
-              "name": "method"
+              "name": "method",
+              "type": "String"
             },
             {
-              "name": "headers"
+              "name": "headers",
+              "type": "(Array.<Object> | undefined)"
             },
             {
-              "name": "payload"
+              "name": "payload",
+              "type": "(String | undefined)"
             }
           ],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_computeCommand",
+          "description": "",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 142,
+              "column": 4
+            },
+            "end": {
+              "line": 142,
+              "column": 24
+            }
+          },
+          "metadata": {},
+          "params": [],
           "return": {
             "type": "void"
           }
@@ -2939,11 +3004,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 102,
+              "line": 144,
               "column": 4
             },
             "end": {
-              "line": 114,
+              "line": 156,
               "column": 5
             }
           },
@@ -2963,11 +3028,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 123,
+              "line": 165,
               "column": 4
             },
             "end": {
-              "line": 174,
+              "line": 215,
               "column": 5
             }
           },
@@ -2988,20 +3053,16 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 176,
+              "line": 217,
               "column": 4
             },
             "end": {
-              "line": 211,
+              "line": 234,
               "column": 5
             }
           },
           "metadata": {},
-          "params": [
-            {
-              "name": "e"
-            }
-          ],
+          "params": [],
           "return": {
             "type": "void"
           }
@@ -3955,7 +4016,7 @@
           "column": 2
         },
         "end": {
-          "line": 212,
+          "line": 235,
           "column": 3
         }
       },
@@ -4242,11 +4303,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 38,
+              "line": 37,
               "column": 4
             },
             "end": {
-              "line": 40,
+              "line": 39,
               "column": 5
             }
           },
@@ -4264,11 +4325,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 50,
+              "line": 49,
               "column": 4
             },
             "end": {
-              "line": 81,
+              "line": 80,
               "column": 5
             }
           },
@@ -4307,11 +4368,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 33,
+          "line": 32,
           "column": 2
         },
         "end": {
-          "line": 82,
+          "line": 81,
           "column": 3
         }
       },
@@ -17996,11 +18057,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 115,
+              "line": 114,
               "column": 4
             },
             "end": {
-              "line": 117,
+              "line": 116,
               "column": 5
             }
           },
@@ -18123,22 +18184,22 @@
         },
         {
           "name": "headers",
-          "type": "Array.<Object>",
+          "type": "string | null | undefined",
           "description": "Parsed HTTP headers.\nEach item contains `name` and `value` properties.",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 100,
+              "line": 99,
               "column": 8
             },
             "end": {
-              "line": 100,
-              "column": 22
+              "line": 99,
+              "column": 23
             }
           },
           "metadata": {
             "polymer": {
-              "attributeType": "Array"
+              "attributeType": "String"
             }
           }
         },
@@ -18149,11 +18210,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 104,
+              "line": 103,
               "column": 8
             },
             "end": {
-              "line": 104,
+              "line": 103,
               "column": 60
             }
           },
@@ -20236,11 +20297,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 108,
+              "line": 107,
               "column": 4
             },
             "end": {
-              "line": 111,
+              "line": 110,
               "column": 5
             }
           },
@@ -20347,11 +20408,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 122,
+              "line": 121,
               "column": 4
             },
             "end": {
-              "line": 143,
+              "line": 142,
               "column": 5
             }
           },
@@ -20373,11 +20434,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 149,
+              "line": 148,
               "column": 4
             },
             "end": {
-              "line": 154,
+              "line": 153,
               "column": 5
             }
           },
@@ -20404,11 +20465,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 159,
+              "line": 158,
               "column": 4
             },
             "end": {
-              "line": 161,
+              "line": 160,
               "column": 5
             }
           },
@@ -20430,11 +20491,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 166,
+              "line": 165,
               "column": 4
             },
             "end": {
-              "line": 168,
+              "line": 167,
               "column": 5
             }
           },
@@ -20456,11 +20517,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 173,
+              "line": 172,
               "column": 4
             },
             "end": {
-              "line": 175,
+              "line": 174,
               "column": 5
             }
           },
@@ -20482,11 +20543,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 180,
+              "line": 179,
               "column": 4
             },
             "end": {
-              "line": 182,
+              "line": 181,
               "column": 5
             }
           },
@@ -20508,11 +20569,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 186,
+              "line": 185,
               "column": 4
             },
             "end": {
-              "line": 200,
+              "line": 199,
               "column": 5
             }
           },
@@ -20528,11 +20589,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 206,
+              "line": 205,
               "column": 4
             },
             "end": {
-              "line": 236,
+              "line": 234,
               "column": 5
             }
           },
@@ -21497,7 +21558,7 @@
           "column": 2
         },
         "end": {
-          "line": 237,
+          "line": 235,
           "column": 3
         }
       },
@@ -21574,27 +21635,27 @@
           "description": "Parsed HTTP headers.\nEach item contains `name` and `value` properties.",
           "sourceRange": {
             "start": {
-              "line": 100,
+              "line": 99,
               "column": 8
             },
             "end": {
-              "line": 100,
-              "column": 22
+              "line": 99,
+              "column": 23
             }
           },
           "metadata": {},
-          "type": "Array.<Object>"
+          "type": "string | null | undefined"
         },
         {
           "name": "payload",
           "description": "HTTP body (the message)",
           "sourceRange": {
             "start": {
-              "line": 104,
+              "line": 103,
               "column": 8
             },
             "end": {
-              "line": 104,
+              "line": 103,
               "column": 60
             }
           },

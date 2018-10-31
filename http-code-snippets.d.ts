@@ -80,7 +80,7 @@ declare namespace ApiElements {
      * Parsed HTTP headers.
      * Each item contains `name` and `value` properties.
      */
-    headers: Array<object|null>|null;
+    headers: string|null|undefined;
 
     /**
      * HTTP body (the message)

@@ -25,7 +25,8 @@
     "iron-pages": "PolymerElements/iron-pages#^2.1.1",
     "iron-icon": "PolymerElements/iron-icon#^2.1.0",
     "arc-icons": "advanced-rest-client/arc-icons#^2.0.0",
-    "prism-element": "PolymerElements/prism-element#^2.1.0"
+    "prism-element": "PolymerElements/prism-element#^2.1.0",
+    "prism-common": "advanced-rest-client/prism-common#^2.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^3.0.1",

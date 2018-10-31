@@ -39,6 +39,7 @@ declare namespace ApiElements {
    * See `http-code-snippets` for styling documentation.
    */
   class BaseCodeSnippet extends Polymer.Element {
+    readonly _code: any;
 
     /**
      * Request URL
@@ -60,8 +61,25 @@ declare namespace ApiElements {
      * HTTP body (the message)
      */
     payload: string|null|undefined;
-    _valuesChanged(url: any, method: any, headers: any, payload: any): void;
-    _processCommand(url: any, method: any, headers: any, payload: any): void;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
+
+    /**
+     * Clears timeout from the debouncer if set.
+     */
+    _clearValueTimeout(): void;
+
+    /**
+     * Computes code value with debouncer set to 25 ms.
+     */
+    _valuesChanged(url: String|null, method: String|null, headers: Array<object|null>|null|undefined, payload: String|null|undefined): void;
+
+    /**
+     * Processes command by calling, respectively, `_computeCommand()` and
+     * `_highlight()`. The result is added to the `<code>` block in the template.
+     */
+    _processCommand(url: String|null, method: String|null, headers: Array<object|null>|null|undefined, payload: String|null|undefined): void;
+    _computeCommand(): void;
     _highlight(code: any, lang: any): any;
 
     /**
@@ -70,7 +88,7 @@ declare namespace ApiElements {
      * include this library from bower_components if the element want to use it.
      */
     urlDetails(url: String|null): object|null;
-    _copyToClipboard(e: any): void;
+    _copyToClipboard(): void;
   }
 }
 
