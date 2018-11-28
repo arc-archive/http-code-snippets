@@ -1,6 +1,6 @@
 {
   "name": "@advanced-rest-client/http-code-snippets",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "license": "Apache-2.0",
   "description": "Code snippets to display a snippets of making a HTTP request",
   "devDependencies": {
