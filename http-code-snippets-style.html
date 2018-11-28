@@ -76,8 +76,10 @@ Medified for ARC.
 
     code[class*="language-"],
     pre[class*="language-"] {
-      color: black;
+      @apply --arc-font-common-code;
+      color: var(--code-color, black);
       text-shadow: 0 1px white;
+      text-shadow: var(--http-code-snippet-code-text-shadow, 0 1px white);
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       text-align: left;
       word-spacing: normal;
@@ -96,7 +98,7 @@ Medified for ARC.
     code[class*="language-"]::-moz-selection,
     code[class*="language-"] ::-moz-selection {
       text-shadow: none;
-      background: #b3d4fc;
+      background: var(--http-code-snippet-code-selection-background-color, #b3d4fc);
     }
 
     pre[class*="language-"]::selection,
@@ -104,7 +106,7 @@ Medified for ARC.
     code[class*="language-"]::selection,
     code[class*="language-"] ::selection {
       text-shadow: none;
-      background: #b3d4fc;
+      background: var(--http-code-snippet-code-selection-background-color, #b3d4fc);
     }
 
     @media print {
@@ -133,11 +135,11 @@ Medified for ARC.
     .token.prolog,
     .token.doctype,
     .token.cdata {
-      color: slategray;
+      color: var(--http-code-snippet-code-cdata-color, slategray);
     }
 
     .token.punctuation {
-      color: #999;
+      color: var(--code-punctuation-value-color, #999);
     }
 
     .namespace {
@@ -151,7 +153,7 @@ Medified for ARC.
     .token.constant,
     .token.symbol,
     .token.deleted {
-      color: #905;
+      color: var(--code-type-number-value-color, #905);
     }
 
     .token.selector,
@@ -160,7 +162,7 @@ Medified for ARC.
     .token.char,
     .token.builtin,
     .token.inserted {
-      color: #690;
+      color: var(--code-type-text-value-color, #690);
     }
 
     .token.operator,
@@ -168,25 +170,24 @@ Medified for ARC.
     .token.url,
     .language-css .token.string,
     .style .token.string {
-      color: #a67f59;
-      /*background: hsla(0, 0%, 100%, .5);*/
+      color: var(--code-punctuation-value-color, #a67f59);
       background: transparent !important;
     }
 
     .token.atrule,
     .token.attr-value,
     .token.keyword {
-      color: #07a;
+      color: var(--http-code-snippet-code-keyword-color, #07a);
     }
 
     .token.function {
-      color: #DD4A68;
+      color: var(--http-code-snippet-code-function-color, #DD4A68);
     }
 
     .token.regex,
     .token.important,
     .token.variable {
-      color: #e90;
+      color: var(--http-code-snippet-variable-color, #e90);
     }
 
     .token.important,
