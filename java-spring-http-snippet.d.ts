@@ -5,12 +5,14 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   java-spring-http-snippet.html
+ *   java-spring-http-snippet.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../prism-common/prism-java-import.d.ts" />
-/// <reference path="base-code-snippet.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
+
+import {BaseCodeSnippet} from './base-code-snippet.js';
 
 declare namespace ApiElements {
 
@@ -36,6 +38,9 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "java-spring-http-snippet": ApiElements.JavaSpringHttpSnippet;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "java-spring-http-snippet": ApiElements.JavaSpringHttpSnippet;
+  }
 }

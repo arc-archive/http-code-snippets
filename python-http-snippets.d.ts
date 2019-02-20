@@ -5,16 +5,13 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   python-http-snippets.html
+ *   python-http-snippets.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../paper-tabs/paper-tabs.d.ts" />
-/// <reference path="../paper-tabs/paper-tab.d.ts" />
-/// <reference path="../iron-pages/iron-pages.d.ts" />
-/// <reference path="requests-python-http-snippet.d.ts" />
-/// <reference path="python-27-http-snippet.d.ts" />
-/// <reference path="python-31-http-snippet.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 
 declare namespace ApiElements {
 
@@ -29,7 +26,7 @@ declare namespace ApiElements {
    * ----------------|-------------|----------
    * `--http-code-snippets` | Mixin applied to this elment | `{}`
    */
-  class PythonHttpSnippets extends Polymer.Element {
+  class PythonHttpSnippets extends PolymerElement {
     selectedFramework: number|null|undefined;
 
     /**
@@ -55,6 +52,9 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "python-http-snippets": ApiElements.PythonHttpSnippets;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "python-http-snippets": ApiElements.PythonHttpSnippets;
+  }
 }

@@ -5,12 +5,14 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   requests-python-http-snippet.html
+ *   requests-python-http-snippet.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../prism-common/prism-python-import.d.ts" />
-/// <reference path="base-code-snippet.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
+
+import {BaseCodeSnippet} from './base-code-snippet.js';
 
 declare namespace ApiElements {
 
@@ -63,6 +65,9 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "requests-python-http-snippet": ApiElements.RequestsPythonHttpSnippet;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "requests-python-http-snippet": ApiElements.RequestsPythonHttpSnippet;
+  }
 }

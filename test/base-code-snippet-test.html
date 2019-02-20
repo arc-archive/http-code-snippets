@@ -4,12 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
   <title>http-code-snippets test</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <script src="../../web-component-tester/browser.js"></script>
-  <!-- IE11, Safari 9 polyfill -->
-  <link rel="import" href="../../url-polyfill/url-polyfill.html">
-  <link rel="import" href="../../prism-element/prism-highlighter.html">
-  <link rel="import" href="../base-code-snippet.html">
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+  <script src="../node_modules/sinon/pkg/sinon.js"></script>
+
+  <script type="module" src="../base-code-snippet.js"></script>
 </head>
 <body>
   <prism-highlighter></prism-highlighter>
@@ -20,7 +23,8 @@
     </template>
   </test-fixture>
 
-  <script>
+  <script type="module">
+  import '@polymer/prism-element/prism-highlighter.js';
   suite('base-code-snippet', () => {
     suite('urlDetails()', () => {
       test('Computes URL details', () => {

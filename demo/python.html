@@ -4,13 +4,16 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-  <title>http-code-snippets - python demo</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="../../shadycss/apply-shim.html">
-  <link rel="import" href="../../polymer/lib/elements/custom-style.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../python-http-snippets.html">
+  <title>http-code-snippets - Python demo</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <script type="module">
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+    import '@polymer/iron-demo-helpers/demo-snippet.js';
+    import '../python-http-snippets.js';
+  </script>
+
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
     :root {
@@ -38,15 +41,17 @@
       <template>
         <python-http-snippets url="https://api.github.com/authorizations" method="POST"></python-http-snippets>
         <script>
-          var headers = [{
+        {
+          const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
-          },{
+          }, {
             name: 'content-type', value: 'application/json'
           }];
-          var payload = {'scopes': ['public_repo']};
-          var snippet = document.querySelectorAll('python-http-snippets')[0];
+          const payload = {'scopes': ['public_repo']};
+          const snippet = document.querySelectorAll('python-http-snippets')[0];
           snippet.headers = headers;
           snippet.payload = JSON.stringify(payload, null, 2);
+        }
         </script>
       </template>
     </demo-snippet>
@@ -54,13 +59,15 @@
     <h3>GET request</h3>
     <demo-snippet>
       <template>
-        <python-http-snippets url="https://api.github.com/users/advanced-rest-client/repos?type=all&sort=pushed" method="GET"></python-http-snippets>
+        <python-http-snippets url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></python-http-snippets>
         <script>
-          var headers = [{
+        {
+          const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
           }];
-          var snippet = document.querySelectorAll('python-http-snippets')[1];
+          const snippet = document.querySelectorAll('python-http-snippets')[1];
           snippet.headers = headers;
+        }
         </script>
       </template>
     </demo-snippet>
@@ -77,9 +84,11 @@
       <template>
         <python-http-snippets url="https://api.github.com/authorizations" method="POST"></python-http-snippets>
         <script>
-          var payload = {'scopes': ['public_repo']};
-          var snippet = document.querySelectorAll('python-http-snippets')[3];
+        {
+          const payload = {'scopes': ['public_repo']};
+          const snippet = document.querySelectorAll('python-http-snippets')[3];
           snippet.payload = JSON.stringify(payload, null, 2);
+        }
         </script>
       </template>
     </demo-snippet>

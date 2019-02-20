@@ -5,12 +5,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>http-code-snippets - curl demo</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="../../shadycss/apply-shim.html">
-  <link rel="import" href="../../polymer/lib/elements/custom-style.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../curl-http-snippet.html">
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <script type="module">
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+    import '@polymer/iron-demo-helpers/demo-snippet.js';
+    import '../curl-http-snippet.js';
+  </script>
+
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
     :root {
@@ -38,15 +41,17 @@
       <template>
         <curl-http-snippet url="https://api.github.com/authorizations" method="POST"></curl-http-snippet>
         <script>
-          var headers = [{
-            name: 'accept', value: 'application/vnd.github.v3+json'
-          },{
-            name: 'content-type', value: 'application/json'
-          }];
-          var payload = {'scopes': ['public_repo']};
-          var snippet = document.querySelectorAll('curl-http-snippet')[0];
-          snippet.headers = headers;
-          snippet.payload = JSON.stringify(payload, null, 2);
+          (function() {
+            const headers = [{
+              name: 'accept', value: 'application/vnd.github.v3+json'
+            }, {
+              name: 'content-type', value: 'application/json'
+            }];
+            const payload = {'scopes': ['public_repo']};
+            const snippet = document.querySelectorAll('curl-http-snippet')[0];
+            snippet.headers = headers;
+            snippet.payload = JSON.stringify(payload, null, 2);
+          })();
         </script>
       </template>
     </demo-snippet>
@@ -54,13 +59,15 @@
     <h3>GET request</h3>
     <demo-snippet>
       <template>
-        <curl-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&sort=pushed" method="GET"></curl-http-snippet>
+        <curl-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></curl-http-snippet>
         <script>
-          var headers = [{
-            name: 'accept', value: 'application/vnd.github.v3+json'
-          }];
-          var snippet = document.querySelectorAll('curl-http-snippet')[1];
-          snippet.headers = headers;
+          (function() {
+            const headers = [{
+              name: 'accept', value: 'application/vnd.github.v3+json'
+            }];
+            const snippet = document.querySelectorAll('curl-http-snippet')[1];
+            snippet.headers = headers;
+          })();
         </script>
       </template>
     </demo-snippet>
@@ -77,9 +84,11 @@
       <template>
         <curl-http-snippet url="https://api.github.com/authorizations" method="POST"></curl-http-snippet>
         <script>
-          var payload = {'scopes': ['public_repo']};
-          var snippet = document.querySelectorAll('curl-http-snippet')[3];
+        (function() {
+          const payload = {'scopes': ['public_repo']};
+          const snippet = document.querySelectorAll('curl-http-snippet')[3];
           snippet.payload = JSON.stringify(payload, null, 2);
+        })();
         </script>
       </template>
     </demo-snippet>

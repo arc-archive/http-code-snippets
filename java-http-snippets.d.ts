@@ -5,15 +5,13 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   java-http-snippets.html
+ *   java-http-snippets.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../paper-tabs/paper-tabs.d.ts" />
-/// <reference path="../paper-tabs/paper-tab.d.ts" />
-/// <reference path="../iron-pages/iron-pages.d.ts" />
-/// <reference path="java-platform-http-snippet.d.ts" />
-/// <reference path="java-spring-http-snippet.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
 
 declare namespace ApiElements {
 
@@ -22,7 +20,7 @@ declare namespace ApiElements {
    *
    * A set of code snippets for Java requests.
    */
-  class JavatHttpSnippets extends Polymer.Element {
+  class JavatHttpSnippets extends PolymerElement {
     selectedFramework: number|null|undefined;
 
     /**
@@ -48,6 +46,9 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "java-http-snippets": ApiElements.JavatHttpSnippets;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "java-http-snippets": ApiElements.JavatHttpSnippets;
+  }
 }

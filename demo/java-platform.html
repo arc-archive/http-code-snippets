@@ -5,13 +5,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>http-code-snippets - Java Platform demo</title>
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="../../shadycss/apply-shim.html">
-  <link rel="import" href="../../polymer/lib/elements/custom-style.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../java-platform-http-snippet.html">
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <script type="module">
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+    import '@polymer/iron-demo-helpers/demo-snippet.js';
+    import '../java-platform-http-snippet.js';
+  </script>
+
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
     :root {
@@ -37,10 +39,7 @@
     <h3>Java platform example</h3>
     <demo-snippet>
       <template>
-        <java-platform-http-snippet
-          url="https://api.github.com/authorizations"
-          method="POST"
-          headers='[{"name": "accept", "value": "application/vnd.github.v3+json"},{"name": "content-type", "value": "application/json"}]'></java-platform-http-snippet>
+        <java-platform-http-snippet url="https://api.github.com/authorizations" method="POST" headers="[{&quot;name&quot;: &quot;accept&quot;, &quot;value&quot;: &quot;application/vnd.github.v3+json&quot;},{&quot;name&quot;: &quot;content-type&quot;, &quot;value&quot;: &quot;application/json&quot;}]"></java-platform-http-snippet>
         <script>
         {
           const payload = {'scopes': ['public_repo']};
@@ -54,11 +53,7 @@
     <h3>GET request</h3>
     <demo-snippet>
       <template>
-        <java-platform-http-snippet
-          url="https://api.github.com/users/advanced-rest-client/repos?type=all&sort=pushed"
-          method="GET"
-          headers='[{"name": "accept", "value": "application/vnd.github.v3+json"}]'></java-platform-http-snippet>
-        </script>
+        <java-platform-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET" headers="[{&quot;name&quot;: &quot;accept&quot;, &quot;value&quot;: &quot;application/vnd.github.v3+json&quot;}]"></java-platform-http-snippet>
       </template>
     </demo-snippet>
 
@@ -75,8 +70,8 @@
         <java-platform-http-snippet url="https://api.github.com/authorizations" method="POST"></java-platform-http-snippet>
         <script>
         {
-          let payload = {'scopes': ['public_repo']};
-          let snippet = document.querySelectorAll('java-platform-http-snippet')[3];
+          const payload = {'scopes': ['public_repo']};
+          const snippet = document.querySelectorAll('java-platform-http-snippet')[3];
           snippet.payload = JSON.stringify(payload, null, 2);
         }
         </script>

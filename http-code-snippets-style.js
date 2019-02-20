@@ -1,13 +1,15 @@
-<!--
+/**
 http://prismjs.com/download.html?themes=prism&languages=markup+css+clike+javascript
 
 prism.js default theme for JavaScript, CSS and HTML
 Based on dabblet (http://dabblet.com)
 @author Lea Verou
 
-Medified for ARC.
--->
-<dom-module id="http-code-snippets-style">
+Modified for ARC.
+*/
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<dom-module id="http-code-snippets-style">
   <template>
     <style>
     :host {
@@ -204,4 +206,6 @@ Medified for ARC.
     }
     </style>
   </template>
-</dom-module>
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);
