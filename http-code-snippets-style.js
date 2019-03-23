@@ -25,8 +25,8 @@ $_documentContainer.innerHTML = `<dom-module id="http-code-snippets-style">
       word-break: break-all;
       padding-top: 20px; /* Padding for the copy button. */
 
-      @apply --http-code-snippet-container;
-      @apply --http-code-snippet-container-highlighted;
+      background-color: var(--http-code-snippet-container-background-color);
+      padding: var(--http-code-snippet-container-padding, 8px);
     }
 
     .copy-button,
@@ -53,7 +53,8 @@ $_documentContainer.innerHTML = `<dom-module id="http-code-snippets-style">
     }
 
     .line {
-      @apply --http-code-snippet-line;
+      word-break: break-all;
+      white-space: pre-wrap;
     }
 
     .line.indent {
@@ -78,7 +79,8 @@ $_documentContainer.innerHTML = `<dom-module id="http-code-snippets-style">
 
     code[class*="language-"],
     pre[class*="language-"] {
-      @apply --arc-font-common-code;
+      font-family: var(--arc-font-code-family);
+      webkit-font-smoothing: var(--arc-font-font-smoothing);
       color: var(--code-color, black);
       text-shadow: 0 1px white;
       text-shadow: var(--http-code-snippet-code-text-shadow, 0 1px white);

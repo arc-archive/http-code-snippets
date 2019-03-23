@@ -25,14 +25,7 @@ import './java-http-snippets.js';
  *
  * ## Styling
  *
- * `<http-code-snippets>` provides the following custom properties and mixins for styling:
- *
- * Custom property | Description | Default
- * ----------------|-------------|----------
- * `--http-code-snippets` | Mixin applied to this elment | `{}`
- * `--http-code-snippet-container` | Mixin applied to the `<code>` element | `{}`
- * `--http-code-snippet-container-highlighted` | The same as above | `{}`
- * `--http-code-snippet-line` | Mixin applied to each line | `{}`
+ * See http-code-snippets-style.js file for styling definition.
  *
  * @customElement
  * @polymer
@@ -45,7 +38,6 @@ class HttpCodeSnippets extends PolymerElement {
     <style>
     :host {
       display: block;
-      @apply --http-code-snippets;
     }
     </style>
     <prism-highlighter></prism-highlighter>
