@@ -9,6 +9,10 @@
 
 Code snippets to render code implementation examples for a HTTP request.
 
+This component requires `advanced-rest-client/URL` (or other) polyfill for
+the URL object. This spec is not supported in Safari 9 and IE 11.
+If you are targeting this browsers install ind include this dependency.
+
 ## Example:
 
 ```html
