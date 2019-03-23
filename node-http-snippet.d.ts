@@ -34,7 +34,8 @@ declare namespace ApiElements {
      * @returns Complete code for given arguments
      */
     _computeCommand(url: String|null, method: String|null, headers: Array<object|null>|null|undefined, payload: String|null): String|null;
-    _createPayload(payload: any): any;
+    _genHeadersPart(headers: any): any;
+    _genPayloadPart(payload: any): any;
   }
 }
 

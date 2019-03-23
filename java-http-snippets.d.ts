@@ -11,8 +11,6 @@
 
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-
 declare namespace ApiElements {
 
   /**
@@ -52,3 +50,5 @@ declare global {
     "java-http-snippets": ApiElements.JavatHttpSnippets;
   }
 }
+
+export {};

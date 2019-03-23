@@ -12,8 +12,6 @@
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-
 export {BaseCodeSnippet};
 
 declare namespace ApiElements {
@@ -94,6 +92,17 @@ declare namespace ApiElements {
      */
     urlDetails(url: String|null): object|null;
     _copyToClipboard(): void;
+
+    /**
+     * Sends the `content-copy` event.
+     * If the event is canceled then the logic from this element won't be
+     * executed. Useful if current platform doesn't support `execCommand('copy')`
+     * and has other way to manage clipboard.
+     *
+     * @param value The value to dispatch with the event.
+     * @returns True if handler executed copy function.
+     */
+    _beforeCopy(value: String|null): Boolean|null;
   }
 }
 
