@@ -12,8 +12,8 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import {BaseCodeSnippet} from './base-code-snippet.js';
-import '@polymer/prism-element/prism-import.js';
-import 'prismjs/components/prism-java.min.js';
+import '../../@polymer/prism-element/prism-import.js';
+import '../../prismjs/components/prism-java.min.js';
 /**
  * `java-spring-http-snippet`
  *

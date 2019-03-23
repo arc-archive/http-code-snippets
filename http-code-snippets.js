@@ -1,9 +1,9 @@
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/prism-element/prism-highlighter.js';
+import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
+import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
+import '../../@polymer/paper-tabs/paper-tabs.js';
+import '../../@polymer/paper-tabs/paper-tab.js';
+import '../../@polymer/iron-pages/iron-pages.js';
+import '../../@polymer/prism-element/prism-highlighter.js';
 import './raw-http-snippet.js';
 import './curl-http-snippet.js';
 import './javascript-http-snippets.js';

@@ -11,11 +11,11 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/iron-pages/iron-pages.js';
+import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
+import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
+import '../../@polymer/paper-tabs/paper-tabs.js';
+import '../../@polymer/paper-tabs/paper-tab.js';
+import '../../@polymer/iron-pages/iron-pages.js';
 import './xhr-http-snippet.js';
 import './fetch-js-http-snippet.js';
 import './node-http-snippet.js';
