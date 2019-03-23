@@ -55,12 +55,24 @@ class RawHttpSnippet extends BaseCodeSnippet {
     if (urlData.hostValue) {
       result += `Host: ${urlData.hostValue}:${urlData.port}\n`;
     }
+    result += this._genHeadersPart(headers);
+    result += this._genPayloadPart(payload);
+    return result;
+  }
+
+  _genHeadersPart(headers) {
+    let result = '';
     if (headers && headers instanceof Array) {
       for (let i = 0, len = headers.length; i < len; i++) {
         const h = headers[i];
         result += `${h.name}: ${h.value}\n`;
       }
     }
+    return result;
+  }
+
+  _genPayloadPart(payload) {
+    let result = '';
     if (payload) {
       result += '\n';
       result += payload;

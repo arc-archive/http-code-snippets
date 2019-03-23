@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>http-code-snippets test</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+</head>
+<body>
+  <test-fixture id="Basic">
+    <template>
+      <node-http-snippet method="POST" url="http://domain.com" payload="test"></node-http-snippet>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="NoPayload">
+    <template>
+      <node-http-snippet method="GET" url="http://domain.com"></node-http-snippet>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Empty">
+    <template>
+      <node-http-snippet></node-http-snippet>
+    </template>
+  </test-fixture>
+
+  <script type="module">
+  import '../node-http-snippet.js';
+  suite('node-http-snippet', () => {
+    test('Renders code block (full)', (done) => {
+      const element = fixture('Basic');
+      element.headers = [{
+        name: 'Content-Type',
+        value: 'application/json'
+      }, {
+        name: 'Accept',
+        value: 'application/json'
+      }];
+
+      const lines = [
+        'const http = require(\'http\');',
+        'const init = {',
+        '  host: \'domain.com\',',
+        '  path: \'/\',',
+        '  port: 80,',
+        '  method: \'POST\',',
+        '  headers: {',
+        '    \'Content-Type\': \'application/json\',',
+        '    \'Accept\': \'application/json\'',
+        '  }',
+        '};',
+        'const callback = function(response) {',
+        '  let result = Buffer.alloc(0);',
+        '  response.on(\'data\', function(chunk) {',
+        '    result = Buffer.concat([result, chunk]);',
+        '  });',
+        '  ',
+        '  response.on(\'end\', function() {',
+        '    // result has response body buffer',
+        '    console.log(str.toString());',
+        '  });',
+        '};',
+        '',
+        'const req = http.request(init, callback);',
+        'const body = `test`;',
+        'req.write(body);',
+        'req.end();',
+        ''
+      ];
+
+      setTimeout(() => {
+        const code = element._code.innerText;
+        const result = code.split('\n');
+        for (let i = 0; i < result.length; i++) {
+          assert.equal(result[i], lines[i], `Line ${i} matches`);
+        }
+        // assert.deepEqual(result, lines);
+        done();
+      }, 25);
+    });
+
+    test('No headers', (done) => {
+      const element = fixture('Basic');
+      setTimeout(() => {
+        const code = element._code.innerText;
+        assert.equal(code.indexOf('headers: {'), -1);
+        done();
+      }, 25);
+    });
+
+    test('No payload', (done) => {
+      const element = fixture('NoPayload');
+      setTimeout(() => {
+        const code = element._code.innerText;
+        assert.equal(code.indexOf('req.write(body)'), -1);
+        done();
+      }, 25);
+    });
+  });
+
+  suite('_genHeadersPart()', () => {
+    let element;
+    setup(() => {
+      element = fixture('Basic');
+    });
+
+    test('Returns empty string when no headers', () => {
+      const result = element._genHeadersPart();
+      assert.equal(result, '');
+    });
+
+    test('Returns headers setting string', () => {
+      const result = element._genHeadersPart([{
+        name: 'x-test',
+        value: 'value'
+      }]);
+      assert.equal(result, '  headers: {\n    \'x-test\': \'value\'\n  }\n');
+    });
+  });
+
+  suite('_genPayloadPart()', () => {
+    let element;
+    setup(() => {
+      element = fixture('Basic');
+    });
+
+    test('Returns empty string for no body', () => {
+      const result = element._genPayloadPart();
+      assert.equal(result, '');
+    });
+
+    test('Returns payload setting string', () => {
+      const result = element._genPayloadPart('test');
+      assert.notEqual(result.indexOf('req.write(body)'), -1);
+    });
+  });
+  </script>
+</body>
+</html>

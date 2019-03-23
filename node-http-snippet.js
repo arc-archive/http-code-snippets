@@ -56,19 +56,35 @@ class NodeHttpSnippet extends BaseCodeSnippet {
       return '';
     }
     let result = 'const http = require(\'http\');\n';
-    const hasHeaders = !!(headers && headers instanceof Array && headers.length);
-    const hasPayload = !!payload;
-    if (hasPayload) {
-      result += this._createPayload(payload);
-    }
-    result += '\n';
     const data = this.urlDetails(url);
     result += 'const init = {\n';
-    result += `  host: '${data.hostValue}'\n`;
-    result += `  path: '${data.path}'\n`;
-    result += `  port: ${data.port}\n`;
-    result += `  method: '${method}'\n`;
-    if (hasHeaders) {
+    result += `  host: '${data.hostValue}',\n`;
+    result += `  path: '${data.path}',\n`;
+    result += `  port: ${data.port},\n`;
+    result += `  method: '${method}',\n`;
+    result += this._genHeadersPart(headers);
+    result += '};\n';
+    result += 'const callback = function(response) {\n';
+    result += '  let result = Buffer.alloc(0);\n';
+    result += '  response.on(\'data\', function(chunk) {\n';
+    result += '    result = Buffer.concat([result, chunk]);\n';
+    result += '  });\n';
+    result += '  \n';
+    result += '  response.on(\'end\', function() {\n';
+    result += '    // result has response body buffer\n';
+    result += '    console.log(str.toString());\n';
+    result += '  });\n';
+    result += '};\n';
+    result += '\n';
+    result += 'const req = http.request(init, callback);\n';
+    result += this._genPayloadPart(payload);
+    result += 'req.end();\n';
+    return result;
+  }
+
+  _genHeadersPart(headers) {
+    let result = '';
+    if (headers && headers instanceof Array && headers.length) {
       result += '  headers: {\n';
       for (let i = 0, len = headers.length; i < len; i++) {
         const h = headers[i];
@@ -80,29 +96,16 @@ class NodeHttpSnippet extends BaseCodeSnippet {
       }
       result += '  }\n';
     }
-    result += '};\n';
-    result += 'const callback = function(response) {\n';
-    result += '  let str = \'\';\n';
-    result += '  response.on(\'data\', function(chunk) {\n';
-    result += '    str += chunk;\n';
-    result += '  });\n';
-    result += '  \n';
-    result += '  response.on(\'end\', function() {\n';
-    result += '    // str has response body\n';
-    result += '    console.log(str);\n';
-    result += '  });\n';
-    result += '};\n';
-    result += '\n';
-    result += 'const req = http.request(init, callback);\n';
-    if (hasPayload) {
-      result += 'req.write(body);\n';
-    }
-    result += 'req.end();\n';
     return result;
   }
 
-  _createPayload(payload) {
-    return `\nconst body = \`${payload}\`;\n`;
+  _genPayloadPart(payload) {
+    let result = '';
+    if (payload) {
+      result += `const body = \`${payload}\`;\n`;
+      result += 'req.write(body);\n';
+    }
+    return result;
   }
 }
 window.customElements.define(NodeHttpSnippet.is, NodeHttpSnippet);

@@ -53,29 +53,15 @@ class JavaPlatformHttpSnippet extends BaseCodeSnippet {
     }
     url = String(url);
     let result = `URL url = new URL("${url}");\n`;
-    let clazz = 'Http';
+    let klass = 'Http';
     if (url.indexOf('https') === 0) {
-      clazz += 's';
+      klass += 's';
     }
-    clazz += 'URLConnection';
-    result += `${clazz} con = (${clazz}) url.openConnection();\n`;
+    klass += 'URLConnection';
+    result += `${klass} con = (${klass}) url.openConnection();\n`;
     result += `con.setRequestMethod("${method}");\n`;
-    if (headers && headers.length) {
-      headers.forEach((h) => {
-        result += `con.setRequestProperty("${h.name}", "${h.value}");\n`;
-      });
-    }
-    if (payload) {
-      result += '\n/* Payload support */\n';
-      result += 'con.setDoOutput(true);\n';
-      result += 'DataOutputStream out = new DataOutputStream(con.getOutputStream());\n';
-      const list = this._payloadToList(payload);
-      list.forEach((line) => {
-        result += `out.writeBytes("${line}\\n");\n`;
-      });
-      result += 'out.flush();\n';
-      result += 'out.close();\n';
-    }
+    result += this._genHeadersPart(headers);
+    result += this._genPayloadPart(payload);
     result += '\n';
     result += 'int status = con.getResponseCode();\n';
     result += 'BufferedReader in = new BufferedReader(';
@@ -89,6 +75,32 @@ class JavaPlatformHttpSnippet extends BaseCodeSnippet {
     result += 'con.disconnect();\n';
     result += 'System.out.println("Response status: " + status);\n';
     result += 'System.out.println(content.toString());';
+    return result;
+  }
+
+  _genHeadersPart(headers) {
+    let result = '';
+    if (headers && headers.length) {
+      headers.forEach((h) => {
+        result += `con.setRequestProperty("${h.name}", "${h.value}");\n`;
+      });
+    }
+    return result;
+  }
+
+  _genPayloadPart(payload) {
+    let result = '';
+    if (payload) {
+      result += '\n/* Payload support */\n';
+      result += 'con.setDoOutput(true);\n';
+      result += 'DataOutputStream out = new DataOutputStream(con.getOutputStream());\n';
+      const list = this._payloadToList(payload);
+      list.forEach((line) => {
+        result += `out.writeBytes("${line}\\n");\n`;
+      });
+      result += 'out.flush();\n';
+      result += 'out.close();\n';
+    }
     return result;
   }
 

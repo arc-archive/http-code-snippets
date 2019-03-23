@@ -53,11 +53,31 @@ class JavaSpringHttpSnippet extends BaseCodeSnippet {
     }
     let result = `RestTemplate rest = new RestTemplate();\n`;
     result += 'HttpHeaders headers = new HttpHeaders();\n';
+    result += this._genHeadersPart(headers);
+    result += this._genPayloadPart(payload);
+    result += '\n';
+    result += 'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);\n';
+    result += 'ResponseEntity<String> responseEntity = rest.exchange(';
+    result += `"${url}", HttpMethod.${method}, requestEntity, String.class);\n`;
+    result += 'int status = responseEntity.getStatusCode();\n';
+    result += 'String response = responseEntity.getBody();\n';
+    result += 'System.out.println("Response status: " + status);\n';
+    result += 'System.out.println(response);';
+    return result;
+  }
+
+  _genHeadersPart(headers) {
+    let result = '';
     if (headers && headers.length) {
       headers.forEach((h) => {
         result += `headers.add("${h.name}", "${h.value}");\n`;
       });
     }
+    return result;
+  }
+
+  _genPayloadPart(payload) {
+    let result = '';
     if (payload) {
       result += '\nStringBuilder sb = new StringBuilder();\n';
       const list = this._payloadToList(payload);
@@ -68,14 +88,6 @@ class JavaSpringHttpSnippet extends BaseCodeSnippet {
     } else {
       result += 'String body = "";\n';
     }
-    result += '\n';
-    result += 'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);\n';
-    result += 'ResponseEntity<String> responseEntity = rest.exchange(';
-    result += `"${url}", HttpMethod.${method}, requestEntity, String.class);\n`;
-    result += 'int status = responseEntity.getStatusCode();\n';
-    result += 'String response = responseEntity.getBody();\n';
-    result += 'System.out.println("Response status: " + status);\n';
-    result += 'System.out.println(response);';
     return result;
   }
 

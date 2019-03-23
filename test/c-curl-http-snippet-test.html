@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>http-code-snippets test</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+</head>
+<body>
+  <test-fixture id="Basic">
+    <template>
+      <c-curl-http-snippet method="POST" url="http://domain.com" payload="test"></c-curl-http-snippet>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="NoPayload">
+    <template>
+      <c-curl-http-snippet method="GET" url="http://domain.com"></c-curl-http-snippet>
+    </template>
+  </test-fixture>
+
+  <script type="module">
+  import '../c-curl-http-snippet.js';
+  suite('c-curl-http-snippet', () => {
+    test('Renders code block (full)', (done) => {
+      const element = fixture('Basic');
+      element.headers = [{
+        name: 'Content-Type',
+        value: 'application/json'
+      }];
+      let compare = '#include \n#include \n\nint main(void)\n{\n\tCURL *curl;';
+      compare += '\n\tCURLcode res;\n\n\tcurl = curl_easy_init();';
+      compare += '\n\tcurl_easy_setopt(curl, CURLOPT_URL, "http://domain.com");';
+      compare += '\n\tcurl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");';
+      compare += '\n\t/* if redirected, tell libcurl to follow redirection */';
+      compare += '\n\tcurl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);';
+      compare += '\n\n\tstruct curl_slist *headers = NULL;';
+      compare += '\n\theaders = curl_slist_append(headers, "Content-Type: application/json");';
+      compare += '\n\tcurl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);\n\n\tchar *body ="test";';
+      compare += '\n\tcurl_easy_setopt(curl, CURLOPT_POSTFIELDS, body);';
+      compare += '\n\n\t/* Perform the request, res will get the return code */';
+      compare += '\n\tres = curl_easy_perform(curl);\n\tif (res != CURLE_OK) {';
+      compare += '\n\t\tfprintf(stderr, "curl_easy_perform() failed: %s';
+      compare += '\\n", curl_easy_strerror(res));\n\t}\n\t/* Clean up after yourself */';
+      compare += '\n\tcurl_easy_cleanup(curl);\n\treturn 0;\n}';
+      compare += '\n/* See: http://stackoverflow.com/a/2329792/1127848 ';
+      compare += 'of how to read data from the response. */';
+      setTimeout(() => {
+        const code = element._code.innerText;
+        assert.equal(code, compare);
+        done();
+      }, 25);
+    });
+
+    test('No headers', (done) => {
+      const element = fixture('Basic');
+      setTimeout(() => {
+        const code = element._code.innerText;
+        assert.equal(code.indexOf('CURLOPT_HTTPHEADER'), -1);
+        done();
+      }, 25);
+    });
+
+    test('No payload', (done) => {
+      const element = fixture('NoPayload');
+      setTimeout(() => {
+        const code = element._code.innerText;
+        assert.equal(code.indexOf('CURLOPT_POSTFIELDS'), -1);
+        done();
+      }, 25);
+    });
+  });
+  </script>
+</body>
+</html>

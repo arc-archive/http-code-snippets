@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>http-code-snippets test</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+</head>
+<body>
+  <test-fixture id="Basic">
+    <template>
+      <requests-python-http-snippet method="POST" url="http://domain.com" payload="test"></requests-python-http-snippet>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="NoPayload">
+    <template>
+      <requests-python-http-snippet method="GET" url="http://domain.com"></requests-python-http-snippet>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Empty">
+    <template>
+      <requests-python-http-snippet></requests-python-http-snippet>
+    </template>
+  </test-fixture>
+
+  <script type="module">
+  import '../requests-python-http-snippet.js';
+  suite('requests-python-http-snippet', () => {
+    test('Renders code block (full)', (done) => {
+      const element = fixture('Basic');
+      element.headers = [{
+        name: 'Content-Type',
+        value: 'application/json'
+      }, {
+        name: 'Accept',
+        value: 'application/json'
+      }];
+
+      const lines = [
+        'import requests',
+        '',
+        'url = \'http://domain.com\'',
+        'headers = {\'Content-Type\': \'application/json\',\'Accept\': \'application/json\'}',
+        'body = """test"""',
+        '',
+        'req = requests.post(url, headers=headers, data=body)',
+        '',
+        'print(req.status_code)',
+        'print(req.headers)',
+        'print(req.text)'
+      ];
+
+      setTimeout(() => {
+        const code = element._code.innerText;
+        const result = code.split('\n');
+        for (let i = 0; i < result.length; i++) {
+          assert.equal(result[i], lines[i], `Line ${i} matches`);
+        }
+        // assert.deepEqual(result, lines);
+        done();
+      }, 25);
+    });
+
+    test('No headers', (done) => {
+      const element = fixture('Basic');
+      setTimeout(() => {
+        const code = element._code.innerText;
+        assert.equal(code.indexOf('headers = {'), -1);
+        done();
+      }, 25);
+    });
+
+    test('No payload', (done) => {
+      const element = fixture('NoPayload');
+      setTimeout(() => {
+        const code = element._code.innerText;
+        assert.equal(code.indexOf('data=body'), -1);
+        done();
+      }, 25);
+    });
+  });
+
+  suite('_getHeaders()', () => {
+    let element;
+    setup(() => {
+      element = fixture('Basic');
+    });
+
+    test('Returns headers setting string', () => {
+      const result = element._getHeaders([{
+        name: 'x-test',
+        value: 'value'
+      }]);
+      assert.equal(result, 'headers = {\'x-test\': \'value\'}\n');
+    });
+  });
+
+  suite('_getPayload()', () => {
+    let element;
+    setup(() => {
+      element = fixture('Basic');
+    });
+
+    test('Returns payload setting string', () => {
+      const result = element._getPayload('test');
+      assert.notEqual(result.indexOf('body = """test"""'), -1);
+    });
+  });
+  </script>
+</body>
+</html>
