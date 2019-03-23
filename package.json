@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "description": "Code snippets to display a snippets of making a HTTP request",
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.5.1"
+    "@polymer/gen-typescript-declarations": "^1.6.1"
   },
   "private": false,
   "main": "http-code-snippets.html",
