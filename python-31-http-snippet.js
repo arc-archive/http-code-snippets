@@ -12,7 +12,7 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import {BaseCodeSnippet} from './base-code-snippet.js';
-import '../../@polymer/prism-element/prism-import.js';
+import '../../prismjs/prism.js';
 import '../../prismjs/components/prism-python.min.js';
 /**
  * `raw-http-snippet`
