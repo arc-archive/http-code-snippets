@@ -221,6 +221,9 @@ export class BaseCodeSnippet extends PolymerElement {
     if (!code) {
       return;
     }
+    if (this._beforeCopy(code.innerText)) {
+      return;
+    }
     // From https://github.com/google/material-design-lite/blob/master/docs/_assets/snippets.js
     const snipRange = document.createRange();
     snipRange.selectNodeContents(code);
@@ -233,6 +236,27 @@ export class BaseCodeSnippet extends PolymerElement {
       console.warn('Copy error', err);
     }
     selection.removeAllRanges();
+  }
+  /**
+   * Sends the `content-copy` event.
+   * If the event is canceled then the logic from this element won't be
+   * executed. Useful if current platform doesn't support `execCommand('copy')`
+   * and has other way to manage clipboard.
+   *
+   * @param {String} value The value to dispatch with the event.
+   * @return {Boolean} True if handler executed copy function.
+   */
+  _beforeCopy(value) {
+    const ev = new CustomEvent('content-copy', {
+      detail: {
+        value
+      },
+      bubbles: true,
+      cancelable: true,
+      composed: true
+    });
+    this.dispatchEvent(ev);
+    return ev.defaultPrevented;
   }
 }
 window.customElements.define(BaseCodeSnippet.is, BaseCodeSnippet);

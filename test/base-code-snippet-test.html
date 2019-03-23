@@ -73,6 +73,41 @@
         assert.isTrue(spy.called);
       });
     });
+
+    suite('_copyToClipboard()', () => {
+      let element;
+
+      setup(() => {
+        element = fixture('Basic');
+        element._code.textContent = 'test-code';
+      });
+
+      test('Dispatches content-copy event', () => {
+        const spy = sinon.spy();
+        element.addEventListener('content-copy', spy);
+        element._copyToClipboard();
+        assert.isTrue(spy.calledOnce);
+        assert.equal(spy.args[0][0].detail.value, 'test-code');
+      });
+
+      test('Calls execCommand() when event is not handled', () => {
+        const spy = sinon.spy(document, 'execCommand');
+        element._copyToClipboard();
+        document.execCommand.restore();
+        assert.isTrue(spy.calledOnce);
+      });
+
+      test('Won\'t call execCommand() when event is handled', () => {
+        const spy = sinon.spy(document, 'execCommand');
+        element.addEventListener('content-copy', function f(e) {
+          element.removeEventListener('content-copy', f);
+          e.preventDefault();
+        });
+        element._copyToClipboard();
+        document.execCommand.restore();
+        assert.isFalse(spy.calledOnce);
+      });
+    });
   });
   </script>
 </body>
