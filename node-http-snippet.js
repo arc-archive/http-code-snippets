@@ -18,11 +18,6 @@ A snippet for requests made in JavaScript (Node) using native library.
 @element node-http-snippets
 @demo demo/node.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
 import {BaseCodeSnippet} from './base-code-snippet.js';
 /**
  * `node-http-snippet`

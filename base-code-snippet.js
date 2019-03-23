@@ -12,19 +12,8 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 import './http-code-snippets-style.js';
-const $_documentContainer = document.createElement('template');
-
-$_documentContainer.innerHTML = `<dom-module id="base-code-snippet">
-  <template strip-whitespace="">
-    <style include="http-code-snippets-style"></style>
-    <button class="copy-button" title="Copy to clipboard" on-click="_copyToClipboard">Copy</button>
-    <code class="code language-snippet"></code>
-  </template>
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
 const URI_CACHE = {};
 /**
  * `base-code-snippet`
@@ -57,9 +46,16 @@ const URI_CACHE = {};
  * @memberof ApiElements
  */
 export class BaseCodeSnippet extends PolymerElement {
+  static get template() {
+    return html`<style include="http-code-snippets-style"></style>
+    <button class="copy-button" title="Copy to clipboard" on-click="_copyToClipboard">Copy</button>
+    <code class="code language-snippet"></code>`;
+  }
+
   static get is() {
     return 'base-code-snippet';
   }
+
   static get properties() {
     return {
       /**

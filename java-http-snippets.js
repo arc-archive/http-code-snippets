@@ -12,16 +12,25 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/paper-tabs/paper-tab.js';
 import '@polymer/iron-pages/iron-pages.js';
 import './java-platform-http-snippet.js';
 import './java-spring-http-snippet.js';
-const $documentContainer = document.createElement('template');
-
-$documentContainer.innerHTML = `<dom-module id="java-http-snippets">
-  <template strip-whitespace="">
-    <style>
+/**
+ * `javascript-http-snippet`
+ *
+ * A set of code snippets for Java requests.
+ *
+ * @customElement
+ * @polymer
+ * @demo demo/java.html Java demo
+ * @memberof ApiElements
+ */
+class JavatHttpSnippets extends PolymerElement {
+  static get template() {
+    return html`<style>
     :host {
       display: block;
     }
@@ -35,23 +44,8 @@ $documentContainer.innerHTML = `<dom-module id="java-http-snippets">
         payload="[[payload]]" headers="[[headers]]"></java-platform-http-snippet>
       <java-spring-http-snippet url="[[url]]" method="[[method]]"
         payload="[[payload]]" headers="[[headers]]"></java-spring-http-snippet>
-    </iron-pages>
-  </template>
-
-</dom-module>`;
-
-document.head.appendChild($documentContainer.content);
-/**
- * `javascript-http-snippet`
- *
- * A set of code snippets for Java requests.
- *
- * @customElement
- * @polymer
- * @demo demo/java.html Java demo
- * @memberof ApiElements
- */
-class JavatHttpSnippets extends PolymerElement {
+    </iron-pages>`;
+  }
   static get is() {
     return 'java-http-snippets';
   }

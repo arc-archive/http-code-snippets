@@ -12,39 +12,13 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/paper-tabs/paper-tab.js';
 import '@polymer/iron-pages/iron-pages.js';
 import './xhr-http-snippet.js';
 import './fetch-js-http-snippet.js';
 import './node-http-snippet.js';
-const $documentContainer = document.createElement('template');
-
-$documentContainer.innerHTML = `<dom-module id="javascript-http-snippets">
-  <template strip-whitespace="">
-    <style>
-    :host {
-      display: block;
-    }
-    </style>
-    <paper-tabs selected="{{selectedFramework}}">
-      <paper-tab>Fetch</paper-tab>
-      <paper-tab>Node</paper-tab>
-      <paper-tab>XHR</paper-tab>
-    </paper-tabs>
-    <iron-pages selected="[[selectedFramework]]">
-      <fetch-js-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]"
-        headers="[[headers]]"></fetch-js-http-snippet>
-      <node-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]"
-        headers="[[headers]]"></node-http-snippet>
-      <xhr-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]"
-        headers="[[headers]]"></xhr-http-snippet>
-    </iron-pages>
-  </template>
-
-</dom-module>`;
-
-document.head.appendChild($documentContainer.content);
 /**
  * `javascript-http-snippet`
  *
@@ -62,6 +36,26 @@ document.head.appendChild($documentContainer.content);
  * @memberof ApiElements
  */
 class JavascriptHttpSnippets extends PolymerElement {
+  static get template() {
+    return html`<style>
+    :host {
+      display: block;
+    }
+    </style>
+    <paper-tabs selected="{{selectedFramework}}">
+      <paper-tab>Fetch</paper-tab>
+      <paper-tab>Node</paper-tab>
+      <paper-tab>XHR</paper-tab>
+    </paper-tabs>
+    <iron-pages selected="[[selectedFramework]]">
+      <fetch-js-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]"
+        headers="[[headers]]"></fetch-js-http-snippet>
+      <node-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]"
+        headers="[[headers]]"></node-http-snippet>
+      <xhr-http-snippet url="[[url]]" method="[[method]]" payload="[[payload]]"
+        headers="[[headers]]"></xhr-http-snippet>
+    </iron-pages>`;
+  }
   static get is() {
     return 'javascript-http-snippets';
   }
