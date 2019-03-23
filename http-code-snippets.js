@@ -210,6 +210,7 @@ class HttpCodeSnippets extends PolymerElement {
       return [];
     }
     const result = [];
+    headers = headers.replace('\\n', '\n');
     headers = headers.split(/\n(?=[^ \t]+)/gim);
     for (let i = 0, len = headers.length; i < len; i++) {
       const line = headers[i].trim();
