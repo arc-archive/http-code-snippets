@@ -9,7 +9,7 @@
     "url": "git://github.com/advanced-rest-client/http-code-snippets.git"
   },
   "name": "@advanced-rest-client/http-code-snippets",
-  "version": "3.0.0-preview.1",
+  "version": "3.0.0-preview.2",
   "license": "Apache-2.0",
   "devDependencies": {
     "@polymer/gen-typescript-declarations": "^1.6.1",
