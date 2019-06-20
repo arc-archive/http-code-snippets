@@ -81,7 +81,7 @@ class FetchJsHttpSnippet extends BaseCodeSnippet {
     result += '})\n';
     result += '.catch((e) => {\n';
     result += '  // error in e.message\n';
-    result += '});\n';
+    result += '});';
     return result;
   }
 

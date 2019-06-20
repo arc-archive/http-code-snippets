@@ -26,7 +26,7 @@ describe('<fetch-js-http-snippet>', function() {
     compare += '\n  headers,\n  body\n}\n\nfetch(\'http://domain.com\', init)';
     compare += '\n.then((response) => {\n  return response.json(); // or .text()';
     compare += ' or .blob() ...\n})\n.then((text) => {\n  // text is the response body';
-    compare += '\n})\n.catch((e) => {\n  // error in e.message\n});\n';
+    compare += '\n})\n.catch((e) => {\n  // error in e.message\n});';
     await aTimeout();
     const code = element._code.innerText;
     assert.equal(code, compare);
