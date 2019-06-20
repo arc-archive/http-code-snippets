@@ -18,7 +18,7 @@ A snippet for requests made in JavaScript (Node) using native library.
 @element node-http-snippets
 @demo demo/node.html
 */
-import {BaseCodeSnippet} from './base-code-snippet.js';
+import { BaseCodeSnippet } from './base-code-snippet.js';
 /**
  * `node-http-snippet`
  *
@@ -35,10 +35,6 @@ import {BaseCodeSnippet} from './base-code-snippet.js';
  * @extends BaseCodeSnippet
  */
 class NodeHttpSnippet extends BaseCodeSnippet {
-  static get is() {
-    return 'node-http-snippet';
-  }
-
   get lang() {
     return 'javascript';
   }
@@ -108,4 +104,4 @@ class NodeHttpSnippet extends BaseCodeSnippet {
     return result;
   }
 }
-window.customElements.define(NodeHttpSnippet.is, NodeHttpSnippet);
+window.customElements.define('node-http-snippet', NodeHttpSnippet);

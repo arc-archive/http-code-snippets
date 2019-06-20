@@ -11,9 +11,9 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {BaseCodeSnippet} from './base-code-snippet.js';
-import '../../prismjs/prism.js';
-import '../../prismjs/components/prism-java.min.js';
+import { BaseCodeSnippet } from './base-code-snippet.js';
+import 'prismjs/prism.js';
+import 'prismjs/components/prism-java.min.js';
 /**
  * `java-spring-http-snippet`
  *
@@ -31,14 +31,9 @@ import '../../prismjs/components/prism-java.min.js';
  * @extends BaseCodeSnippet
  */
 class JavaSpringHttpSnippet extends BaseCodeSnippet {
-  static get is() {
-    return 'java-spring-http-snippet';
-  }
-
   get lang() {
     return 'java';
   }
-
   /**
    * Computes code for Java (Spring).
    * @param {String} url
@@ -95,4 +90,4 @@ class JavaSpringHttpSnippet extends BaseCodeSnippet {
     return payload.split('\n').map((item) => item.replace(/"/g, '\\"'));
   }
 }
-window.customElements.define(JavaSpringHttpSnippet.is, JavaSpringHttpSnippet);
+window.customElements.define('java-spring-http-snippet', JavaSpringHttpSnippet);

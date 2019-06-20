@@ -12,22 +12,24 @@
   "version": "3.0.0-preview.2",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.6.1",
-    "@polymer/iron-component-page": "^4.0.0",
-    "@polymer/iron-demo-helpers": "^3.0.0",
+    "@advanced-rest-client/arc-demo-helper": "^1.0.3",
+    "@advanced-rest-client/testing-karma-sl": "^1.0.2",
+    "@open-wc/testing": "^0.11.1",
+    "@open-wc/testing-karma": "^2.0.6",
+    "@polymer/gen-typescript-declarations": "^1.6.2",
     "@polymer/iron-test-helpers": "^3.0.0",
-    "@webcomponents/webcomponentsjs": "^2.0.0",
-    "@polymer/test-fixture": "^4.0.2",
-    "chai": "^4.2.0",
-    "mocha": "^5.2.0",
-    "sinon": "^7.2.3",
-    "wct-mocha": "^1.0.0"
+    "@webcomponents/webcomponentsjs": "^2.2.10",
+    "sinon": "^7.3.2",
+    "owc-dev-server": "^0.3.0"
   },
   "main": "http-code-snippets.js",
   "scripts": {
-    "lint": "polymer lint http-code-snippets.html c-curl-http-snippet.html curl-http-snippet.html fetch-js-http-snippet.html http-code-snippets-style.html http-code-snippets.html javascript-http-snippets.html node-http-snippet.html python-27-http-snippet.html python-31-http-snippet.html python-http-snippets.html raw-http-snippet.html requests-python-http-snippet.html xhr-http-snippet.html",
-    "test-sauce": "polymer test --plugin sauce --job-name \"http-code-snippets:local-test\"",
-    "test": "polymer test --plugin local",
+    "start": "owc-dev-server --open demo",
+    "test": "karma start --coverage",
+    "test:watch": "karma start --auto-watch=true --single-run=false",
+    "test:legacy": "karma start --legacy --coverage",
+    "test:legacy:watch": "karma start --legacy --auto-watch=true --single-run=false",
+    "test:sl": "karma start karma.sl.config.js --legacy --coverage",
     "update-types": "gen-typescript-declarations --deleteExisting --outDir ."
   },
   "bugs": {
@@ -43,13 +45,12 @@
     "The Advanced REST client authors <arc@mulesoft.com>"
   ],
   "dependencies": {
-    "@advanced-rest-client/arc-icons": "^3.0.0-preview.1",
-    "@polymer/iron-flex-layout": "^3.0.0",
+    "@advanced-rest-client/arc-icons": "^3.0.0",
     "@polymer/iron-icon": "^3.0.0",
     "@polymer/iron-pages": "^3.0.0",
     "@polymer/paper-icon-button": "^3.0.0",
-    "@polymer/paper-tabs": "^3.0.0",
-    "@polymer/polymer": "^3.0.0",
-    "@polymer/prism-element": "^3.0.0"
+    "@polymer/paper-tabs": "^3.1.0",
+    "@polymer/prism-element": "^3.0.0",
+    "lit-element": "^2.0.1"
   }
 }

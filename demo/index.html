@@ -7,39 +7,30 @@
   <title>http-code-snippets demo</title>
 
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-
-  <script type="module">
-    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
-    import '@polymer/iron-demo-helpers/demo-snippet.js';
-    import '../http-code-snippets.js';
-  </script>
-
-  <custom-style>
-    <style is="custom-style" include="demo-pages-shared-styles">
-    </style>
-  </custom-style>
+  <script type="module" src="../node_modules/@advanced-rest-client/arc-demo-helper/arc-demo-helper.js"></script>
+  <script type="module" src="../http-code-snippets.js"></script>
 </head>
 <body unresolved>
   <div class="vertical-section-container centered">
     <h3>Full example</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <http-code-snippets url="https://api.github.com/authorizations" method="POST"></http-code-snippets>
         <script>
           (function() {
             let headers = 'accept: application/vnd.github.v3+json\\n';
             headers += 'content-type: application/json';
-            const payload = {'scopes': ['public_repo']};
+            const payload = { 'scopes': ['public_repo'] };
             const snippet = document.querySelectorAll('http-code-snippets')[0];
             snippet.headers = headers;
             snippet.payload = JSON.stringify(payload, null, 2);
           })();
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>GET request</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <http-code-snippets url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></http-code-snippets>
         <script>
@@ -50,28 +41,28 @@
         })();
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>Minimal request</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <http-code-snippets url="https://api.github.com/users/advanced-rest-client/repos" method="GET"></http-code-snippets>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>Payload only</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <http-code-snippets url="https://api.github.com/authorizations" method="POST"></http-code-snippets>
         <script>
         (function() {
-          const payload = {'scopes': ['public_repo']};
+          const payload = { 'scopes': ['public_repo'] };
           const snippet = document.querySelectorAll('http-code-snippets')[3];
           snippet.payload = JSON.stringify(payload, null, 2);
         })();
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
   </div>
 </body>
 </html>

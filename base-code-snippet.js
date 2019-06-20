@@ -11,9 +11,8 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
-import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
-import './http-code-snippets-style.js';
+import { LitElement, html } from 'lit-element';
+import httpStyles from './http-code-snippets-style.js';
 const URI_CACHE = {};
 /**
  * `base-code-snippet`
@@ -45,15 +44,18 @@ const URI_CACHE = {};
  * @demo demo/index.html
  * @memberof ApiElements
  */
-export class BaseCodeSnippet extends PolymerElement {
-  static get template() {
-    return html`<style include="http-code-snippets-style"></style>
-    <button class="copy-button" title="Copy to clipboard" on-click="_copyToClipboard">Copy</button>
-    <code class="code language-snippet"></code>`;
+export class BaseCodeSnippet extends LitElement {
+  static get _httpStyles() {
+    return httpStyles;
   }
 
-  static get is() {
-    return 'base-code-snippet';
+  static get styles() {
+    return BaseCodeSnippet._httpStyles;
+  }
+
+  render() {
+    return html`<button class="copy-button" title="Copy to clipboard" @click="${this._copyToClipboard}">Copy</button>
+    <code class="code language-snippet"></code>`;
   }
 
   static get properties() {
@@ -61,38 +63,81 @@ export class BaseCodeSnippet extends PolymerElement {
       /**
        * Request URL
        */
-      url: String,
+      url: { type: String },
       /**
        * HTTP method
        */
-      method: String,
+      method: { type: String },
       /**
        * Parsed HTTP headers.
        * Each item contains `name` and `value` properties.
        * @type {Array<Object>}
        */
-      headers: Array,
+      headers: { type: Array },
       /**
        * HTTP body (the message)
        */
-      payload: String
+      payload: { type: String }
     };
   }
 
-  static get observers() {
-    return [
-      '_valuesChanged(url, method, headers, payload)'
-    ];
+  get url() {
+    return this._url;
+  }
+
+  get method() {
+    return this._method;
+  }
+
+  get headers() {
+    return this._headers;
+  }
+
+  get payload() {
+    return this._payload;
+  }
+
+  set url(value) {
+    this._setProp('url', value);
+  }
+
+  set method(value) {
+    this._setProp('method', value);
+  }
+
+  set headers(value) {
+    this._setProp('headers', value);
+  }
+
+  set payload(value) {
+    this._setProp('payload', value);
   }
 
   get _code() {
     return this.shadowRoot.querySelector('code');
   }
 
+  _setProp(prop, value) {
+    if (this._sop(prop, value)) {
+      this._valuesChanged();
+    }
+  }
+
+  _sop(prop, value) {
+    const key = '_' + prop;
+    const old = this[key];
+    if (old === value) {
+      return false;
+    }
+    this[key] = value;
+    this.requestUpdate(prop, old);
+    return true;
+  }
+
   connectedCallback() {
     super.connectedCallback();
     if (!this.__valuesDebouncer) {
-      this._valuesChanged(this.url, this.method, this.headers, this.payload);
+      this._valuesChanged();
     }
   }
 
@@ -110,28 +155,21 @@ export class BaseCodeSnippet extends PolymerElement {
     }
   }
   /**
-   * Computes code value with debouncer set to 25 ms.
-   * @param {String} url
-   * @param {String} method
-   * @param {Array<Object>|undefined} headers
-   * @param {String|undefined} payload
+   * Computes code value with debouncer.
    */
-  _valuesChanged(url, method, headers, payload) {
+  _valuesChanged() {
     this._clearValueTimeout();
     this.__valuesDebouncer = setTimeout(() => {
       this.__valuesDebouncer = undefined;
-      this._processCommand(url, method, headers, payload);
-    }, 25);
+      this._processCommand();
+    });
   }
   /**
    * Processes command by calling, respectively, `_computeCommand()` and
    * `_highlight()`. The result is added to the `<code>` block in the template.
-   * @param {String} url
-   * @param {String} method
-   * @param {Array<Object>|undefined} headers
-   * @param {String|undefined} payload
    */
-  _processCommand(url, method, headers, payload) {
+  _processCommand() {
+    const { url, method, headers, payload } = this;
     let code = this._computeCommand(url, method, headers, payload);
     if (!code) {
       code = '';
@@ -154,7 +192,7 @@ export class BaseCodeSnippet extends PolymerElement {
       }
     });
     this.dispatchEvent(e);
-    return e.detail.code;
+    return e.detail.code || code;
   }
   /**
    * Reads the host, port and path from the url.
@@ -221,21 +259,29 @@ export class BaseCodeSnippet extends PolymerElement {
     if (!code) {
       return;
     }
-    if (this._beforeCopy(code.innerText)) {
+    const content = code.innerText;
+    if (this._beforeCopy(content)) {
       return;
     }
-    // From https://github.com/google/material-design-lite/blob/master/docs/_assets/snippets.js
-    const snipRange = document.createRange();
-    snipRange.selectNodeContents(code);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(snipRange);
+    const el = document.createElement('textarea');
+    el.value = content;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    const selected = document.getSelection().rangeCount > 0 ?
+      document.getSelection().getRangeAt(0) : false;
+    el.select();
     try {
       document.execCommand('copy');
     } catch (err) {
-      console.warn('Copy error', err);
+      console.warn(err);
     }
-    selection.removeAllRanges();
+    document.body.removeChild(el);
+    document.getSelection().removeAllRanges();
+    if (selected) {
+      document.getSelection().addRange(selected);
+    }
   }
   /**
    * Sends the `content-copy` event.
@@ -259,4 +305,4 @@ export class BaseCodeSnippet extends PolymerElement {
     return ev.defaultPrevented;
   }
 }
-window.customElements.define(BaseCodeSnippet.is, BaseCodeSnippet);
+window.customElements.define('base-code-snippet', BaseCodeSnippet);

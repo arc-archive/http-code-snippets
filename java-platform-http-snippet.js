@@ -11,9 +11,9 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {BaseCodeSnippet} from './base-code-snippet.js';
-import '../../prismjs/prism.js';
-import '../../prismjs/components/prism-java.min.js';
+import { BaseCodeSnippet } from './base-code-snippet.js';
+import 'prismjs/prism.js';
+import 'prismjs/components/prism-java.min.js';
 /**
  * `java-platform-http-snippet`
  *
@@ -31,10 +31,6 @@ import '../../prismjs/components/prism-java.min.js';
  * @extends BaseCodeSnippet
  */
 class JavaPlatformHttpSnippet extends BaseCodeSnippet {
-  static get is() {
-    return 'java-platform-http-snippet';
-  }
-
   get lang() {
     return 'java';
   }
@@ -108,4 +104,4 @@ class JavaPlatformHttpSnippet extends BaseCodeSnippet {
     return payload.split('\n').map((item) => item.replace(/"/g, '\\"'));
   }
 }
-window.customElements.define(JavaPlatformHttpSnippet.is, JavaPlatformHttpSnippet);
+window.customElements.define('java-platform-http-snippet', JavaPlatformHttpSnippet);

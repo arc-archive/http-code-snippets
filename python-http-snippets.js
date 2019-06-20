@@ -11,11 +11,10 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
-import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
-import '../../@polymer/paper-tabs/paper-tabs.js';
-import '../../@polymer/paper-tabs/paper-tab.js';
-import '../../@polymer/iron-pages/iron-pages.js';
+import { LitElement, html, css } from 'lit-element';
+import '@polymer/paper-tabs/paper-tabs.js';
+import '@polymer/paper-tabs/paper-tab.js';
+import '@polymer/iron-pages/iron-pages.js';
 import './requests-python-http-snippet.js';
 import './python-27-http-snippet.js';
 import './python-31-http-snippet.js';
@@ -35,56 +34,65 @@ import './python-31-http-snippet.js';
  * @demo demo/python.html Python demo
  * @memberof ApiElements
  */
-class PythonHttpSnippets extends PolymerElement {
-  static get template() {
-    return html`<style>
-    :host {
+class PythonHttpSnippets extends LitElement {
+  static get styles() {
+    return css`:host {
       display: block;
-    }
-    </style>
-    <paper-tabs selected="{{selectedFramework}}">
+    }`;
+  }
+
+  render() {
+    const { selected, url, method, payload, headers } = this;
+    return html`<paper-tabs .selected="${selected}" @selected-changed="${this._selectedCHanged}">
       <paper-tab>Requests</paper-tab>
       <paper-tab>Python 2.7</paper-tab>
       <paper-tab>Python 3.1</paper-tab>
     </paper-tabs>
-    <iron-pages selected="[[selectedFramework]]">
-      <requests-python-http-snippet url="[[url]]" method="[[method]]"
-        payload="[[payload]]" headers="[[headers]]"></requests-python-http-snippet>
-      <python-27-http-snippet url="[[url]]" method="[[method]]"
-        payload="[[payload]]" headers="[[headers]]"></python-27-http-snippet>
-      <python-31-http-snippet url="[[url]]" method="[[method]]"
-        payload="[[payload]]" headers="[[headers]]"></python-31-http-snippet>
+    <iron-pages .selected="${selected}">
+      <requests-python-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
+        .headers="${headers}"></requests-python-http-snippet>
+      <python-27-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
+        .headers="${headers}"></python-27-http-snippet>
+      <python-31-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
+        .headers="${headers}"></python-31-http-snippet>
     </iron-pages>`;
-  }
-  static get is() {
-    return 'python-http-snippets';
   }
 
   static get properties() {
     return {
-      selectedFramework: {
-        type: Number,
-        value: 0
-      },
+      selected: { type: Number },
       /**
        * Request URL
        */
-      url: String,
+      url: { type: String },
       /**
        * HTTP method
        */
-      method: String,
+      method: { type: String },
       /**
        * Parsed HTTP headers.
        * Each item contains `name` and `value` properties.
        * @type {Array<Object>}
        */
-      headers: Array,
+      headers: { type: Array },
       /**
        * HTTP body (the message)
        */
-      payload: String
+      payload: { type: String }
     };
   }
+
+  constructor() {
+    super();
+    this.selected = 0;
+  }
+  /**
+   * Handler for `selected-changed` event dispatched on paper-tabs.
+   * @param {CustomEvent} e
+   */
+  _selectedCHanged(e) {
+    const { value } = e.detail;
+    this.selected = value;
+  }
 }
-window.customElements.define(PythonHttpSnippets.is, PythonHttpSnippets);
+window.customElements.define('python-http-snippets', PythonHttpSnippets);

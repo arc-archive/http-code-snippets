@@ -11,7 +11,7 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {BaseCodeSnippet} from './base-code-snippet.js';
+import { BaseCodeSnippet } from './base-code-snippet.js';
 /**
  * `fetch-js-http-snippet`
  *
@@ -28,10 +28,6 @@ import {BaseCodeSnippet} from './base-code-snippet.js';
  * @extends BaseCodeSnippet
  */
 class FetchJsHttpSnippet extends BaseCodeSnippet {
-  static get is() {
-    return 'fetch-js-http-snippet';
-  }
-
   get lang() {
     return 'javascript';
   }
@@ -61,12 +57,12 @@ class FetchJsHttpSnippet extends BaseCodeSnippet {
         result += this._createPayload(payload);
       }
       result += 'const init = {\n';
-      result += `\tmethod: '${method}'`;
+      result += `  method: '${method}'`;
       if (hasHeaders) {
-        result += `,\n\theaders`;
+        result += `,\n  headers`;
       }
       if (hasPayload) {
-        result += `,\n\tbody`;
+        result += `,\n  body`;
       }
       result += '\n';
       result += '}\n\n';
@@ -78,13 +74,13 @@ class FetchJsHttpSnippet extends BaseCodeSnippet {
     }
     result += ')\n';
     result += '.then((response) => {\n';
-    result += '\treturn response.json(); // or .text() or .blob() ...\n';
+    result += '  return response.json(); // or .text() or .blob() ...\n';
     result += '})\n';
     result += '.then((text) => {\n';
-    result += '\t// text is the response body\n';
+    result += '  // text is the response body\n';
     result += '})\n';
     result += '.catch((e) => {\n';
-    result += '\t// error in e.message\n';
+    result += '  // error in e.message\n';
     result += '});\n';
     return result;
   }
@@ -103,4 +99,4 @@ class FetchJsHttpSnippet extends BaseCodeSnippet {
     return `const body = \`${payload}\`;\n\n`;
   }
 }
-window.customElements.define(FetchJsHttpSnippet.is, FetchJsHttpSnippet);
+window.customElements.define('fetch-js-http-snippet', FetchJsHttpSnippet);

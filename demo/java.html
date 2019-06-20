@@ -7,37 +7,13 @@
   <title>http-code-snippets - java demo</title>
 
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-
-  <script type="module">
-    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
-    import '@polymer/iron-demo-helpers/demo-snippet.js';
-    import '../java-http-snippets.js';
-  </script>
-
-  <custom-style>
-    <style is="custom-style" include="demo-pages-shared-styles">
-    :root {
-      --http-code-snippet-container: {
-        background-color: #e0e0e0;
-        padding: 12px;
-      }
-
-      --http-code-snippet-container-highlighted: {
-        background-color: #f5f5f5;
-      }
-
-      --http-code-snippet-line: {
-        word-break: break-all;
-        white-space: pre-wrap;
-      }
-    }
-    </style>
-  </custom-style>
+  <script type="module" src="../node_modules/@advanced-rest-client/arc-demo-helper/arc-demo-helper.js"></script>
+  <script type="module" src="../java-http-snippets.js"></script>
 </head>
 <body unresolved>
   <div class="vertical-section-container centered">
     <h3>Java examples</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <java-http-snippets url="https://api.github.com/authorizations" method="POST"></java-http-snippets>
         <script>
@@ -54,10 +30,10 @@
         }
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>GET request</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <java-http-snippets url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></java-http-snippets>
         <script>
@@ -70,17 +46,17 @@
         }
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>Minimal request</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <java-http-snippets url="https://api.github.com/users/advanced-rest-client/repos" method="GET"></java-http-snippets>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>Payload only</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <java-http-snippets url="https://api.github.com/authorizations" method="POST"></java-http-snippets>
         <script>
@@ -91,7 +67,7 @@
         }
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
   </div>
 </body>
 </html>

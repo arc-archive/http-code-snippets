@@ -11,9 +11,9 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {BaseCodeSnippet} from './base-code-snippet.js';
-import '../../prismjs/prism.js';
-import '../../prismjs/components/prism-python.min.js';
+import { BaseCodeSnippet } from './base-code-snippet.js';
+import 'prismjs/prism.js';
+import 'prismjs/components/prism-python.min.js';
 /**
  * `python-27-http-snippet`
  *
@@ -30,10 +30,6 @@ import '../../prismjs/components/prism-python.min.js';
  * @extends BaseCodeSnippet
  */
 class Python27HttpSnippet extends BaseCodeSnippet {
-  static get is() {
-    return 'python-27-http-snippet';
-  }
-
   get lang() {
     return 'python';
   }
@@ -130,4 +126,4 @@ class Python27HttpSnippet extends BaseCodeSnippet {
     return result;
   }
 }
-window.customElements.define(Python27HttpSnippet.is, Python27HttpSnippet);
+window.customElements.define('python-27-http-snippet', Python27HttpSnippet);

@@ -11,7 +11,7 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {BaseCodeSnippet} from './base-code-snippet.js';
+import { BaseCodeSnippet } from './base-code-snippet.js';
 import './base-code-snippet.js';
 /**
  * `raw-http-snippet`
@@ -29,10 +29,6 @@ import './base-code-snippet.js';
  * @extends BaseCodeSnippet
  */
 class XhrHttpSnippet extends BaseCodeSnippet {
-  static get is() {
-    return 'xhr-http-snippet';
-  }
-
   get lang() {
     return 'javascript';
   }
@@ -78,4 +74,4 @@ class XhrHttpSnippet extends BaseCodeSnippet {
     return result;
   }
 }
-window.customElements.define(XhrHttpSnippet.is, XhrHttpSnippet);
+window.customElements.define('xhr-http-snippet', XhrHttpSnippet);

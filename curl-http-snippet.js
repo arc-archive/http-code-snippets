@@ -11,9 +11,9 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {BaseCodeSnippet} from './base-code-snippet.js';
-import '../../prismjs/prism.js';
-import '../../prismjs/components/prism-bash.min.js';
+import { BaseCodeSnippet } from './base-code-snippet.js';
+import 'prismjs/prism.js';
+import 'prismjs/components/prism-bash.min.js';
 /**
  * `curl-http-snippet`
  *
@@ -30,10 +30,6 @@ import '../../prismjs/components/prism-bash.min.js';
  * @extends BaseCodeSnippet
  */
 class CurlHttpSnippet extends BaseCodeSnippet {
-  static get is() {
-    return 'curl-http-snippet';
-  }
-
   get lang() {
     return 'bash';
   }
@@ -50,7 +46,7 @@ class CurlHttpSnippet extends BaseCodeSnippet {
     method = method || 'GET';
     let result = `curl "${url}" \\\n`;
     if (method !== 'GET') {
-      result += `\t-X ${method} \\\n`;
+      result += `  -X ${method} \\\n`;
     }
     if (payload) {
       let quot = '';
@@ -59,12 +55,12 @@ class CurlHttpSnippet extends BaseCodeSnippet {
       } catch (_) {
         quot = '"';
       }
-      result += `\t-d ${quot}${payload}${quot} \\\n`;
+      result += `  -d ${quot}${payload}${quot} \\\n`;
     }
     if (headers && headers instanceof Array) {
       for (let i = 0, len = headers.length; i < len; i++) {
         const h = headers[i];
-        result += `\t-H "${h.name}: ${h.value}" `;
+        result += `  -H "${h.name}: ${h.value}" `;
         if (i + 1 !== len) {
           result += '\\\n';
         }
@@ -76,4 +72,4 @@ class CurlHttpSnippet extends BaseCodeSnippet {
     return result;
   }
 }
-window.customElements.define(CurlHttpSnippet.is, CurlHttpSnippet);
+window.customElements.define('curl-http-snippet', CurlHttpSnippet);
