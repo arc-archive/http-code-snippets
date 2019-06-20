@@ -78,7 +78,7 @@ class FetchJsHttpSnippet extends BaseCodeSnippet {
     }
     result += ')\n';
     result += '.then((response) => {\n';
-    result += '\treturn response.text(); // or .json() or .blob() ...\n';
+    result += '\treturn response.json(); // or .text() or .blob() ...\n';
     result += '})\n';
     result += '.then((text) => {\n';
     result += '\t// text is the response body\n';
