@@ -5,84 +5,69 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>http-code-snippets - java demo</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="../../shadycss/apply-shim.html">
-  <link rel="import" href="../../polymer/lib/elements/custom-style.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../java-http-snippets.html">
-  <custom-style>
-    <style is="custom-style" include="demo-pages-shared-styles">
-    :root {
-      --http-code-snippet-container: {
-        background-color: #e0e0e0;
-        padding: 12px;
-      }
 
-      --http-code-snippet-container-highlighted: {
-        background-color: #f5f5f5;
-      }
-
-      --http-code-snippet-line: {
-        word-break: break-all;
-        white-space: pre-wrap;
-      }
-    }
-    </style>
-  </custom-style>
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script type="module" src="../node_modules/@advanced-rest-client/arc-demo-helper/arc-demo-helper.js"></script>
+  <script type="module" src="../java-http-snippets.js"></script>
 </head>
 <body unresolved>
   <div class="vertical-section-container centered">
     <h3>Java examples</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <java-http-snippets url="https://api.github.com/authorizations" method="POST"></java-http-snippets>
         <script>
-          var headers = [{
+        {
+          const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
-          },{
+          }, {
             name: 'content-type', value: 'application/json'
           }];
-          var payload = {'scopes': ['public_repo']};
-          var snippet = document.querySelectorAll('java-http-snippets')[0];
+          const payload = {'scopes': ['public_repo']};
+          const snippet = document.querySelectorAll('java-http-snippets')[0];
           snippet.headers = headers;
           snippet.payload = JSON.stringify(payload, null, 2);
+        }
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>GET request</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
-        <java-http-snippets url="https://api.github.com/users/advanced-rest-client/repos?type=all&sort=pushed" method="GET"></java-http-snippets>
+        <java-http-snippets url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></java-http-snippets>
         <script>
-          var headers = [{
+        {
+          const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
           }];
-          var snippet = document.querySelectorAll('java-http-snippets')[1];
+          const snippet = document.querySelectorAll('java-http-snippets')[1];
           snippet.headers = headers;
+        }
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>Minimal request</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <java-http-snippets url="https://api.github.com/users/advanced-rest-client/repos" method="GET"></java-http-snippets>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
 
     <h3>Payload only</h3>
-    <demo-snippet>
+    <arc-demo-helper>
       <template>
         <java-http-snippets url="https://api.github.com/authorizations" method="POST"></java-http-snippets>
         <script>
-          var payload = {'scopes': ['public_repo']};
-          var snippet = document.querySelectorAll('java-http-snippets')[3];
+        {
+          const payload = {'scopes': ['public_repo']};
+          const snippet = document.querySelectorAll('java-http-snippets')[3];
           snippet.payload = JSON.stringify(payload, null, 2);
+        }
         </script>
       </template>
-    </demo-snippet>
+    </arc-demo-helper>
   </div>
 </body>
 </html>

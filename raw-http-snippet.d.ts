@@ -5,12 +5,14 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   raw-http-snippet.html
+ *   raw-http-snippet.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../prism-common/prism-http-import.d.ts" />
-/// <reference path="base-code-snippet.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
+
+import {BaseCodeSnippet} from './base-code-snippet.js';
 
 declare namespace ApiElements {
 
@@ -32,9 +34,14 @@ declare namespace ApiElements {
      * @returns Complete cURL command for given arguments
      */
     _computeCommand(url: String|null, method: String|null, headers: Array<object|null>|null|undefined, payload: String|null): String|null;
+    _genHeadersPart(headers: any): any;
+    _genPayloadPart(payload: any): any;
   }
 }
 
-interface HTMLElementTagNameMap {
-  "raw-http-snippet": ApiElements.RawHttpSnippet;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "raw-http-snippet": ApiElements.RawHttpSnippet;
+  }
 }

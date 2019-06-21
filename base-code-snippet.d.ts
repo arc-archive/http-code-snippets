@@ -5,11 +5,14 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   base-code-snippet.html
+ *   base-code-snippet.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="http-code-snippets-style.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
+
+export {BaseCodeSnippet};
 
 declare namespace ApiElements {
 
@@ -38,7 +41,7 @@ declare namespace ApiElements {
    *
    * See `http-code-snippets` for styling documentation.
    */
-  class BaseCodeSnippet extends Polymer.Element {
+  class BaseCodeSnippet extends PolymerElement {
     readonly _code: any;
 
     /**
@@ -89,9 +92,23 @@ declare namespace ApiElements {
      */
     urlDetails(url: String|null): object|null;
     _copyToClipboard(): void;
+
+    /**
+     * Sends the `content-copy` event.
+     * If the event is canceled then the logic from this element won't be
+     * executed. Useful if current platform doesn't support `execCommand('copy')`
+     * and has other way to manage clipboard.
+     *
+     * @param value The value to dispatch with the event.
+     * @returns True if handler executed copy function.
+     */
+    _beforeCopy(value: String|null): Boolean|null;
   }
 }
 
-interface HTMLElementTagNameMap {
-  "base-code-snippet": ApiElements.BaseCodeSnippet;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "base-code-snippet": ApiElements.BaseCodeSnippet;
+  }
 }

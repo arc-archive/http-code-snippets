@@ -5,20 +5,12 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   http-code-snippets.html
+ *   http-code-snippets.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../paper-tabs/paper-tabs.d.ts" />
-/// <reference path="../paper-tabs/paper-tab.d.ts" />
-/// <reference path="../iron-pages/iron-pages.d.ts" />
-/// <reference path="../prism-element/prism-highlighter.d.ts" />
-/// <reference path="raw-http-snippet.d.ts" />
-/// <reference path="curl-http-snippet.d.ts" />
-/// <reference path="javascript-http-snippets.d.ts" />
-/// <reference path="python-http-snippets.d.ts" />
-/// <reference path="c-curl-http-snippet.d.ts" />
-/// <reference path="java-http-snippets.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
 
 declare namespace ApiElements {
 
@@ -37,16 +29,9 @@ declare namespace ApiElements {
    *
    * ## Styling
    *
-   * `<http-code-snippets>` provides the following custom properties and mixins for styling:
-   *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--http-code-snippets` | Mixin applied to this elment | `{}`
-   * `--http-code-snippet-container` | Mixin applied to the `<code>` element | `{}`
-   * `--http-code-snippet-container-highlighted` | The same as above | `{}`
-   * `--http-code-snippet-line` | Mixin applied to each line | `{}`
+   * See http-code-snippets-style.js file for styling definition.
    */
-  class HttpCodeSnippets extends Polymer.Element {
+  class HttpCodeSnippets extends PolymerElement {
     readonly _container: Element|null|undefined;
 
     /**
@@ -145,6 +130,11 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "http-code-snippets": ApiElements.HttpCodeSnippets;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "http-code-snippets": ApiElements.HttpCodeSnippets;
+  }
 }
+
+export {};
