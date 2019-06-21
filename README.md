@@ -9,10 +9,6 @@
 
 Code snippets to render code implementation examples for a HTTP request.
 
-This component requires `advanced-rest-client/URL` (or other) polyfill for
-the URL object. This spec is not supported in Safari 9 and IE 11.
-If you are targeting this browsers install ind include this dependency.
-
 ## Example:
 
 ```html
@@ -40,44 +36,52 @@ npm install --save @advanced-rest-client/http-code-snippets
     </script>
   </head>
   <body>
-    <http-code-snippets></http-code-snippets>
+    <http-code-snippets url="https://api.github.com/authorizations" method="POST" payload='{"scopes": ["public_repo"]}'></http-code-snippets>
   </body>
 </html>
 ```
 
-### In a Polymer 3 element
+### In a LitElement
 
 ```js
-import {PolymerElement, html} from './node_modules/@polymer/polymer/polymer-element.js';
-import './node_modules/@advanced-rest-client/http-code-snippets/http-code-snippets.js';
+import { LitElement, html } from 'lit-element';
+import '@advanced-rest-client/http-code-snippets/http-code-snippets.js';
 
 class SampleElement extends PolymerElement {
-  static get template() {
+  render() {
+    const {
+      url,
+      method,
+      headers,
+      payload
+    } = this;
     return html`
-    <http-code-snippets></http-code-snippets>
+    <http-code-snippets
+      .url="${url}"
+      .method="${method}"
+      .headers="${headers}"
+      .payload="${payload}"></http-code-snippets>
     `;
   }
 }
 customElements.define('sample-element', SampleElement);
 ```
 
-### Installation
+### Development
 
 ```sh
 git clone https://github.com/advanced-rest-client/http-code-snippets
-cd api-url-editor
+cd http-code-snippets
 npm install
-npm install -g polymer-cli
 ```
 
 ### Running the demo locally
 
 ```sh
-polymer serve --npm
-open http://127.0.0.1:<port>/demo/
+npm start
 ```
 
 ### Running the tests
 ```sh
-polymer test --npm
+npm test
 ```
