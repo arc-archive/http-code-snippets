@@ -275,3 +275,12 @@
 
 
 
+# [3.0.0](https://github.com/advanced-rest-client/http-code-snippets/compare/0.1.0...3.0.0) (2019-07-24)
+
+
+### Bug Fixes
+
+* fixing audit errors ([7f97f33](https://github.com/advanced-rest-client/http-code-snippets/commit/7f97f33))
+
+
+
