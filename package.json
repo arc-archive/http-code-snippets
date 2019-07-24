@@ -12,15 +12,15 @@
   "version": "3.0.0",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@advanced-rest-client/arc-demo-helper": "^1.0.3",
+    "@advanced-rest-client/arc-demo-helper": "^1.0.4",
     "@advanced-rest-client/testing-karma-sl": "^1.0.2",
     "@open-wc/testing": "^0.11.1",
-    "@open-wc/testing-karma": "^2.0.6",
+    "@open-wc/testing-karma": "^2.0.16",
     "@polymer/gen-typescript-declarations": "^1.6.2",
     "@polymer/iron-test-helpers": "^3.0.0",
     "@webcomponents/webcomponentsjs": "^2.2.10",
-    "sinon": "^7.3.2",
-    "owc-dev-server": "^0.3.0"
+    "owc-dev-server": "^0.3.0",
+    "sinon": "^7.3.2"
   },
   "main": "http-code-snippets.js",
   "scripts": {
