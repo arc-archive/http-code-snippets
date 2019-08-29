@@ -12,9 +12,8 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html, css } from 'lit-element';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/iron-pages/iron-pages.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
 import './requests-python-http-snippet.js';
 import './python-27-http-snippet.js';
 import './python-31-http-snippet.js';
@@ -41,21 +40,40 @@ class PythonHttpSnippets extends LitElement {
     }`;
   }
 
+  _renderPage(selected) {
+    const { url, method, payload, headers } = this;
+    switch (selected) {
+      case 0: return html`<requests-python-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></requests-python-http-snippet>`;
+      case 1: return html`<python-27-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></python-27-http-snippet>`;
+      case 2: return html`<python-31-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></python-31-http-snippet>`;
+    }
+  }
+
   render() {
-    const { selected, url, method, payload, headers } = this;
-    return html`<paper-tabs .selected="${selected}" @selected-changed="${this._selectedCHanged}">
-      <paper-tab>Requests</paper-tab>
-      <paper-tab>Python 2.7</paper-tab>
-      <paper-tab>Python 3.1</paper-tab>
-    </paper-tabs>
-    <iron-pages .selected="${selected}">
-      <requests-python-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
-        .headers="${headers}"></requests-python-http-snippet>
-      <python-27-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
-        .headers="${headers}"></python-27-http-snippet>
-      <python-31-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
-        .headers="${headers}"></python-31-http-snippet>
-    </iron-pages>`;
+    const { selected, compatibility } = this;
+    return html`
+    <anypoint-tabs
+      ?compatibility="${compatibility}"
+      .selected="${selected}"
+      @selected-changed="${this._selectedCHanged}">
+      <anypoint-tab>Requests</anypoint-tab>
+      <anypoint-tab>Python 2.7</anypoint-tab>
+      <anypoint-tab>Python 3.1</anypoint-tab>
+    </anypoint-tabs>
+    ${this._renderPage(selected)}
+    `;
   }
 
   static get properties() {
@@ -78,7 +96,11 @@ class PythonHttpSnippets extends LitElement {
       /**
        * HTTP body (the message)
        */
-      payload: { type: String }
+      payload: { type: String },
+      /**
+       * Enables compatibility with Anypoint components.
+       */
+      compatibility: { type: Boolean }
     };
   }
 
@@ -87,7 +109,7 @@ class PythonHttpSnippets extends LitElement {
     this.selected = 0;
   }
   /**
-   * Handler for `selected-changed` event dispatched on paper-tabs.
+   * Handler for `selected-changed` event dispatched on anypoint-tabs.
    * @param {CustomEvent} e
    */
   _selectedCHanged(e) {

@@ -12,9 +12,8 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html, css } from 'lit-element';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/iron-pages/iron-pages.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
 import './java-platform-http-snippet.js';
 import './java-spring-http-snippet.js';
 /**
@@ -34,19 +33,35 @@ class JavatHttpSnippets extends LitElement {
     }`;
   }
 
-  render() {
-    const { selected, url, method, payload, headers } = this;
-    return html`<paper-tabs .selected="${selected}" @selected-changed="${this._selectedCHanged}">
-      <paper-tab>Platform</paper-tab>
-      <paper-tab>Spring</paper-tab>
-    </paper-tabs>
-    <iron-pages .selected="${selected}">
-      <java-platform-http-snippet .url="${url}" .method="${method}"
-        .payload="${payload}" .headers="${headers}"></java-platform-http-snippet>
-      <java-spring-http-snippet .url="${url}" .method="${method}"
-        .payload="${payload}" .headers="${headers}"></java-spring-http-snippet>
-    </iron-pages>`;
+  _renderPage(selected) {
+    const { url, method, payload, headers } = this;
+    switch (selected) {
+      case 0: return html`<java-platform-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></java-platform-http-snippet>`;
+      case 1: return html`<java-spring-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></java-spring-http-snippet>`;
+    }
   }
+
+  render() {
+    const { selected, compatibility } = this;
+    return html`
+    <anypoint-tabs
+      ?compatibility="${compatibility}"
+      .selected="${selected}"
+      @selected-changed="${this._selectedCHanged}">
+      <anypoint-tab>Platform</anypoint-tab>
+      <anypoint-tab>Spring</anypoint-tab>
+    </anypoint-tabs>
+    ${this._renderPage(selected)}`;
+  }
+
   static get properties() {
     return {
       selected: { type: Number },
@@ -67,7 +82,11 @@ class JavatHttpSnippets extends LitElement {
       /**
        * HTTP body (the message)
        */
-      payload: { type: String }
+      payload: { type: String },
+      /**
+       * Enables compatibility with Anypoint components.
+       */
+      compatibility: { type: Boolean, reflect: true }
     };
   }
   constructor() {
@@ -75,7 +94,7 @@ class JavatHttpSnippets extends LitElement {
     this.selected = 0;
   }
   /**
-   * Handler for `selected-changed` event dispatched on paper-tabs.
+   * Handler for `selected-changed` event dispatched on anypoint-tabs.
    * @param {CustomEvent} e
    */
   _selectedCHanged(e) {

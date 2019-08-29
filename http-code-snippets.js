@@ -1,7 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/iron-pages/iron-pages.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
 import '@polymer/prism-element/prism-highlighter.js';
 import './raw-http-snippet.js';
 import './curl-http-snippet.js';
@@ -38,33 +37,61 @@ class HttpCodeSnippets extends LitElement {
   }
 
   render() {
-    const { selected, scrollable } = this;
+    const { selected, scrollable, compatibility } = this;
     return html`
     <prism-highlighter></prism-highlighter>
-    <paper-tabs
+    <anypoint-tabs
       .selected="${selected}"
       ?scrollable="${scrollable}"
-      fit-container
+      fitcontainer
+      ?compatibility="${compatibility}"
       @selected-changed="${this._selectedCHanged}">
-      <paper-tab>cURL</paper-tab>
-      <paper-tab>HTTP</paper-tab>
-      <paper-tab>JavaScript</paper-tab>
-      <paper-tab>Python</paper-tab>
-      <paper-tab>C</paper-tab>
-      <paper-tab>Java</paper-tab>
-    </paper-tabs>
+      <anypoint-tab>cURL</anypoint-tab>
+      <anypoint-tab>HTTP</anypoint-tab>
+      <anypoint-tab>JavaScript</anypoint-tab>
+      <anypoint-tab>Python</anypoint-tab>
+      <anypoint-tab>C</anypoint-tab>
+      <anypoint-tab>Java</anypoint-tab>
+    </anypoint-tabs>
     ${this._snippetTemplate()}`;
   }
 
   _snippetTemplate() {
-    const { selected, url, method, payload, _headersList: headers } = this;
+    const { selected, url, method, payload, _headersList: headers, compatibility } = this;
     switch (selected) {
-      case 0: return html`<curl-http-snippet .url="${url}" .method="${method}" .payload="${payload}" .headers="${headers}"></curl-http-snippet>`;
-      case 1: return html`<raw-http-snippet .url="${url}" .method="${method}" .payload="${payload}" .headers="${headers}"></raw-http-snippet>`;
-      case 2: return html`<javascript-http-snippets .url="${url}" .method="${method}" .payload="${payload}" .headers="${headers}"></javascript-http-snippets>`;
-      case 3: return html`<python-http-snippets .url="${url}" .method="${method}" .payload="${payload}" .headers="${headers}"></python-http-snippets>`;
-      case 4: return html`<c-curl-http-snippet .url="${url}" .method="${method}" .payload="${payload}" .headers="${headers}"></c-curl-http-snippet>`;
-      case 5: return html`<java-http-snippets .url="${url}" .method="${method}" .payload="${payload}" .headers="${headers}"></java-http-snippets>`;
+      case 0: return html`<curl-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></curl-http-snippet>`;
+      case 1: return html`<raw-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></raw-http-snippet>`;
+      case 2: return html`<javascript-http-snippets
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"
+        ?compatibility="${compatibility}"></javascript-http-snippets>`;
+      case 3: return html`<python-http-snippets
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"
+        ?compatibility="${compatibility}"></python-http-snippets>`;
+      case 4: return html`<c-curl-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></c-curl-http-snippet>`;
+      case 5: return html`<java-http-snippets
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"
+        ?compatibility="${compatibility}"></java-http-snippets>`;
     }
   }
 
@@ -81,7 +108,7 @@ class HttpCodeSnippets extends LitElement {
        * @type {Array<Object>}
        */
       _headersList: { type: Array },
-      // Passed to `paper-tabs` `scrollable` property
+      // Passed to `anypoint-tabs` `scrollable` property
       scrollable: { type: Boolean },
       /**
        * Request URL
@@ -99,7 +126,11 @@ class HttpCodeSnippets extends LitElement {
       /**
        * HTTP body (the message)
        */
-      payload: { type: String }
+      payload: { type: String },
+      /**
+       * Enables compatibility with Anypoint components.
+       */
+      compatibility: { type: Boolean, reflect: true }
     };
   }
 
@@ -121,7 +152,7 @@ class HttpCodeSnippets extends LitElement {
     this.selected = 0;
   }
   /**
-   * Handler for `selected-changed` event dispatched on paper-tabs.
+   * Handler for `selected-changed` event dispatched on anypoint-tabs.
    * @param {CustomEvent} e
    */
   _selectedCHanged(e) {

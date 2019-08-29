@@ -14,6 +14,7 @@ the License.
 import { LitElement, html } from 'lit-element';
 import httpStyles from './http-code-snippets-style.js';
 const URI_CACHE = {};
+function noop() {}
 /**
  * `base-code-snippet`
  *
@@ -77,7 +78,11 @@ export class BaseCodeSnippet extends LitElement {
       /**
        * HTTP body (the message)
        */
-      payload: { type: String }
+      payload: { type: String },
+      /**
+       * Enables compatibility with Anypoint components.
+       */
+      compatibility: { type: Boolean }
     };
   }
 
@@ -135,14 +140,18 @@ export class BaseCodeSnippet extends LitElement {
   }
 
   connectedCallback() {
-    super.connectedCallback();
+    if (super.connectedCallback) {
+      super.connectedCallback();
+    }
     if (!this.__valuesDebouncer) {
       this._valuesChanged();
     }
   }
 
   disconnectedCallback() {
-    super.disconnectedCallback();
+    if (super.disconnectedCallback) {
+      super.disconnectedCallback();
+    }
     this._clearValueTimeout();
   }
   /**
@@ -255,7 +264,7 @@ export class BaseCodeSnippet extends LitElement {
   }
 
   _copyToClipboard() {
-    let code = this._code;
+    const code = this._code;
     if (!code) {
       return;
     }
@@ -275,7 +284,7 @@ export class BaseCodeSnippet extends LitElement {
     try {
       document.execCommand('copy');
     } catch (err) {
-      console.warn(err);
+      noop();
     }
     document.body.removeChild(el);
     document.getSelection().removeAllRanges();

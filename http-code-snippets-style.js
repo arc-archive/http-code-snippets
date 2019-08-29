@@ -27,7 +27,7 @@ export default css`:host {
 }
 
 .copy-button,
-paper-icon-button {
+anypoint-icon-button {
   position: absolute;
   top: 0px;
   right: 0px;

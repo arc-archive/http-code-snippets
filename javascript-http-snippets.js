@@ -12,9 +12,8 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html, css } from 'lit-element';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/iron-pages/iron-pages.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
+import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
 import './xhr-http-snippet.js';
 import './fetch-js-http-snippet.js';
 import './node-http-snippet.js';
@@ -41,21 +40,40 @@ class JavascriptHttpSnippets extends LitElement {
     }`;
   }
 
+  _renderPage(selected) {
+    const { url, method, payload, headers } = this;
+    switch (selected) {
+      case 0: return html`<fetch-js-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></fetch-js-http-snippet>`;
+      case 1: return html`<node-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></node-http-snippet>`;
+      case 2: return html`<xhr-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></xhr-http-snippet>`;
+    }
+  }
+
   render() {
-    const { selected, url, method, payload, headers } = this;
-    return html`<paper-tabs .selected="${selected}" @selected-changed="${this._selectedCHanged}">
-      <paper-tab>Fetch</paper-tab>
-      <paper-tab>Node</paper-tab>
-      <paper-tab>XHR</paper-tab>
-    </paper-tabs>
-    <iron-pages .selected="${selected}">
-      <fetch-js-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
-        .headers="${headers}"></fetch-js-http-snippet>
-      <node-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
-        .headers="${headers}"></node-http-snippet>
-      <xhr-http-snippet .url="${url}" .method="${method}" .payload="${payload}"
-        .headers="${headers}"></xhr-http-snippet>
-    </iron-pages>`;
+    const { selected, compatibility } = this;
+    return html`
+    <anypoint-tabs
+      ?compatibility="${compatibility}"
+      .selected="${selected}"
+      @selected-changed="${this._selectedCHanged}">
+      <anypoint-tab>Fetch</anypoint-tab>
+      <anypoint-tab>Node</anypoint-tab>
+      <anypoint-tab>XHR</anypoint-tab>
+    </anypoint-tabs>
+    ${this._renderPage(selected)}
+    `;
   }
   static get properties() {
     return {
@@ -77,7 +95,11 @@ class JavascriptHttpSnippets extends LitElement {
       /**
        * HTTP body (the message)
        */
-      payload: { type: String }
+      payload: { type: String },
+      /**
+       * Enables compatibility with Anypoint components.
+       */
+      compatibility: { type: Boolean, reflect: true }
     };
   }
   constructor() {
@@ -85,7 +107,7 @@ class JavascriptHttpSnippets extends LitElement {
     this.selected = 0;
   }
   /**
-   * Handler for `selected-changed` event dispatched on paper-tabs.
+   * Handler for `selected-changed` event dispatched on anypoint-tabs.
    * @param {CustomEvent} e
    */
   _selectedCHanged(e) {
