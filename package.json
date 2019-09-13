@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/http-code-snippets",
   "description": "Code snippets to display a snippets of making a HTTP request",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "license": "Apache-2.0",
   "main": "http-code-snippets.js",
   "keywords": [
@@ -24,32 +24,30 @@
     "email": "arc@mulesoft.com"
   },
   "dependencies": {
-    "@advanced-rest-client/arc-icons": "^3.0.0",
     "@anypoint-web-components/anypoint-button": "^1.0.9",
-    "@anypoint-web-components/anypoint-tabs": "^0.1.0",
-    "@polymer/iron-icon": "^3.0.0",
+    "@anypoint-web-components/anypoint-tabs": "^0.1.3",
     "@polymer/prism-element": "^3.0.0",
     "lit-element": "^2.2.1",
-    "prismjs": "^1.11.0"
+    "prismjs": "^1.17.1"
   },
   "devDependencies": {
     "@advanced-rest-client/arc-demo-helper": "^1.0.14",
     "@advanced-rest-client/eslint-config": "^1.1.1",
     "@advanced-rest-client/prettier-config": "^0.1.0",
-    "@advanced-rest-client/testing-karma-sl": "^1.0.3",
-    "@anypoint-web-components/anypoint-styles": "^1.0.0-preview.1",
+    "@advanced-rest-client/testing-karma-sl": "^1.0.5",
+    "@anypoint-web-components/anypoint-styles": "^1.0.0-preview.2",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^7.0.0",
     "@open-wc/testing": "^2.2.8",
-    "@open-wc/testing-karma": "^3.1.28",
+    "@open-wc/testing-karma": "^3.1.33",
     "@polymer/gen-typescript-declarations": "^1.6.2",
     "@polymer/iron-test-helpers": "^3.0.0",
     "deepmerge": "^4.0.0",
-    "es-dev-server": "^1.15.3",
+    "es-dev-server": "^1.18.0",
     "husky": "^1.0.0",
     "karma": "^4.2.0",
     "lint-staged": "^9.2.5",
-    "sinon": "^7.4.1"
+    "sinon": "^7.4.2"
   },
   "scripts": {
     "update-types": "NODE_OPTIONS=--max_old_space_size=2048 gen-typescript-declarations --deleteExisting --outDir .",
