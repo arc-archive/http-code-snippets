@@ -68,7 +68,7 @@ class NodeHttpSnippet extends BaseCodeSnippet {
     result += '  \n';
     result += '  response.on(\'end\', function() {\n';
     result += '    // result has response body buffer\n';
-    result += '    console.log(str.toString());\n';
+    result += '    console.log(result.toString());\n';
     result += '  });\n';
     result += '};\n';
     result += '\n';

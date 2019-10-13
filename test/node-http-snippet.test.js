@@ -43,7 +43,7 @@ describe('<node-http-snippet>', function() {
         '  ',
         '  response.on(\'end\', function() {',
         '    // result has response body buffer',
-        '    console.log(str.toString());',
+        '    console.log(result.toString());',
         '  });',
         '};',
         '',
