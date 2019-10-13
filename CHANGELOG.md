@@ -302,3 +302,13 @@
 
 
 
+## [3.0.3](https://github.com/advanced-rest-client/http-code-snippets/compare/0.1.0...3.0.3) (2019-10-13)
+
+
+### Bug Fixes
+
+* fixing audit errors ([7f97f33](https://github.com/advanced-rest-client/http-code-snippets/commit/7f97f33))
+* fixing variable name ([223cb11](https://github.com/advanced-rest-client/http-code-snippets/commit/223cb11))
+
+
+
