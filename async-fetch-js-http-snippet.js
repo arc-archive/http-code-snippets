@@ -22,12 +22,11 @@ import { BaseCodeSnippet } from './base-code-snippet.js';
  * See `http-code-snippets` for styling documentation.
  *
  * @customElement
- * @polymer
  * @demo demo/fetch-js.html Fetch (JavaScript) demo
  * @memberof ApiElements
  * @extends BaseCodeSnippet
  */
-class FetchJsHttpSnippet extends BaseCodeSnippet {
+class AsyncFetchJsHttpSnippet extends BaseCodeSnippet {
   get lang() {
     return 'javascript';
   }
@@ -47,7 +46,7 @@ class FetchJsHttpSnippet extends BaseCodeSnippet {
     const hasHeaders = !!(headers && headers instanceof Array && headers.length);
     const hasPayload = !!payload;
     const hasInit = hasHeaders || hasPayload || !!(method && method !== 'GET');
-    let result = '';
+    let result = '(async () => {\n';
 
     if (hasInit) {
       if (hasHeaders) {
@@ -56,47 +55,58 @@ class FetchJsHttpSnippet extends BaseCodeSnippet {
       if (hasPayload) {
         result += this._createPayload(payload);
       }
-      result += 'const init = {\n';
-      result += `  method: '${method}'`;
+      result += '  const init = {\n';
+      result += `    method: '${method}'`;
       if (hasHeaders) {
-        result += `,\n  headers`;
+        result += `,\n    headers`;
       }
       if (hasPayload) {
-        result += `,\n  body`;
+        result += `,\n    body`;
       }
       result += '\n';
-      result += '};\n\n';
+      result += '  };\n\n';
     }
 
-    result += `fetch('${url}'`;
+    result += `  const response = await fetch('${url}'`;
     if (hasInit) {
       result += ', init';
     }
-    result += ')\n';
-    result += '.then((response) => {\n';
-    result += '  return response.json(); // or .text() or .blob() ...\n';
-    result += '})\n';
-    result += '.then((text) => {\n';
-    result += '  // text is the response body\n';
-    result += '})\n';
-    result += '.catch((e) => {\n';
-    result += '  // error in e.message\n';
-    result += '});';
+    result += ');\n';
+    result += '  console.log(`response status is ${response.status}`);\n';
+    result += '  const mediaType = response.headers.get(\'content-type\');\n';
+    result += '  let data;\n';
+    result += '  if (mediaType.includes(\'json\')) {\n';
+    result += '    data = await response.json();\n';
+    result += '  } else {\n';
+    result += '    data = await response.text();\n';
+    result += '  }\n';
+    result += '  console.log(data);\n';
+    result += '})();';
     return result;
   }
 
   _createHeaders(headers) {
-    let result = 'const headers = new Headers();\n';
+    let result = '  const headers = new Headers();\n';
     for (let i = 0, len = headers.length; i < len; i++) {
       const h = headers[i];
-      result += `headers.append('${h.name}', '${h.value}');\n`;
+      result += `  headers.append('${h.name}', '${h.value}');\n`;
     }
     result += '\n';
     return result;
   }
 
   _createPayload(payload) {
-    return `const body = \`${payload}\`;\n\n`;
+    // return `  const body = \`${payload}\`;\n\n`;
+    let result = '  const body = `';
+    const list = payload.split('\n');
+    const size = list.length;
+    list.forEach((line, i) => {
+      const nl = i + 1 === size ? '' : '\n'
+      const spaces = i === 0 ? '' : '  ';
+      result += `${spaces}${line}${nl}`;
+    });
+    result += '`;\n\n';
+    return result;
   }
 }
-window.customElements.define('fetch-js-http-snippet', FetchJsHttpSnippet);
+window.customElements.define('async-fetch-js-http-snippet', AsyncFetchJsHttpSnippet);

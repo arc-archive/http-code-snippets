@@ -23,7 +23,7 @@ describe('<fetch-js-http-snippet>', function() {
     let compare = 'const headers = new Headers();\nheaders.append(\'Content-Type\', ';
     compare += '\'application/json\');\nheaders.append(\'Accept\', \'application/json\');';
     compare += '\n\nconst body = `test`;\n\nconst init = {\n  method: \'POST\',';
-    compare += '\n  headers,\n  body\n}\n\nfetch(\'http://domain.com\', init)';
+    compare += '\n  headers,\n  body\n};\n\nfetch(\'http://domain.com\', init)';
     compare += '\n.then((response) => {\n  return response.json(); // or .text()';
     compare += ' or .blob() ...\n})\n.then((text) => {\n  // text is the response body';
     compare += '\n})\n.catch((e) => {\n  // error in e.message\n});';

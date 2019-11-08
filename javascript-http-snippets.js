@@ -17,6 +17,7 @@ import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
 import './xhr-http-snippet.js';
 import './fetch-js-http-snippet.js';
 import './node-http-snippet.js';
+import './async-fetch-js-http-snippet.js';
 /**
  * `javascript-http-snippet`
  *
@@ -48,12 +49,17 @@ class JavascriptHttpSnippets extends LitElement {
         .method="${method}"
         .payload="${payload}"
         .headers="${headers}"></fetch-js-http-snippet>`;
-      case 1: return html`<node-http-snippet
+      case 1: return html`<async-fetch-js-http-snippet
+        .url="${url}"
+        .method="${method}"
+        .payload="${payload}"
+        .headers="${headers}"></async-js-http-snippet>`;
+      case 2: return html`<node-http-snippet
         .url="${url}"
         .method="${method}"
         .payload="${payload}"
         .headers="${headers}"></node-http-snippet>`;
-      case 2: return html`<xhr-http-snippet
+      case 3: return html`<xhr-http-snippet
         .url="${url}"
         .method="${method}"
         .payload="${payload}"
@@ -69,6 +75,7 @@ class JavascriptHttpSnippets extends LitElement {
       .selected="${selected}"
       @selected-changed="${this._selectedCHanged}">
       <anypoint-tab>Fetch</anypoint-tab>
+      <anypoint-tab>Fetch/Async</anypoint-tab>
       <anypoint-tab>Node</anypoint-tab>
       <anypoint-tab>XHR</anypoint-tab>
     </anypoint-tabs>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <title>http-code-snippets - c-curl demo</title>
+
+  <script type="module" src="../node_modules/@anypoint-web-components/anypoint-styles/colors.js"></script>
+  <script type="module" src="../node_modules/@advanced-rest-client/arc-demo-helper/arc-demo-helper.js"></script>
+  <script type="module" src="../async-fetch-js-http-snippet.js"></script>
+</head>
+<body unresolved>
+  <div class="vertical-section-container centered">
+    <h3>Async Fetch API (JavaScript) example</h3>
+    <arc-demo-helper>
+      <template>
+        <async-fetch-js-http-snippet url="https://api.github.com/authorizations" method="POST"></async-fetch-js-http-snippet>
+        <script>
+        (function() {
+          const headers = [{
+            name: 'accept', value: 'application/vnd.github.v3+json'
+          }, {
+            name: 'content-type', value: 'application/json'
+          }];
+          const payload = { 'scopes': ['public_repo'] };
+          const snippet = document.querySelectorAll('async-fetch-js-http-snippet')[0];
+          snippet.headers = headers;
+          snippet.payload = JSON.stringify(payload, null, 2);
+        })();
+        </script>
+      </template>
+    </arc-demo-helper>
+
+    <h3>GET request</h3>
+    <arc-demo-helper>
+      <template>
+        <async-fetch-js-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></async-fetch-js-http-snippet>
+        <script>
+        (function() {
+          const headers = [{
+            name: 'accept', value: 'application/vnd.github.v3+json'
+          }];
+          const snippet = document.querySelectorAll('async-fetch-js-http-snippet')[1];
+          snippet.headers = headers;
+        })();
+        </script>
+      </template>
+    </arc-demo-helper>
+
+    <h3>Minimal request</h3>
+    <arc-demo-helper>
+      <template>
+        <async-fetch-js-http-snippet url="https://api.github.com/users/advanced-rest-client/repos" method="GET"></async-fetch-js-http-snippet>
+      </template>
+    </arc-demo-helper>
+
+    <h3>Payload only</h3>
+    <arc-demo-helper>
+      <template>
+        <async-fetch-js-http-snippet url="https://api.github.com/authorizations" method="POST"></async-fetch-js-http-snippet>
+        <script>
+        (function() {
+          const payload = { 'scopes': ['public_repo'] };
+          const snippet = document.querySelectorAll('async-fetch-js-http-snippet')[3];
+          snippet.payload = JSON.stringify(payload, null, 2);
+        })();
+        </script>
+      </template>
+    </arc-demo-helper>
+  </div>
+</body>
+</html>
