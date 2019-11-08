@@ -10,6 +10,9 @@
 
 
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
+
+import {LitElement, html, css} from 'lit-element';
 
 declare namespace ApiElements {
 
@@ -18,8 +21,8 @@ declare namespace ApiElements {
    *
    * A set of code snippets for Java requests.
    */
-  class JavatHttpSnippets extends PolymerElement {
-    selectedFramework: number|null|undefined;
+  class JavatHttpSnippets extends LitElement {
+    selected: number|null|undefined;
 
     /**
      * Request URL
@@ -41,6 +44,19 @@ declare namespace ApiElements {
      * HTTP body (the message)
      */
     payload: string|null|undefined;
+
+    /**
+     * Enables compatibility with Anypoint components.
+     */
+    compatibility: boolean|null|undefined;
+    constructor();
+    render(): any;
+    _renderPage(selected: any): any;
+
+    /**
+     * Handler for `selected-changed` event dispatched on anypoint-tabs.
+     */
+    _selectedCHanged(e: CustomEvent|null): void;
   }
 }
 
@@ -50,5 +66,3 @@ declare global {
     "java-http-snippets": ApiElements.JavatHttpSnippets;
   }
 }
-
-export {};

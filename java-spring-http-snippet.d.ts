@@ -27,6 +27,7 @@ declare namespace ApiElements {
    */
   class JavaSpringHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
+    constructor();
 
     /**
      * Computes code for Java (Spring).

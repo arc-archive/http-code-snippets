@@ -27,6 +27,7 @@ declare namespace ApiElements {
    */
   class CurlHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
+    constructor();
 
     /**
      * Computes command for cURL.

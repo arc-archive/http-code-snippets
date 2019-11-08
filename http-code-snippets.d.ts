@@ -12,6 +12,8 @@
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
+import {LitElement, html, css} from 'lit-element';
+
 declare namespace ApiElements {
 
   /**
@@ -31,23 +33,28 @@ declare namespace ApiElements {
    *
    * See http-code-snippets-style.js file for styling definition.
    */
-  class HttpCodeSnippets extends PolymerElement {
-    readonly _container: Element|null|undefined;
+  class HttpCodeSnippets extends LitElement {
+
+    /**
+     * Parsed HTTP headers.
+     * Each item contains `name` and `value` properties.
+     */
+    headers: string|null|undefined;
 
     /**
      * Currently selected tab for the platform row.
      */
-    selectedPlatform: number|null|undefined;
+    selected: number|null|undefined;
 
     /**
      * Computed list of headers from `headers` property.
      * It is an array of objects where each object contains `name` and `value`
      * properties.
      */
-    readonly _headersList: Array<object|null>|null;
+    _headersList: Array<object|null>|null;
 
     /**
-     * Passed to `paper-tabs` `scrollable` property
+     * Passed to `anypoint-tabs` `scrollable` property
      */
     scrollable: boolean|null|undefined;
 
@@ -62,64 +69,22 @@ declare namespace ApiElements {
     method: string|null|undefined;
 
     /**
-     * Parsed HTTP headers.
-     * Each item contains `name` and `value` properties.
-     */
-    headers: string|null|undefined;
-
-    /**
      * HTTP body (the message)
      */
     payload: string|null|undefined;
-    disconnectedCallback(): void;
 
     /**
-     * Adds code snippet when selection change.
-     *
-     * @param selection Currently selected snippet.
+     * Enables compatibility with Anypoint components.
      */
-    _selectedChanged(selection: Number|null): void;
+    compatibility: boolean|null|undefined;
+    constructor();
+    render(): any;
+    _snippetTemplate(): any;
 
     /**
-     * Propagates a property change to current panel, if any.
-     *
-     * @param property Name of the property to propagate.
-     * @param value Value of the property
+     * Handler for `selected-changed` event dispatched on anypoint-tabs.
      */
-    _propertyChanged(property: String|null, value: String|null): void;
-
-    /**
-     * Updates URL property on current panel
-     *
-     * @param value New value to set
-     */
-    _urlChanged(value: String|null): void;
-
-    /**
-     * Updates "method" property on current panel
-     *
-     * @param value New value to set
-     */
-    _methodChanged(value: String|null): void;
-
-    /**
-     * Updates "payload" property on current panel
-     *
-     * @param value New value to set
-     */
-    _payloadChanged(value: String|null): void;
-
-    /**
-     * Updates "headers" property on current panel as a `_headersList` property
-     *
-     * @param value New value to set
-     */
-    _headersChanged(value: Array<object|null>|null): void;
-
-    /**
-     * Removes current code snippet panel from the UI.
-     */
-    _removeCurrentSnippet(): void;
+    _selectedCHanged(e: CustomEvent|null): void;
 
     /**
      * Computes a list of headers from a headers string.
@@ -136,5 +101,3 @@ declare global {
     "http-code-snippets": ApiElements.HttpCodeSnippets;
   }
 }
-
-export {};

@@ -5,7 +5,7 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   java-platform-http-snippet.js
+ *   async-fetch-js-http-snippet.js
  */
 
 
@@ -17,33 +17,32 @@ import {BaseCodeSnippet} from './base-code-snippet.js';
 declare namespace ApiElements {
 
   /**
-   * `java-platform-http-snippet`
+   * `fetch-js-http-snippet`
    *
-   * A snippet for requests made in Java using the platform functions
+   * A snippet for requests made in JavaScript using Fetch API.
    *
    * ### Styling
    *
    * See `http-code-snippets` for styling documentation.
    */
-  class JavaPlatformHttpSnippet extends BaseCodeSnippet {
+  class AsyncFetchJsHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
     constructor();
 
     /**
-     * Computes code for Java (patform).
+     * Computes code for JavaScript (Fetch API).
      *
      * @returns Complete code for given arguments
      */
     _computeCommand(url: String|null, method: String|null, headers: Array<object|null>|null|undefined, payload: String|null): String|null;
-    _genHeadersPart(headers: any): any;
-    _genPayloadPart(payload: any): any;
-    _payloadToList(payload: any): any;
+    _createHeaders(headers: any): any;
+    _createPayload(payload: any): any;
   }
 }
 
 declare global {
 
   interface HTMLElementTagNameMap {
-    "java-platform-http-snippet": ApiElements.JavaPlatformHttpSnippet;
+    "async-fetch-js-http-snippet": ApiElements.AsyncFetchJsHttpSnippet;
   }
 }

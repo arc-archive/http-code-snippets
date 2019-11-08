@@ -27,6 +27,7 @@ declare namespace ApiElements {
    */
   class XhrHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
+    constructor();
 
     /**
      * Computes code for JavaScript (XHR API).

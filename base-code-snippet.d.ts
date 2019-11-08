@@ -12,6 +12,8 @@
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
+import {LitElement, html} from 'lit-element';
+
 export {BaseCodeSnippet};
 
 declare namespace ApiElements {
@@ -41,8 +43,7 @@ declare namespace ApiElements {
    *
    * See `http-code-snippets` for styling documentation.
    */
-  class BaseCodeSnippet extends PolymerElement {
-    readonly _code: any;
+  class BaseCodeSnippet extends LitElement {
 
     /**
      * Request URL
@@ -64,8 +65,18 @@ declare namespace ApiElements {
      * HTTP body (the message)
      */
     payload: string|null|undefined;
+    readonly _code: any;
+
+    /**
+     * Enables compatibility with Anypoint components.
+     */
+    compatibility: boolean|null|undefined;
+    constructor();
     connectedCallback(): void;
     disconnectedCallback(): void;
+    render(): any;
+    _setProp(prop: any, value: any): void;
+    _sop(prop: any, value: any): any;
 
     /**
      * Clears timeout from the debouncer if set.
@@ -73,15 +84,15 @@ declare namespace ApiElements {
     _clearValueTimeout(): void;
 
     /**
-     * Computes code value with debouncer set to 25 ms.
+     * Computes code value with debouncer.
      */
-    _valuesChanged(url: String|null, method: String|null, headers: Array<object|null>|null|undefined, payload: String|null|undefined): void;
+    _valuesChanged(): void;
 
     /**
      * Processes command by calling, respectively, `_computeCommand()` and
      * `_highlight()`. The result is added to the `<code>` block in the template.
      */
-    _processCommand(url: String|null, method: String|null, headers: Array<object|null>|null|undefined, payload: String|null|undefined): void;
+    _processCommand(): void;
     _computeCommand(): void;
     _highlight(code: any, lang: any): any;
 

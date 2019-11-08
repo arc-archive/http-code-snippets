@@ -29,6 +29,7 @@ declare namespace ApiElements {
    */
   class RequestsPythonHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
+    constructor();
 
     /**
      * Computes code for Python (Request lib).

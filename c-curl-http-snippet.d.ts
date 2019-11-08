@@ -28,6 +28,7 @@ declare namespace ApiElements {
   class CcurlHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
     readonly _codeHeaders: any;
+    constructor();
 
     /**
      * Computes code for C with curl.

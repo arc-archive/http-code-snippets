@@ -27,6 +27,7 @@ declare namespace ApiElements {
    */
   class NodeHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
+    constructor();
 
     /**
      * Computes code for JavaScript (Node).

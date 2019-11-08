@@ -27,6 +27,7 @@ declare namespace ApiElements {
    */
   class Python27HttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
+    constructor();
 
     /**
      * Computes code for Python (2.7).

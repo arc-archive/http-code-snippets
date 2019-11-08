@@ -27,6 +27,7 @@ declare namespace ApiElements {
    */
   class RawHttpSnippet extends BaseCodeSnippet {
     readonly lang: any;
+    constructor();
 
     /**
      * Computes bas command for cURL.
