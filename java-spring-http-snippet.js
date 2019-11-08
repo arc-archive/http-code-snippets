@@ -54,7 +54,8 @@ class JavaSpringHttpSnippet extends BaseCodeSnippet {
     result += 'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);\n';
     result += 'ResponseEntity<String> responseEntity = rest.exchange(';
     result += `"${url}", HttpMethod.${method}, requestEntity, String.class);\n`;
-    result += 'int status = responseEntity.getStatusCode();\n';
+    result += 'HttpStatus httpStatus = responseEntity.getStatusCode();\n';
+    result += 'int status = httpStatus.value();\n';
     result += 'String response = responseEntity.getBody();\n';
     result += 'System.out.println("Response status: " + status);\n';
     result += 'System.out.println(response);';

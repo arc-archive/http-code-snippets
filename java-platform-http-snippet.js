@@ -91,8 +91,10 @@ class JavaPlatformHttpSnippet extends BaseCodeSnippet {
       result += 'con.setDoOutput(true);\n';
       result += 'DataOutputStream out = new DataOutputStream(con.getOutputStream());\n';
       const list = this._payloadToList(payload);
-      list.forEach((line) => {
-        result += `out.writeBytes("${line}\\n");\n`;
+      const size = list.length;
+      list.forEach((line, i) => {
+        const nl = i + 1 === size ? '' : '\\n'
+        result += `out.writeBytes("${line}${nl}");\n`;
       });
       result += 'out.flush();\n';
       result += 'out.close();\n';

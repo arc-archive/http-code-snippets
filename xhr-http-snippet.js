@@ -63,8 +63,12 @@ class XhrHttpSnippet extends BaseCodeSnippet {
     if (hasPayload) {
       result += 'var body = \'\';\n';
       const re = /'/g;
-      payload.split('\n').forEach((line) => {
-        result += 'body += \'' + line.replace(re, '\\\'') + '\\n\';\n';
+      const list = payload.split('\n');
+      const size = list.length;
+      list.forEach((line, i) => {
+        const nl = i + 1 === size ? '' : '\\n'
+        line = line.replace(re, '\\\'');
+        result += `body += '${line}${nl}';\n`;
       });
       result += 'xhr.send(body);\n';
     } else {

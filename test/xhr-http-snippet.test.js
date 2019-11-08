@@ -4,7 +4,7 @@ import '../xhr-http-snippet.js';
 describe('<xhr-http-snippet>', function() {
   async function basicFixture() {
     return (await fixture(`<xhr-http-snippet method="POST"
-      url="http://domain.com" payload="test"></xhr-http-snippet>`));
+      url="http://domain.com" payload="test\nmultiple"></xhr-http-snippet>`));
   }
 
   async function noPayloadFixture() {
@@ -36,6 +36,7 @@ describe('<xhr-http-snippet>', function() {
       'xhr.setRequestHeader(\'Accept\',\'application/json\');',
       'var body = \'\';',
       'body += \'test\\n\';',
+      'body += \'multiple\';',
       'xhr.send(body);',
       ''
     ];

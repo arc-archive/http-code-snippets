@@ -4,7 +4,7 @@ import '../java-platform-http-snippet.js';
 describe('<java-platform-http-snippet>', function() {
   async function basicFixture() {
     return (await fixture(`<java-platform-http-snippet method="POST"
-      url="http://domain.com" payload="test"></java-platform-http-snippet>`));
+      url="http://domain.com" payload="test\nmultiline"></java-platform-http-snippet>`));
   }
 
   async function noPayloadFixture() {
@@ -34,6 +34,7 @@ describe('<java-platform-http-snippet>', function() {
         'con.setDoOutput(true);',
         'DataOutputStream out = new DataOutputStream(con.getOutputStream());',
         'out.writeBytes("test\\n");',
+        'out.writeBytes("multiline");',
         'out.flush();',
         'out.close();',
         '',
@@ -104,8 +105,9 @@ describe('<java-platform-http-snippet>', function() {
     });
 
     it('Returns payload setting string', () => {
-      const result = element._genPayloadPart('test');
-      assert.notEqual(result.indexOf('out.writeBytes("test\\n");\n'), -1);
+      const result = element._genPayloadPart('test\nmultiple');
+      assert.include(result, 'out.writeBytes("test\\n");\n');
+      assert.include(result, 'out.writeBytes("multiple");\n');
     });
   });
 });

@@ -36,7 +36,8 @@ describe('<java-spring-http-snippet>', function() {
         'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);',
         'ResponseEntity<String> responseEntity = rest.exchange("http://domain.com", ' +
           'HttpMethod.POST, requestEntity, String.class);',
-        'int status = responseEntity.getStatusCode();',
+        'HttpStatus httpStatus = responseEntity.getStatusCode();',
+        'int status = httpStatus.value();',
         'String response = responseEntity.getBody();',
         'System.out.println("Response status: " + status);',
         'System.out.println(response);'

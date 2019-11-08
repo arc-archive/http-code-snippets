@@ -51,12 +51,19 @@ class NodeHttpSnippet extends BaseCodeSnippet {
     if (!url || !method) {
       return '';
     }
-    let result = 'const http = require(\'http\');\n';
+    const isHttps = String(url).indexOf('https:') === 0;
+    let libName = 'http';
+    if (isHttps) {
+      libName += 's';
+    }
+    let result = `const http = require('${libName}');\n`;
     const data = this.urlDetails(url);
     result += 'const init = {\n';
     result += `  host: '${data.hostValue}',\n`;
     result += `  path: '${data.path}',\n`;
-    result += `  port: ${data.port},\n`;
+    if (!data.autoPort) {
+      result += `  port: ${data.port},\n`;
+    }
     result += `  method: '${method}',\n`;
     result += this._genHeadersPart(headers);
     result += '};\n';

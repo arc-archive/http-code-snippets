@@ -1,10 +1,18 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, aTimeout, html } from '@open-wc/testing';
 import '../node-http-snippet.js';
 
 describe('<node-http-snippet>', function() {
   async function basicFixture() {
     return (await fixture(`<node-http-snippet method="POST"
       url="http://domain.com" payload="test"></node-http-snippet>`));
+  }
+
+  async function urlPostFixture(url) {
+    return (await fixture(html`<node-http-snippet
+      method="POST"
+      .url="${url}"
+      payload="test"
+    ></node-http-snippet>`));
   }
 
   async function noPayloadFixture() {
@@ -28,7 +36,7 @@ describe('<node-http-snippet>', function() {
         'const init = {',
         '  host: \'domain.com\',',
         '  path: \'/\',',
-        '  port: 80,',
+        // '  port: 80,',
         '  method: \'POST\',',
         '  headers: {',
         '    \'Content-Type\': \'application/json\',',
@@ -73,6 +81,20 @@ describe('<node-http-snippet>', function() {
       await aTimeout();
       const code = element._code.innerText;
       assert.equal(code.indexOf('req.write(body)'), -1);
+    });
+
+    it('renders http library when no https', async () => {
+      const element = await urlPostFixture('http://api.domain.com');
+      await aTimeout();
+      const code = element._code.innerText;
+      assert.include(code, 'require(\'http\')');
+    });
+
+    it('renders port when defined in the URL', async () => {
+      const element = await urlPostFixture('http://api.domain.com:8080/path');
+      await aTimeout();
+      const code = element._code.innerText;
+      assert.include(code, 'port: 8080,');
     });
   });
 

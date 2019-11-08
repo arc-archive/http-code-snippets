@@ -240,6 +240,7 @@ export class BaseCodeSnippet extends LitElement {
     }
     let port = uri.port;
     if (!port) {
+      result.autoPort = true;
       if (uri.protocol === 'https:') {
         port = 443;
       } else {
