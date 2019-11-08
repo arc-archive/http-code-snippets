@@ -5,7 +5,7 @@ const createBaseConfig = require('./karma.conf.js');
 
 module.exports = (config) => {
   const cnf = slSettings();
-  cnf.sauceLabs.testName = 'websocket-request';
+  cnf.sauceLabs.testName = 'http-code-snippets';
   cnf.browsers = [
     'SL_Chrome',
     'SL_Chrome-1',
