@@ -312,3 +312,19 @@
 
 
 
+# [3.1.0](https://github.com/advanced-rest-client/http-code-snippets/compare/0.1.0...3.1.0) (2019-11-08)
+
+
+### Bug Fixes
+
+* fixing audit errors ([7f97f33](https://github.com/advanced-rest-client/http-code-snippets/commit/7f97f33df02ffb00c3fc37e408708cca7ff6cb4e))
+* fixing customer reported issues SE-13594 ([aab4ee1](https://github.com/advanced-rest-client/http-code-snippets/commit/aab4ee10deb2a0fb3ff552e6a9cc5947549d0b23))
+* fixing variable name ([223cb11](https://github.com/advanced-rest-client/http-code-snippets/commit/223cb1128bdcce4a3f5c78c828c60c23f15c405b))
+
+
+### Features
+
+* adding async fetch example ([0ceb39a](https://github.com/advanced-rest-client/http-code-snippets/commit/0ceb39a75f7e8f08ed29dd6a7411420b52e5c35c))
+
+
+
