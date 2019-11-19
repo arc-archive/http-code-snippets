@@ -30,7 +30,7 @@ import './java-http-snippets.js';
  * @memberof ApiElements
  */
 class HttpCodeSnippets extends LitElement {
-  static get styles() {
+  get styles() {
     return css`:host {
       display: block;
     }`;
@@ -38,7 +38,7 @@ class HttpCodeSnippets extends LitElement {
 
   render() {
     const { selected, scrollable, compatibility } = this;
-    return html`
+    return html`<style>${this.styles}</style>
     <prism-highlighter></prism-highlighter>
     <anypoint-tabs
       .selected="${selected}"
