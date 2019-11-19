@@ -50,12 +50,13 @@ export class BaseCodeSnippet extends LitElement {
     return httpStyles;
   }
 
-  static get styles() {
+  get styles() {
     return BaseCodeSnippet._httpStyles;
   }
 
   render() {
-    return html`<button class="copy-button" title="Copy to clipboard" @click="${this._copyToClipboard}">Copy</button>
+    return html`<style>${this.styles}</style>
+<button class="copy-button" title="Copy to clipboard" @click="${this._copyToClipboard}">Copy</button>
     <code class="code language-snippet"></code>`;
   }
 

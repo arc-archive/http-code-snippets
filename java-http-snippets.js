@@ -27,7 +27,7 @@ import './java-spring-http-snippet.js';
  * @memberof ApiElements
  */
 class JavatHttpSnippets extends LitElement {
-  static get styles() {
+  get styles() {
     return css`:host {
       display: block;
     }`;
@@ -51,7 +51,7 @@ class JavatHttpSnippets extends LitElement {
 
   render() {
     const { selected, compatibility } = this;
-    return html`
+    return html`<style>${this.styles}</style>
     <anypoint-tabs
       ?compatibility="${compatibility}"
       .selected="${selected}"
