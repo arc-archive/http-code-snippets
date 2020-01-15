@@ -77,8 +77,12 @@ class JavaSpringHttpSnippet extends BaseCodeSnippet {
     if (payload) {
       result += '\nStringBuilder sb = new StringBuilder();\n';
       const list = this._payloadToList(payload);
-      list.forEach((line) => {
-        result += `sb.append("${line}\\n");\n`;
+      const len = list.length;
+      list.forEach((line, i) => {
+        if (i + 1 !== len) {
+          line += '\\n';
+        }
+        result += `sb.append("${line}");\n`;
       });
       result += 'String body = sb.toString();\n';
     } else {

@@ -1,10 +1,16 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, aTimeout, html } from '@open-wc/testing';
 import '../java-spring-http-snippet.js';
 
 describe('<java-spring-http-snippet>', function() {
   async function basicFixture() {
-    return (await fixture(`<java-spring-http-snippet method="POST"
-      url="http://domain.com" payload="test"></java-spring-http-snippet>`));
+    const method = 'POST';
+    const url = 'http://domain.com';
+    const payload = 'test\nvalue';
+    return (await fixture(html`<java-spring-http-snippet
+      .method="${method}"
+      .url="${url}"
+      .payload="${payload}"
+    ></java-spring-http-snippet>`));
   }
 
   async function noPayloadFixture() {
@@ -31,6 +37,7 @@ describe('<java-spring-http-snippet>', function() {
         '',
         'StringBuilder sb = new StringBuilder();',
         'sb.append("test\\n");',
+        'sb.append("value");',
         'String body = sb.toString();',
         '',
         'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);',
