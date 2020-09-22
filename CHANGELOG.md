@@ -512,3 +512,28 @@ Copying code snippets to clipboard
  [01c40ab](https://github.com/advanced-rest-client/http-code-snippets/commit/01c40ab49d6a7bd8f40fc2fd7d9e8c8f3fa52608) by Pawel Psztyc
 
 
+<a name="3.2.0"></a>
+## [3.2.0](https://github.com/advanced-rest-client/http-code-snippets/compare/3.1.1...3.2.0) (2020-09-22)
+
+### Build
+
+* bumping version [314277e](https://github.com/advanced-rest-client/http-code-snippets/commit/314277ef7ebb5d170a60235324aa1a110fe5a692) by Pawel Psztyc
+
+
+### Continuous integration
+
+* updating travis configuration [1e112cf](https://github.com/advanced-rest-client/http-code-snippets/commit/1e112cf49ae7789bf72fdb76019580461e7afa87) by Pawel Psztyc
+
+
+### Update
+
+* upgrading to latest ARC standards [740c304](https://github.com/advanced-rest-client/http-code-snippets/commit/740c304d6e7f63f86fab28535a513996ab5704ea) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [da27d63](https://github.com/advanced-rest-client/http-code-snippets/commit/da27d633d29f07bc9fd26f0290b433db62ed88ee) by Ci agent
+* upgrading dependencies [eeecb70](https://github.com/advanced-rest-client/http-code-snippets/commit/eeecb7004f8ff498ad7ae57f46c43a9d637e4d8b) by Pawel Psztyc
+
+
+### Bug Fixes
+
+* removing new line character at the last payload line [ba0457d](https://github.com/advanced-rest-client/http-code-snippets/commit/ba0457dad6ead9e181691b0864053f623582adab) by Pawel Psztyc
+
+
