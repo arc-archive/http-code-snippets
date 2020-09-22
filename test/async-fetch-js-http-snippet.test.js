@@ -1,9 +1,17 @@
+/* eslint-disable no-template-curly-in-string */
 import { fixture, assert, aTimeout, html } from '@open-wc/testing';
 import '../async-fetch-js-http-snippet.js';
 
-describe('<async-fetch-js-http-snippet>', function() {
+/** @typedef {import('../src/JavaScript/AsyncFetchJsHttpSnippetElement').AsyncFetchJsHttpSnippetElement} AsyncFetchJsHttpSnippetElement */
+/** @typedef {import('../src/BaseCodeSnippet').CodeHeader} CodeHeader */
+
+describe('<async-fetch-js-http-snippet>', () => {
+  /**
+   * @param {CodeHeader[]=} headers
+   * @returns {Promise<AsyncFetchJsHttpSnippetElement>}
+   */
   async function basicFixture(headers) {
-    return (await fixture(html`<async-fetch-js-http-snippet
+    return (fixture(html`<async-fetch-js-http-snippet
       method="POST"
       url="http://domain.com"
       payload="test\nmultiline"
@@ -11,28 +19,37 @@ describe('<async-fetch-js-http-snippet>', function() {
     ></async-fetch-js-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<AsyncFetchJsHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (await fixture(html`<async-fetch-js-http-snippet
+    return (fixture(html`<async-fetch-js-http-snippet
       method="GET"
       url="http://domain.com"
     ></async-fetch-js-http-snippet>`));
   }
 
   it('Renders code block (full)', async () => {
-    const element = await basicFixture({
+    const element = await basicFixture([{
       name: 'Content-Type',
       value: 'application/json'
     }, {
       name: 'Accept',
       value: 'application/json'
-    });
+    }]);
+
     const lines = [
       '(async () => {',
+      '  const headers = new Headers();',
+      '  headers.append(\'Content-Type\', \'application/json\');',
+      '  headers.append(\'Accept\', \'application/json\');',
+      '',
       '  const body = `test',
       '  multiline`;',
       '',
       '  const init = {',
       '    method: \'POST\',',
+      '    headers,',
       '    body',
       '  };',
       '',
@@ -49,7 +66,7 @@ describe('<async-fetch-js-http-snippet>', function() {
       '})();',
     ];
 
-    await aTimeout();
+    await aTimeout(0);
     const code = element._code.innerText;
     const result = code.split('\n');
     for (let i = 0; i < result.length; i++) {
@@ -59,14 +76,14 @@ describe('<async-fetch-js-http-snippet>', function() {
 
   it('No headers', async () => {
     const element = await basicFixture();
-    await aTimeout();
+    await aTimeout(0);
     const code = element._code.innerText;
     assert.equal(code.indexOf('new Headers'), -1);
   });
 
   it('No payload', async () => {
     const element = await noPayloadFixture();
-    await aTimeout();
+    await aTimeout(0);
     const code = element._code.innerText;
     assert.equal(code.indexOf('const body ='), -1);
   });

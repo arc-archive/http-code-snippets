@@ -17,7 +17,7 @@
       <template>
         <http-code-snippets url="https://api.github.com/authorizations" method="POST"></http-code-snippets>
         <script>
-          (function() {
+          (() => {
             let headers = 'accept: application/vnd.github.v3+json\\n';
             headers += 'content-type: application/json';
             const payload = { 'scopes': ['public_repo'] };
@@ -34,7 +34,7 @@
       <template>
         <http-code-snippets url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></http-code-snippets>
         <script>
-        (function() {
+        (() => {
           const headers = 'accept: application/vnd.github.v3+json';
           const snippet = document.querySelectorAll('http-code-snippets')[1];
           snippet.headers = headers;
@@ -55,7 +55,7 @@
       <template>
         <http-code-snippets url="https://api.github.com/authorizations" method="POST"></http-code-snippets>
         <script>
-        (function() {
+        (() => {
           const payload = { 'scopes': ['public_repo'] };
           const snippet = document.querySelectorAll('http-code-snippets')[3];
           snippet.payload = JSON.stringify(payload, null, 2);

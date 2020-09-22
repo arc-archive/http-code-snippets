@@ -17,7 +17,7 @@
       <template>
         <async-fetch-js-http-snippet url="https://api.github.com/authorizations" method="POST"></async-fetch-js-http-snippet>
         <script>
-        (function() {
+        (() => {
           const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
           }, {
@@ -37,7 +37,7 @@
       <template>
         <async-fetch-js-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></async-fetch-js-http-snippet>
         <script>
-        (function() {
+        (() => {
           const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
           }];
@@ -60,7 +60,7 @@
       <template>
         <async-fetch-js-http-snippet url="https://api.github.com/authorizations" method="POST"></async-fetch-js-http-snippet>
         <script>
-        (function() {
+        (() => {
           const payload = { 'scopes': ['public_repo'] };
           const snippet = document.querySelectorAll('async-fetch-js-http-snippet')[3];
           snippet.payload = JSON.stringify(payload, null, 2);

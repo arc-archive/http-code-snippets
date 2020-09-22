@@ -1,9 +1,10 @@
 {
   "name": "@advanced-rest-client/http-code-snippets",
   "description": "Code snippets to display a snippets of making a HTTP request",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "license": "Apache-2.0",
-  "main": "http-code-snippets.js",
+  "main": "index.js",
+  "module": "index.js",
   "keywords": [
     "web-components",
     "code-snippets",
@@ -24,36 +25,33 @@
     "email": "arc@mulesoft.com"
   },
   "dependencies": {
-    "@anypoint-web-components/anypoint-button": "^1.0.15",
-    "@anypoint-web-components/anypoint-tabs": "^0.1.10",
+    "@anypoint-web-components/anypoint-button": "^1.1.1",
+    "@anypoint-web-components/anypoint-tabs": "^0.1.11",
     "@polymer/prism-element": "^3.0.0",
-    "lit-element": "^2.2.1",
-    "prismjs": "^1.19.0"
+    "lit-element": "^2.4.0",
+    "prismjs": "^1.21.0"
   },
   "devDependencies": {
-    "@advanced-rest-client/arc-demo-helper": "^1.0.17",
-    "@advanced-rest-client/eslint-config": "^1.1.4",
-    "@advanced-rest-client/prettier-config": "^0.1.0",
-    "@advanced-rest-client/testing-karma-sl": "^1.1.0",
+    "@advanced-rest-client/arc-demo-helper": "^2.1.4",
+    "@advanced-rest-client/testing-karma-sl": "^1.4.2",
     "@anypoint-web-components/anypoint-styles": "^1.0.1",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "@open-wc/testing": "^2.5.0",
-    "@open-wc/testing-karma": "^3.2.30",
-    "@polymer/gen-typescript-declarations": "^1.6.2",
+    "@open-wc/eslint-config": "^3.0.0",
+    "@open-wc/testing": "^2.5.26",
+    "@open-wc/testing-karma": "^4.0.5",
     "@polymer/iron-test-helpers": "^3.0.0",
     "deepmerge": "^4.2.2",
-    "es-dev-server": "^1.36.2",
-    "husky": "^4.0.10",
-    "karma": "^4.4.1",
-    "lint-staged": "^9.5.0",
-    "sinon": "^8.0.4"
+    "es-dev-server": "^1.57.4",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.1",
+    "sinon": "^9.0.3",
+    "typescript": "^4.0.2",
+    "typescript-lit-html-plugin": "^0.9.0"
   },
   "scripts": {
-    "update-types": "NODE_OPTIONS=--max_old_space_size=2048 gen-typescript-declarations --deleteExisting --outDir .",
     "start": "es-dev-server --app-index demo/index.html --node-resolve --open --watch",
-    "start:server": "node --inspect demo/parsing-server/main.js",
-    "start:compatibility": "es-dev-server --app-index demo/index.html --compatibility all --node-resolve --open --watch",
     "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
@@ -62,16 +60,51 @@
     "format": "npm run format:eslint && npm run format:prettier",
     "test": "karma start --coverage",
     "test:watch": "karma start --auto-watch=true --single-run=false",
-    "test:update-snapshots": "karma start --update-snapshots",
-    "test:prune-snapshots": "karma start --prune-snapshots",
-    "test:compatibility": "karma start --compatibility all --coverage",
-    "test:compatibility:watch": "karma start --compatibility all --auto-watch=true --single-run=false",
-    "test:sl": "karma start karma.sl.config.js --compatibility all --coverage"
+    "test:sl": "karma start karma.sl.config.js --compatibility auto --coverage",
+    "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/demo/**/*.js",
+          "**/demo/**/*.html"
+        ],
+        "rules": {
+          "no-console": "off",
+          "no-unused-expressions": "off",
+          "class-methods-use-this": "off",
+          "import/no-extraneous-dependencies": "off"
+        }
+      },
+      {
+        "files": [
+          "**/*.js"
+        ],
+        "rules": {
+          "no-plusplus": "off",
+          "no-continue": "off",
+          "class-methods-use-this": "off"
+        }
+      }
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   }
 }

@@ -1,7 +1,9 @@
 import { fixture, assert, aTimeout } from '@open-wc/testing';
-import sinon from 'sinon/pkg/sinon-esm.js';
+import sinon from 'sinon';
 import '@polymer/prism-element/prism-highlighter.js';
-import '../base-code-snippet.js';
+import './base-class-element.js';
+
+/** @typedef {import('./base-class-element').BaseClassElement} BaseClassElement */
 
 {
   const n = document.createElement('prism-highlighter');
@@ -9,12 +11,15 @@ import '../base-code-snippet.js';
 }
 
 
-describe('<base-code-snippet>', function() {
+describe('BaseCodeSnippet', () => {
+  /**
+   * @return {Promise<BaseClassElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<base-code-snippet
+    return (fixture(`<base-class-element
       headers='[{"Content-Type": "application/json"}]'
       method="GET"
-      url="http://domain.com"></base-code-snippet>`));
+      url="http://domain.com"></base-class-element>`));
   }
 
   describe('urlDetails()', () => {
@@ -28,10 +33,10 @@ describe('<base-code-snippet>', function() {
 
     it('Adds code to the DOM', async () => {
       const element = await basicFixture();
-      element._computeCommand = function() {
+      element._computeCommand = () => {
         return 'test-command';
       };
-      await aTimeout();
+      await aTimeout(0);
       const code = element.shadowRoot.querySelector('code').innerText.trim();
       assert.equal(code, 'test-command');
     });
@@ -41,7 +46,8 @@ describe('<base-code-snippet>', function() {
     it('Element eventually dispatches syntax-highlight event', (done) => {
       basicFixture()
       .then((element) => {
-        element._computeCommand = function() {
+        // eslint-disable-next-line no-param-reassign
+        element._computeCommand = () => {
           return 'test-command';
         };
         element.addEventListener('syntax-highlight', function f(e) {
@@ -55,7 +61,7 @@ describe('<base-code-snippet>', function() {
 
     it('Dispatches syntax-highlight event', async () => {
       const element = await basicFixture();
-      element._computeCommand = function() {
+      element._computeCommand = () => {
         return 'test-command';
       };
       const spy = sinon.spy();
@@ -84,6 +90,7 @@ describe('<base-code-snippet>', function() {
     it('Calls execCommand() when event is not handled', () => {
       const spy = sinon.spy(document, 'execCommand');
       element._copyToClipboard();
+      // @ts-ignore
       document.execCommand.restore();
       assert.isTrue(spy.calledOnce);
     });
@@ -95,6 +102,7 @@ describe('<base-code-snippet>', function() {
         e.preventDefault();
       });
       element._copyToClipboard();
+      // @ts-ignore
       document.execCommand.restore();
       assert.isFalse(spy.calledOnce);
     });

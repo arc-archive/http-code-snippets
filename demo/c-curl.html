@@ -17,7 +17,7 @@
       <template>
         <c-curl-http-snippet url="https://api.github.com/authorizations" method="POST"></c-curl-http-snippet>
         <script>
-          (function() {
+          (() => {
             const headers = [{
               name: 'accept', value: 'application/vnd.github.v3+json'
             }, {
@@ -37,7 +37,7 @@
       <template>
         <c-curl-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></c-curl-http-snippet>
         <script>
-          (function() {
+          (() => {
             const headers = [{
               name: 'accept', value: 'application/vnd.github.v3+json'
             }];
@@ -60,7 +60,7 @@
       <template>
         <c-curl-http-snippet url="https://api.github.com/authorizations" method="POST"></c-curl-http-snippet>
         <script>
-        (function() {
+        (() => {
           const payload = {'scopes': ['public_repo']};
           const snippet = document.querySelectorAll('c-curl-http-snippet')[3];
           snippet.payload = JSON.stringify(payload, null, 2);
