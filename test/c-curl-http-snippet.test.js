@@ -1,14 +1,14 @@
 import { fixture, assert, aTimeout } from '@open-wc/testing';
 import '../c-curl-http-snippet.js';
 
-describe('<c-curl-http-snippet>', function() {
+describe('<c-curl-http-snippet>', () => {
   async function basicFixture() {
-    return (await fixture(`<c-curl-http-snippet method="POST"
+    return (fixture(`<c-curl-http-snippet method="POST"
       url="http://domain.com" payload="test"></c-curl-http-snippet>`));
   }
 
   async function noPayloadFixture() {
-    return (await fixture(`<c-curl-http-snippet method="GET" url="http://domain.com"></c-curl-http-snippet>`));
+    return (fixture(`<c-curl-http-snippet method="GET" url="http://domain.com"></c-curl-http-snippet>`));
   }
 
   it('Renders code block (full)', async () => {
@@ -17,7 +17,8 @@ describe('<c-curl-http-snippet>', function() {
       name: 'Content-Type',
       value: 'application/json'
     }];
-    let compare = '#include <stdio.h>\n#include <curl/curl.h>\n\nint main(void)\n{\n\tCURL *curl;';
+    // The <stdio.h> and <curl/curl.h> are removed due to `innerText` processing.
+    let compare = '#include \n#include \n\nint main(void)\n{\n\tCURL *curl;';
     compare += '\n\tCURLcode res;\n\n\tcurl = curl_easy_init();';
     compare += '\n\tcurl_easy_setopt(curl, CURLOPT_URL, "http://domain.com");';
     compare += '\n\tcurl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");';

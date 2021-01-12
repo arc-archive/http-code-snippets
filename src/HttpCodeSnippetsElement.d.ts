@@ -57,7 +57,7 @@ export declare class HttpCodeSnippetsElement extends LitElement {
    * Enables compatibility with Anypoint components.
    * @attribute
    */
-  compatibility: string;
+  compatibility: boolean;
 
 
   constructor();

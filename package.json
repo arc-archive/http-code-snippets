@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/http-code-snippets",
   "description": "Code snippets to display a snippets of making a HTTP request",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "license": "Apache-2.0",
   "main": "index.js",
   "module": "index.js",
@@ -11,10 +11,11 @@
     "api-console"
   ],
   "authors": [
-    "Pawel Psztyc"
+    "Pawel Psztyc",
+    "Francisco Di Giandomenico"
   ],
   "contributors": [
-    "The Advanced REST client authors <arc@mulesoft.com>"
+    "Your name can be here!"
   ],
   "repository": {
     "type": "git",
@@ -26,41 +27,39 @@
   },
   "dependencies": {
     "@anypoint-web-components/anypoint-button": "^1.1.1",
-    "@anypoint-web-components/anypoint-tabs": "^0.1.11",
+    "@anypoint-web-components/anypoint-tabs": "^0.1.12",
     "@polymer/prism-element": "^3.0.0",
     "lit-element": "^2.4.0",
-    "prismjs": "^1.21.0"
+    "prismjs": "^1.23.0"
   },
   "devDependencies": {
-    "@advanced-rest-client/arc-demo-helper": "^2.1.4",
-    "@advanced-rest-client/testing-karma-sl": "^1.4.2",
+    "@advanced-rest-client/arc-demo-helper": "^2.2.5",
     "@anypoint-web-components/anypoint-styles": "^1.0.1",
-    "@open-wc/eslint-config": "^3.0.0",
-    "@open-wc/testing": "^2.5.26",
-    "@open-wc/testing-karma": "^4.0.5",
     "@polymer/iron-test-helpers": "^3.0.0",
-    "deepmerge": "^4.2.2",
-    "es-dev-server": "^1.57.4",
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.4.0",
-    "prettier": "^2.1.1",
-    "sinon": "^9.0.3",
-    "typescript": "^4.0.2",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@open-wc/eslint-config": "^4.2.0",
+    "@open-wc/testing": "^2.5.15",
+    "@web/dev-server": "^0.1.3",
+    "@web/test-runner": "^0.12.1",
+    "@web/test-runner-playwright": "^0.8.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "husky": "^4.3.7",
+    "lint-staged": "^10.5.3",
+    "sinon": "^9.2.3",
+    "typescript": "^4.1.3",
     "typescript-lit-html-plugin": "^0.9.0"
   },
   "scripts": {
-    "start": "es-dev-server --app-index demo/index.html --node-resolve --open --watch",
+    "start": "web-dev-server --app-index demo/index.html --node-resolve --open --watch --root-dir .",
     "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
-    "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
-    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
-    "format": "npm run format:eslint && npm run format:prettier",
-    "test": "karma start --coverage",
-    "test:watch": "karma start --auto-watch=true --single-run=false",
-    "test:sl": "karma start karma.sl.config.js --compatibility auto --coverage",
+    "lint:types": "tsc",
+    "lint": "npm run lint:eslint",
+    "format": "npm run format:eslint",
+    "test": "web-test-runner test/**/*.test.js --coverage --node-resolve --playwright --browsers chromium firefox webkit",
+    "test:watch": "web-test-runner test/**/*.test.js --node-resolve --watch --playwright --browsers chromium",
     "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json"
   },
   "eslintConfig": {
@@ -71,12 +70,15 @@
     "overrides": [
       {
         "files": [
-          "**/demo/**/*.js",
+          "demo/**/*.js",
+          "test/**/*.js",
           "**/demo/**/*.html"
         ],
         "rules": {
           "no-console": "off",
           "no-unused-expressions": "off",
+          "no-plusplus": "off",
+          "no-param-reassing": "off",
           "class-methods-use-this": "off",
           "import/no-extraneous-dependencies": "off"
         }
@@ -92,10 +94,6 @@
         }
       }
     ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "arrowParens": "always"
   },
   "husky": {
     "hooks": {

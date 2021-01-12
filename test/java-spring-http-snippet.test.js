@@ -1,12 +1,12 @@
 import { fixture, assert, aTimeout, html } from '@open-wc/testing';
 import '../java-spring-http-snippet.js';
 
-describe('<java-spring-http-snippet>', function() {
+describe('<java-spring-http-snippet>', () => {
   async function basicFixture() {
     const method = 'POST';
     const url = 'http://domain.com';
     const payload = 'test\nvalue';
-    return (await fixture(html`<java-spring-http-snippet
+    return (fixture(html`<java-spring-http-snippet
       .method="${method}"
       .url="${url}"
       .payload="${payload}"
@@ -14,7 +14,7 @@ describe('<java-spring-http-snippet>', function() {
   }
 
   async function noPayloadFixture() {
-    return (await fixture(`<java-spring-http-snippet method="GET"
+    return (fixture(`<java-spring-http-snippet method="GET"
       url="http://domain.com"></java-spring-http-snippet>`));
   }
 
@@ -40,8 +40,10 @@ describe('<java-spring-http-snippet>', function() {
         'sb.append("value");',
         'String body = sb.toString();',
         '',
-        'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);',
-        'ResponseEntity<String> responseEntity = rest.exchange("http://domain.com", ' +
+        // here is missing `<String>` as the innerText removes it.
+        'HttpEntity requestEntity = new HttpEntity(body, headers);',
+        // The same here with <String>
+        'ResponseEntity responseEntity = rest.exchange("http://domain.com", ' +
           'HttpMethod.POST, requestEntity, String.class);',
         'HttpStatus httpStatus = responseEntity.getStatusCode();',
         'int status = httpStatus.value();',
@@ -49,7 +51,7 @@ describe('<java-spring-http-snippet>', function() {
         'System.out.println("Response status: " + status);',
         'System.out.println(response);'
       ];
-      await aTimeout();
+      await aTimeout(0);
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {

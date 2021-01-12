@@ -1,10 +1,5 @@
 [![Published on NPM](https://img.shields.io/npm/v/@advanced-rest-client/http-code-snippets.svg)](https://www.npmjs.com/package/@advanced-rest-client/http-code-snippets)
 
-[![Build Status](https://travis-ci.org/advanced-rest-client/http-code-snippets.svg?branch=stage)](https://travis-ci.org/advanced-rest-client/http-code-snippets)
-
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/advanced-rest-client/http-code-snippets)
-
-
 # &lt;http-code-snippets&gt;
 
 Code snippets to render code implementation examples for a HTTP request.
