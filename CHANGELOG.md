@@ -537,3 +537,14 @@ Copying code snippets to clipboard
 * removing new line character at the last payload line [ba0457d](https://github.com/advanced-rest-client/http-code-snippets/commit/ba0457dad6ead9e181691b0864053f623582adab) by Pawel Psztyc
 
 
+<a name="3.2.1"></a>
+## [3.2.1](https://github.com/advanced-rest-client/http-code-snippets/compare/3.1.2...3.2.1) (2021-01-12)
+
+### Update
+
+* moving to the new test framework [3046810](https://github.com/advanced-rest-client/http-code-snippets/commit/304681002bcd60b2bee66fe66cf5371c045e6980) by Pawel Psztyc
+* [ci skip] automated merge master->stage. syncing main branches [2f44c75](https://github.com/advanced-rest-client/http-code-snippets/commit/2f44c7564862790cfe3716dbe49d6172f383932e) by Ci agent
+* upgrading to latest ARC standards [740c304](https://github.com/advanced-rest-client/http-code-snippets/commit/740c304d6e7f63f86fab28535a513996ab5704ea) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [da27d63](https://github.com/advanced-rest-client/http-code-snippets/commit/da27d633d29f07bc9fd26f0290b433db62ed88ee) by Ci agent
+
+
