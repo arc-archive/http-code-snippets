@@ -4,20 +4,17 @@
 
 Code snippets to render code implementation examples for a HTTP request.
 
-## Example:
+## Example
 
 ```html
 <http-code-snippets url="https://api.github.com/authorizations" method="POST" payload='{"scopes": ["public_repo"]}'></http-code-snippets>
 ```
 
-## API components
-
-This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)
-
 ## Usage
 
 ### Installation
-```
+
+```sh
 npm install --save @advanced-rest-client/http-code-snippets
 ```
 
@@ -77,6 +74,11 @@ npm start
 ```
 
 ### Running the tests
+
 ```sh
 npm test
 ```
+
+## API components
+
+This component is a part of [API components ecosystem](https://elements.advancedrestclient.com/)

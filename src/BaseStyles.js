@@ -81,7 +81,6 @@ pre[class*="language-"] {
   color: var(--code-color, black);
   text-shadow: 0 1px white;
   text-shadow: var(--http-code-snippet-code-text-shadow, 0 1px white);
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   text-align: left;
   word-spacing: normal;
   line-height: 1.5;
