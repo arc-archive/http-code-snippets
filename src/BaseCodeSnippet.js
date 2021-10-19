@@ -12,11 +12,15 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html } from 'lit-element';
+import { PrismHighlighter } from '@advanced-rest-client/highlight';
 import httpStyles from './BaseStyles.js';
 
 /** @typedef {import('./BaseCodeSnippet').UrlDetails} UrlDetails */
 
 const URI_CACHE = {};
+
+export const highlighter = Symbol('highlighter');
+export const highlightHandler = Symbol('highlightHandler');
 
 /**
  * `base-code-snippet`
@@ -74,9 +78,9 @@ export class BaseCodeSnippet extends LitElement {
        */
       payload: { type: String },
       /**
-       * Enables compatibility with Anypoint components.
+       * Enables Anypoint theme.
        */
-      compatibility: { type: Boolean }
+      anypoint: { type: Boolean }
     };
   }
 
@@ -140,6 +144,11 @@ export class BaseCodeSnippet extends LitElement {
     return this.shadowRoot.querySelector('code');
   }
 
+  constructor() {
+    super();
+    this[highlighter] = new PrismHighlighter(this[highlightHandler].bind(this));
+  }
+
   connectedCallback() {
     super.connectedCallback();
     if (!this.__valuesDebouncer) {
@@ -150,6 +159,16 @@ export class BaseCodeSnippet extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     this._clearValueTimeout();
+  }
+
+  /**
+   * Resets the state of the render to initial state.
+   */
+  reset() {
+    const node = this._code;
+    if (node) {
+      node.innerHTML = '';
+    }
   }
 
   /**
@@ -174,18 +193,16 @@ export class BaseCodeSnippet extends LitElement {
   }
 
   /**
-   * Processes command by calling, respectively, `_computeCommand()` and
-   * `_highlight()`. The result is added to the `<code>` block in the template.
+   * Processes the current snippet command.
    */
   _processCommand() {
     const { url, method, headers, payload } = this;
-    let code = this._computeCommand(url, method, headers, payload);
+    const code = this._computeCommand(url, method, headers, payload);
+    this.reset();
     if (!code) {
-      code = '';
-    } else {
-      code = this._highlight(code, this.lang);
+      return;
     }
-    this._code.innerHTML = code;
+    this[highlighter].debounce(code, this.lang);
   }
 
   /**
@@ -201,23 +218,15 @@ export class BaseCodeSnippet extends LitElement {
   }
 
   /**
-   * Dispatches `syntax-highlight` event to highlight the syntax.
    * @param {string} code 
-   * @param {string} lang 
-   * @returns {string}
    */
-  _highlight(code, lang) {
-    const e = new CustomEvent('syntax-highlight', {
-      bubbles: true,
-      cancelable: true,
-      composed: true,
-      detail: {
-        code,
-        lang
-      }
-    });
-    this.dispatchEvent(e);
-    return e.detail.code || code;
+  [highlightHandler](code) {
+    const node = this._code;
+    /* istanbul ignore else */
+    if (node) {
+      node.innerHTML += code;
+    }
+    this.dispatchEvent(new Event('highlighted'));
   }
 
   /**

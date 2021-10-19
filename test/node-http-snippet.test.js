@@ -1,22 +1,33 @@
-import { fixture, assert, aTimeout, html } from '@open-wc/testing';
+import { fixture, assert, oneEvent, html } from '@open-wc/testing';
 import '../node-http-snippet.js';
 
-describe('<node-http-snippet>', function() {
+/** @typedef {import('../src/JavaScript/NodeHttpSnippetElement').NodeHttpSnippetElement} NodeHttpSnippetElement */
+
+describe('<node-http-snippet>', () => {
+  /**
+   * @returns {Promise<NodeHttpSnippetElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<node-http-snippet method="POST"
+    return (fixture(html`<node-http-snippet method="POST"
       url="http://domain.com" payload="test"></node-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<NodeHttpSnippetElement>}
+   */
   async function urlPostFixture(url) {
-    return (await fixture(html`<node-http-snippet
+    return (fixture(html`<node-http-snippet
       method="POST"
       .url="${url}"
       payload="test"
     ></node-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<NodeHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (await fixture(`<node-http-snippet method="GET"
+    return (fixture(html`<node-http-snippet method="GET"
       url="http://domain.com"></node-http-snippet>`));
   }
 
@@ -61,7 +72,7 @@ describe('<node-http-snippet>', function() {
         'req.end();',
         ''
       ];
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {
@@ -71,28 +82,28 @@ describe('<node-http-snippet>', function() {
 
     it('No headers', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('headers: {'), -1);
     });
 
     it('No payload', async () => {
       const element = await noPayloadFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('req.write(body)'), -1);
     });
 
     it('renders http library when no https', async () => {
       const element = await urlPostFixture('http://api.domain.com');
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.include(code, 'require(\'http\')');
     });
 
     it('renders port when defined in the URL', async () => {
       const element = await urlPostFixture('http://api.domain.com:8080/path');
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.include(code, 'port: 8080,');
     });

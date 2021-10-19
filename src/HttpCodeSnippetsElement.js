@@ -1,8 +1,7 @@
 
 import { LitElement, html, css } from 'lit-element';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
-import '@polymer/prism-element/prism-highlighter.js';
+import '@anypoint-web-components/awc/anypoint-tabs.js';
+import '@anypoint-web-components/awc/anypoint-tab.js';
 import '../raw-http-snippet.js';
 import '../curl-http-snippet.js';
 import '../javascript-http-snippets.js';
@@ -11,6 +10,7 @@ import '../c-curl-http-snippet.js';
 import '../java-http-snippets.js';
 
 /** @typedef {import('./BaseCodeSnippet').CodeHeader} CodeHeader */
+/** @typedef {import('@anypoint-web-components/awc').AnypointTabsElement} AnypointTabsElement */
 
 /**
  * `http-code-snippets`
@@ -62,10 +62,10 @@ export class HttpCodeSnippetsElement extends LitElement {
        */
       payload: { type: String },
       /**
-       * Enables compatibility with Anypoint components.
+       * Enables Anypoint theme.
        * @attribute
        */
-      compatibility: { type: Boolean, reflect: true }
+      anypoint: { type: Boolean, reflect: true }
     };
   }
 
@@ -86,7 +86,7 @@ export class HttpCodeSnippetsElement extends LitElement {
     super();
     this.selected = 0;
     this.scrollable = false;
-    this.compatibility = false;
+    this.anypoint = false;
     this.url = undefined;
     this.method = undefined; 
     this.payload = undefined;
@@ -97,8 +97,8 @@ export class HttpCodeSnippetsElement extends LitElement {
    * @param {CustomEvent} e
    */
   _selectedCHanged(e) {
-    const { value } = e.detail;
-    this.selected = value;
+    const node = /** @type AnypointTabsElement */ (e.target);
+    this.selected = /** @type number */ (node.selected);
   }
 
   /**
@@ -139,16 +139,15 @@ export class HttpCodeSnippetsElement extends LitElement {
   }
 
   render() {
-    const { selected, scrollable, compatibility } = this;
+    const { selected, scrollable, anypoint } = this;
     return html`
     <style>${this.styles}</style>
-    <prism-highlighter></prism-highlighter>
     <anypoint-tabs
       .selected="${selected}"
       ?scrollable="${scrollable}"
       fitcontainer
-      ?compatibility="${compatibility}"
-      @selected-changed="${this._selectedCHanged}"
+      ?anypoint="${anypoint}"
+      @selectedchange="${this._selectedCHanged}"
     >
       <anypoint-tab>cURL</anypoint-tab>
       <anypoint-tab>HTTP</anypoint-tab>
@@ -161,7 +160,7 @@ export class HttpCodeSnippetsElement extends LitElement {
   }
 
   _snippetTemplate() {
-    const { selected, url, method, payload, _headersList: headers, compatibility } = this;
+    const { selected, url, method, payload, _headersList: headers, anypoint } = this;
     switch (selected) {
       case 0: return html`<curl-http-snippet
         .url="${url}"
@@ -178,13 +177,13 @@ export class HttpCodeSnippetsElement extends LitElement {
         .method="${method}"
         .payload="${payload}"
         .headers="${headers}"
-        ?compatibility="${compatibility}"></javascript-http-snippets>`;
+        ?anypoint="${anypoint}"></javascript-http-snippets>`;
       case 3: return html`<python-http-snippets
         .url="${url}"
         .method="${method}"
         .payload="${payload}"
         .headers="${headers}"
-        ?compatibility="${compatibility}"></python-http-snippets>`;
+        ?anypoint="${anypoint}"></python-http-snippets>`;
       case 4: return html`<c-curl-http-snippet
         .url="${url}"
         .method="${method}"
@@ -195,7 +194,7 @@ export class HttpCodeSnippetsElement extends LitElement {
         .method="${method}"
         .payload="${payload}"
         .headers="${headers}"
-        ?compatibility="${compatibility}"></java-http-snippets>`;
+        ?anypoint="${anypoint}"></java-http-snippets>`;
       default: return '';
     }
   }

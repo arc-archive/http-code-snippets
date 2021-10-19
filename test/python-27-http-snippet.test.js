@@ -1,14 +1,22 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, html, oneEvent } from '@open-wc/testing';
 import '../python-27-http-snippet.js';
 
-describe('<python-27-http-snippet>', function() {
+/** @typedef {import('../src/Python/Python27HttpSnippetElement').Python27HttpSnippetElement} Python27HttpSnippetElement */
+
+describe('<python-27-http-snippet>', () => {
+  /**
+   * @returns {Promise<Python27HttpSnippetElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<python-27-http-snippet method="POST"
+    return (fixture(html`<python-27-http-snippet method="POST"
       url="http://domain.com" payload="test"></python-27-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<Python27HttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (await fixture(`<python-27-http-snippet method="GET"
+    return (fixture(html`<python-27-http-snippet method="GET"
       url="http://domain.com"></python-27-http-snippet>`));
   }
 
@@ -37,7 +45,7 @@ describe('<python-27-http-snippet>', function() {
         'print(res.read())',
         'print(res.getheaders())'
       ];
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {
@@ -47,14 +55,14 @@ describe('<python-27-http-snippet>', function() {
 
     it('No headers', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('headers: {'), -1);
     });
 
     it('No payload', async () => {
       const element = await noPayloadFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('req.write(body)'), -1);
     });

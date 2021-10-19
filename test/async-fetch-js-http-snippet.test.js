@@ -1,5 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
-import { fixture, assert, aTimeout, html } from '@open-wc/testing';
+import { fixture, assert, aTimeout, html, oneEvent } from '@open-wc/testing';
 import '../async-fetch-js-http-snippet.js';
 
 /** @typedef {import('../src/JavaScript/AsyncFetchJsHttpSnippetElement').AsyncFetchJsHttpSnippetElement} AsyncFetchJsHttpSnippetElement */
@@ -11,22 +11,26 @@ describe('<async-fetch-js-http-snippet>', () => {
    * @returns {Promise<AsyncFetchJsHttpSnippetElement>}
    */
   async function basicFixture(headers) {
-    return (fixture(html`<async-fetch-js-http-snippet
+    const element = /** @type AsyncFetchJsHttpSnippetElement */ (await fixture(html`<async-fetch-js-http-snippet
       method="POST"
       url="http://domain.com"
       payload="test\nmultiline"
       .headers="${headers}"
     ></async-fetch-js-http-snippet>`));
+    await oneEvent(element, 'highlighted');
+    return element;
   }
 
   /**
    * @returns {Promise<AsyncFetchJsHttpSnippetElement>}
    */
   async function noPayloadFixture() {
-    return (fixture(html`<async-fetch-js-http-snippet
+    const element = /** @type AsyncFetchJsHttpSnippetElement */ (await fixture(html`<async-fetch-js-http-snippet
       method="GET"
       url="http://domain.com"
     ></async-fetch-js-http-snippet>`));
+    await oneEvent(element, 'highlighted');
+    return element;
   }
 
   it('Renders code block (full)', async () => {

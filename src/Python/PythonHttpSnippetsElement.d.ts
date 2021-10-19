@@ -38,10 +38,10 @@ export class PythonHttpSnippetsElement extends LitElement {
   payload: string;
 
   /**
-   * Enables compatibility with Anypoint components.
+   * Enables Anypoint theme.
    * @attribute
    */
-  compatibility: boolean;
+  anypoint: boolean;
   constructor();
   
   render(): TemplateResult;

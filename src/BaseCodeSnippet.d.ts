@@ -12,7 +12,10 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, TemplateResult, CSSResult } from 'lit-element';
-import httpStyles from './BaseStyles.js';
+import { PrismHighlighter } from '@advanced-rest-client/highlight';
+
+export const highlighter: unique symbol;
+export const highlightHandler: unique symbol;
 
 export declare interface CodeHeader {
   name: string;
@@ -43,13 +46,11 @@ export declare interface UrlDetails {
  * If the child class implements it's own template, it should contain
  * `<code></code>` inside the template where the highlighted value is
  * added.
- *
- * Parent element, presumably `http-code-snippets`, or main document
- * must include `prism-element/prism-highlighter.html` in it's DOM.
  */
 export declare abstract class BaseCodeSnippet extends LitElement {
-  static readonly _httpStyles: CSSResult;
-  styles: CSSResult;
+  static get _httpStyles(): CSSResult;
+  get styles(): CSSResult;
+  [highlighter]: PrismHighlighter;
   /**
    * Request URL
    * @attribute
@@ -72,10 +73,10 @@ export declare abstract class BaseCodeSnippet extends LitElement {
    */
   payload: string;
   /**
-   * Enables compatibility with Anypoint components.
+   * Enables Anypoint theme.
    * @attribute
    */
-  compatibility: boolean;
+  anypoint: boolean;
 
   render(): TemplateResult;
 
@@ -84,6 +85,11 @@ export declare abstract class BaseCodeSnippet extends LitElement {
   connectedCallback(): void;
 
   disconnectedCallback(): void;
+
+  /**
+   * Resets the state of the render to initial state.
+   */
+  reset(): void;
 
   /**
    * Clears timeout from the debouncer if set.
@@ -100,6 +106,8 @@ export declare abstract class BaseCodeSnippet extends LitElement {
    * `_highlight()`. The result is added to the `<code>` block in the template.
    */
   _processCommand(): void;
+
+  [highlightHandler](code: string): void;
 
   abstract _computeCommand(url: string, method: string, headers: CodeHeader[], payload: string): string;
 

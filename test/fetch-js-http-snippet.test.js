@@ -1,14 +1,22 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, html, oneEvent } from '@open-wc/testing';
 import '../fetch-js-http-snippet.js';
 
-describe('<fetch-js-http-snippet>', function() {
+/** @typedef {import('../src/JavaScript/FetchJsHttpSnippetElement').FetchJsHttpSnippetElement} FetchJsHttpSnippetElement */
+
+describe('<fetch-js-http-snippet>', () => {
+  /**
+   * @returns {Promise<FetchJsHttpSnippetElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<fetch-js-http-snippet method="POST"
+    return (fixture(html`<fetch-js-http-snippet method="POST"
       url="http://domain.com" payload="test"></fetch-js-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<FetchJsHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (await fixture(`<fetch-js-http-snippet method="GET" url="http://domain.com"></fetch-js-http-snippet>`));
+    return (fixture(html`<fetch-js-http-snippet method="GET" url="http://domain.com"></fetch-js-http-snippet>`));
   }
 
   it('Renders code block (full)', async () => {
@@ -27,21 +35,21 @@ describe('<fetch-js-http-snippet>', function() {
     compare += '\n.then((response) => {\n  return response.json(); // or .text()';
     compare += ' or .blob() ...\n})\n.then((text) => {\n  // text is the response body';
     compare += '\n})\n.catch((e) => {\n  // error in e.message\n});';
-    await aTimeout();
+    await oneEvent(element, 'highlighted');
     const code = element._code.innerText;
     assert.equal(code, compare);
   });
 
   it('No headers', async () => {
     const element = await basicFixture();
-    await aTimeout();
+    await oneEvent(element, 'highlighted');
     const code = element._code.innerText;
     assert.equal(code.indexOf('new Headers'), -1);
   });
 
   it('No payload', async () => {
     const element = await noPayloadFixture();
-    await aTimeout();
+    await oneEvent(element, 'highlighted');
     const code = element._code.innerText;
     assert.equal(code.indexOf('const body ='), -1);
   });

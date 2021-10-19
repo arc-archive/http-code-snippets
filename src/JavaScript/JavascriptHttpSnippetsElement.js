@@ -12,15 +12,16 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html, css } from 'lit-element';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
+import '@anypoint-web-components/awc/anypoint-tabs.js';
+import '@anypoint-web-components/awc/anypoint-tab.js';
 import '../../xhr-http-snippet.js';
 import '../../fetch-js-http-snippet.js';
 import '../../node-http-snippet.js';
 import '../../async-fetch-js-http-snippet.js';
 
-/** @typedef {import('../BaseCodeSnippet').CodeHeader} CodeHeader */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
+/** @typedef {import('@anypoint-web-components/awc').AnypointTabsElement} AnypointTabsElement */
+/** @typedef {import('../BaseCodeSnippet').CodeHeader} CodeHeader */
 
 /**
  * `javascript-http-snippet`
@@ -63,17 +64,17 @@ export class JavascriptHttpSnippetsElement extends LitElement {
        */
       payload: { type: String },
       /**
-       * Enables compatibility with Anypoint components.
+       * Enables Anypoint theme.
        * @attribute
        */
-      compatibility: { type: Boolean, reflect: true }
+      anypoint: { type: Boolean, reflect: true }
     };
   }
 
   constructor() {
     super();
     this.selected = 0;
-    this.compatibility = false;
+    this.anypoint = false;
     this.url = undefined;
     this.method = undefined; 
     this.payload = undefined;
@@ -88,8 +89,8 @@ export class JavascriptHttpSnippetsElement extends LitElement {
    * @param {CustomEvent} e
    */
   _selectedCHanged(e) {
-    const { value } = e.detail;
-    this.selected = value;
+    const node = /** @type AnypointTabsElement */ (e.target);
+    this.selected = /** @type number */ (node.selected);
   }
 
   /**
@@ -108,7 +109,7 @@ export class JavascriptHttpSnippetsElement extends LitElement {
         .url="${url}"
         .method="${method}"
         .payload="${payload}"
-        .headers="${headers}"></async-js-http-snippet>`;
+        .headers="${headers}"></async-fetch-js-http-snippet>`;
       case 2: return html`<node-http-snippet
         .url="${url}"
         .method="${method}"
@@ -127,12 +128,12 @@ export class JavascriptHttpSnippetsElement extends LitElement {
    * @returns {TemplateResult}
    */
   render() {
-    const { selected, compatibility } = this;
+    const { selected, anypoint } = this;
     return html`<style>${this.styles}</style>
     <anypoint-tabs
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       .selected="${selected}"
-      @selected-changed="${this._selectedCHanged}">
+      @selectedchange="${this._selectedCHanged}">
       <anypoint-tab>Fetch</anypoint-tab>
       <anypoint-tab>Fetch/Async</anypoint-tab>
       <anypoint-tab>Node</anypoint-tab>

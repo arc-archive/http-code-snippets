@@ -1,14 +1,21 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, html, oneEvent } from '@open-wc/testing';
 import '../requests-python-http-snippet.js';
 
-describe('<requests-python-http-snippet>', function() {
+/** @typedef {import('../src/Python/RequestsPythonHttpSnippetElement').RequestsPythonHttpSnippetElement} RequestsPythonHttpSnippetElement */
+
+describe('<requests-python-http-snippet>', () => {
+  /**
+   * @returns {Promise<RequestsPythonHttpSnippetElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<requests-python-http-snippet method="POST"
+    return (fixture(html`<requests-python-http-snippet method="POST"
       url="http://domain.com" payload="test"></requests-python-http-snippet>`));
   }
-
+  /**
+   * @returns {Promise<RequestsPythonHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (await fixture(`<requests-python-http-snippet method="GET"
+    return (fixture(html`<requests-python-http-snippet method="GET"
       url="http://domain.com"></requests-python-http-snippet>`));
   }
 
@@ -36,7 +43,7 @@ describe('<requests-python-http-snippet>', function() {
         'print(req.headers)',
         'print(req.text)'
       ];
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {
@@ -46,14 +53,14 @@ describe('<requests-python-http-snippet>', function() {
 
     it('No headers', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('headers = {'), -1);
     });
 
     it('No payload', async () => {
       const element = await noPayloadFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('data=body'), -1);
     });

@@ -12,14 +12,15 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html, css } from 'lit-element';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
+import '@anypoint-web-components/awc/anypoint-tabs.js';
+import '@anypoint-web-components/awc/anypoint-tab.js';
 import '../../java-platform-http-snippet.js';
 import '../../java-spring-http-snippet.js';
 
 
-/** @typedef {import('../BaseCodeSnippet').CodeHeader} CodeHeader */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
+/** @typedef {import('@anypoint-web-components/awc').AnypointTabsElement} AnypointTabsElement */
+/** @typedef {import('../BaseCodeSnippet').CodeHeader} CodeHeader */
 
 /**
  * `javascript-http-snippet`
@@ -61,17 +62,17 @@ export class JavaHttpSnippetsElement extends LitElement {
        */
       payload: { type: String },
       /**
-       * Enables compatibility with Anypoint components.
+       * Enables Anypoint theme.
        * @attribute
        */
-      compatibility: { type: Boolean, reflect: true }
+      anypoint: { type: Boolean, reflect: true }
     };
   }
 
   constructor() {
     super();
     this.selected = 0;
-    this.compatibility = false;
+    this.anypoint = false;
     this.url = undefined;
     this.method = undefined; 
     this.payload = undefined;
@@ -86,8 +87,8 @@ export class JavaHttpSnippetsElement extends LitElement {
    * @param {CustomEvent} e
    */
   _selectedCHanged(e) {
-    const { value } = e.detail;
-    this.selected = value;
+    const node = /** @type AnypointTabsElement */ (e.target);
+    this.selected = /** @type number */ (node.selected);
   }
 
   /**
@@ -115,12 +116,12 @@ export class JavaHttpSnippetsElement extends LitElement {
    * @returns {TemplateResult}
    */
   render() {
-    const { selected, compatibility } = this;
+    const { selected, anypoint } = this;
     return html`<style>${this.styles}</style>
     <anypoint-tabs
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       .selected="${selected}"
-      @selected-changed="${this._selectedCHanged}">
+      @selectedchange="${this._selectedCHanged}">
       <anypoint-tab>Platform</anypoint-tab>
       <anypoint-tab>Spring</anypoint-tab>
     </anypoint-tabs>

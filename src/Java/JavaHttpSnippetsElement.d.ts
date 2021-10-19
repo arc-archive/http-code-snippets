@@ -39,10 +39,10 @@ export declare class JavaHttpSnippetsElement extends LitElement {
   payload: string;
 
   /**
-   * Enables compatibility with Anypoint components.
+   * Enables Anypoint theme.
    * @attribute
    */
-  compatibility: boolean;
+  anypoint: boolean;
   constructor();
   
   render(): TemplateResult;
@@ -57,4 +57,3 @@ export declare class JavaHttpSnippetsElement extends LitElement {
    */
   _selectedCHanged(e: CustomEvent): void;
 }
-

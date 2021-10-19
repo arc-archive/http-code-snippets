@@ -1,7 +1,12 @@
-import { fixture, assert, aTimeout, html } from '@open-wc/testing';
+import { fixture, assert, oneEvent, html } from '@open-wc/testing';
 import '../java-spring-http-snippet.js';
 
+/** @typedef {import('../src/Java/JavaSpringHttpSnippetElement').JavaSpringHttpSnippetElement} JavaSpringHttpSnippetElement */
+
 describe('<java-spring-http-snippet>', () => {
+  /**
+   * @returns {Promise<JavaSpringHttpSnippetElement>}
+   */
   async function basicFixture() {
     const method = 'POST';
     const url = 'http://domain.com';
@@ -13,8 +18,11 @@ describe('<java-spring-http-snippet>', () => {
     ></java-spring-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<JavaSpringHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (fixture(`<java-spring-http-snippet method="GET"
+    return (fixture(html`<java-spring-http-snippet method="GET"
       url="http://domain.com"></java-spring-http-snippet>`));
   }
 
@@ -40,10 +48,8 @@ describe('<java-spring-http-snippet>', () => {
         'sb.append("value");',
         'String body = sb.toString();',
         '',
-        // here is missing `<String>` as the innerText removes it.
-        'HttpEntity requestEntity = new HttpEntity(body, headers);',
-        // The same here with <String>
-        'ResponseEntity responseEntity = rest.exchange("http://domain.com", ' +
+        'HttpEntity<String> requestEntity = new HttpEntity<String>(body, headers);',
+        'ResponseEntity<String> responseEntity = rest.exchange("http://domain.com", ' +
           'HttpMethod.POST, requestEntity, String.class);',
         'HttpStatus httpStatus = responseEntity.getStatusCode();',
         'int status = httpStatus.value();',
@@ -51,7 +57,7 @@ describe('<java-spring-http-snippet>', () => {
         'System.out.println("Response status: " + status);',
         'System.out.println(response);'
       ];
-      await aTimeout(0);
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {
@@ -61,14 +67,14 @@ describe('<java-spring-http-snippet>', () => {
 
     it('No headers', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('headers.add'), -1);
     });
 
     it('No payload', async () => {
       const element = await noPayloadFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('String body = sb.toString();'), -1);
       assert.notEqual(code.indexOf('String body = "";\n'), -1);

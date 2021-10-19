@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>http-code-snippets - c-curl demo</title>
 
-  <script type="module" src="../node_modules/@anypoint-web-components/anypoint-styles/colors.js"></script>
+  <script type="module" src="../node_modules/@anypoint-web-components/awc/colors.js"></script>
   <script type="module" src="../node_modules/@advanced-rest-client/arc-demo-helper/arc-demo-helper.js"></script>
   <script type="module" src="../fetch-js-http-snippet.js"></script>
 </head>
@@ -17,7 +17,7 @@
       <template>
         <fetch-js-http-snippet url="https://api.github.com/authorizations" method="POST"></fetch-js-http-snippet>
         <script>
-        (function() {
+        (() => {
           const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
           }, {
@@ -37,7 +37,7 @@
       <template>
         <fetch-js-http-snippet url="https://api.github.com/users/advanced-rest-client/repos?type=all&amp;sort=pushed" method="GET"></fetch-js-http-snippet>
         <script>
-        (function() {
+        (() => {
           const headers = [{
             name: 'accept', value: 'application/vnd.github.v3+json'
           }];
@@ -60,7 +60,7 @@
       <template>
         <fetch-js-http-snippet url="https://api.github.com/authorizations" method="POST"></fetch-js-http-snippet>
         <script>
-        (function() {
+        (() => {
           const payload = { 'scopes': ['public_repo'] };
           const snippet = document.querySelectorAll('fetch-js-http-snippet')[3];
           snippet.payload = JSON.stringify(payload, null, 2);

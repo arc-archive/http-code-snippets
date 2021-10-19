@@ -1,14 +1,22 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, html, oneEvent } from '@open-wc/testing';
 import '../c-curl-http-snippet.js';
 
+/** @typedef {import('../src/C/CcurlHttpSnippetElement').CcurlHttpSnippetElement} CcurlHttpSnippetElement */
+
 describe('<c-curl-http-snippet>', () => {
+  /**
+   * @returns {Promise<CcurlHttpSnippetElement>}
+   */
   async function basicFixture() {
-    return (fixture(`<c-curl-http-snippet method="POST"
+    return (fixture(html`<c-curl-http-snippet method="POST"
       url="http://domain.com" payload="test"></c-curl-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<CcurlHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (fixture(`<c-curl-http-snippet method="GET" url="http://domain.com"></c-curl-http-snippet>`));
+    return (fixture(html`<c-curl-http-snippet method="GET" url="http://domain.com"></c-curl-http-snippet>`));
   }
 
   it('Renders code block (full)', async () => {
@@ -17,8 +25,8 @@ describe('<c-curl-http-snippet>', () => {
       name: 'Content-Type',
       value: 'application/json'
     }];
-    // The <stdio.h> and <curl/curl.h> are removed due to `innerText` processing.
-    let compare = '#include \n#include \n\nint main(void)\n{\n\tCURL *curl;';
+    await oneEvent(element, 'highlighted');
+    let compare = '#include <stdio.h>\n#include <curl/curl.h>\n\nint main(void)\n{\n\tCURL *curl;';
     compare += '\n\tCURLcode res;\n\n\tcurl = curl_easy_init();';
     compare += '\n\tcurl_easy_setopt(curl, CURLOPT_URL, "http://domain.com");';
     compare += '\n\tcurl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");';
@@ -35,21 +43,20 @@ describe('<c-curl-http-snippet>', () => {
     compare += '\n\tcurl_easy_cleanup(curl);\n\treturn 0;\n}';
     compare += '\n/* See: http://stackoverflow.com/a/2329792/1127848 ';
     compare += 'of how to read data from the response. */';
-    await aTimeout();
     const code = element._code.innerText;
     assert.equal(code, compare);
   });
 
   it('No headers', async () => {
     const element = await basicFixture();
-    await aTimeout();
+    await oneEvent(element, 'highlighted');
     const code = element._code.innerText;
     assert.equal(code.indexOf('CURLOPT_HTTPHEADER'), -1);
   });
 
   it('No payload', async () => {
     const element = await noPayloadFixture();
-    await aTimeout();
+    await oneEvent(element, 'highlighted');
     const code = element._code.innerText;
     assert.equal(code.indexOf('CURLOPT_POSTFIELDS'), -1);
   });

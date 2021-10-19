@@ -1,8 +1,5 @@
 
 import { LitElement, TemplateResult, CSSResult } from 'lit-element';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tabs.js';
-import '@anypoint-web-components/anypoint-tabs/anypoint-tab.js';
-import '@polymer/prism-element/prism-highlighter.js';
 import '../raw-http-snippet.js';
 import '../curl-http-snippet.js';
 import '../javascript-http-snippets.js';
@@ -54,10 +51,10 @@ export declare class HttpCodeSnippetsElement extends LitElement {
    */
   payload: string;
   /**
-   * Enables compatibility with Anypoint components.
+   * Enables Anypoint theme.
    * @attribute
    */
-  compatibility: boolean;
+  anypoint: boolean;
 
 
   constructor();

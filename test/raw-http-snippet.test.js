@@ -1,14 +1,21 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, html, oneEvent } from '@open-wc/testing';
 import '../raw-http-snippet.js';
 
-describe('<raw-http-snippet>', function() {
+/** @typedef {import('../src/Http/RawHttpSnippetElement').RawHttpSnippetElement} RawHttpSnippetElement */
+
+describe('<raw-http-snippet>', () => {
+  /**
+   * @returns {Promise<RawHttpSnippetElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<raw-http-snippet method="POST"
+    return (fixture(html`<raw-http-snippet method="POST"
       url="http://domain.com" payload="test"></raw-http-snippet>`));
   }
-
+  /**
+   * @returns {Promise<RawHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (await fixture(`<raw-http-snippet method="GET"
+    return (fixture(html`<raw-http-snippet method="GET"
       url="http://domain.com"></raw-http-snippet>`));
   }
 
@@ -33,7 +40,7 @@ describe('<raw-http-snippet>', function() {
         '',
         ''
       ];
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {
@@ -51,7 +58,7 @@ describe('<raw-http-snippet>', function() {
         '',
         ''
       ];
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {
@@ -66,7 +73,7 @@ describe('<raw-http-snippet>', function() {
         'Host: domain.com:80',
         ''
       ];
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {

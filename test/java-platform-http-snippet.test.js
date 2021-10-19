@@ -1,14 +1,22 @@
-import { fixture, assert, aTimeout } from '@open-wc/testing';
+import { fixture, assert, html, oneEvent } from '@open-wc/testing';
 import '../java-platform-http-snippet.js';
 
-describe('<java-platform-http-snippet>', function() {
+/** @typedef {import('../src/Java/JavaPlatformHttpSnippetElement').JavaPlatformHttpSnippetElement} JavaPlatformHttpSnippetElement */
+
+describe('<java-platform-http-snippet>', () => {
+  /**
+   * @returns {Promise<JavaPlatformHttpSnippetElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<java-platform-http-snippet method="POST"
+    return (fixture(html`<java-platform-http-snippet method="POST"
       url="http://domain.com" payload="test\nmultiline"></java-platform-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<JavaPlatformHttpSnippetElement>}
+   */
   async function noPayloadFixture() {
-    return (await fixture(`<java-platform-http-snippet method="GET"
+    return (fixture(html`<java-platform-http-snippet method="GET"
       url="http://domain.com"></java-platform-http-snippet>`));
   }
 
@@ -50,7 +58,7 @@ describe('<java-platform-http-snippet>', function() {
         'System.out.println("Response status: " + status);',
         'System.out.println(content.toString());'
       ];
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       const result = code.split('\n');
       for (let i = 0; i < result.length; i++) {
@@ -60,14 +68,14 @@ describe('<java-platform-http-snippet>', function() {
 
     it('No headers', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('setRequestProperty'), -1);
     });
 
     it('No payload', async () => {
       const element = await noPayloadFixture();
-      await aTimeout();
+      await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('DataOutputStream ='), -1);
     });

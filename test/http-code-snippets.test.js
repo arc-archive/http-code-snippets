@@ -1,39 +1,56 @@
 import { fixture, assert, aTimeout } from '@open-wc/testing';
 import '../http-code-snippets.js';
 
-describe('<http-code-snippets>', function() {
+/** @typedef {import('../src/HttpCodeSnippetsElement').HttpCodeSnippetsElement} HttpCodeSnippetsElement */
+
+describe('<http-code-snippets>', () => {
+  /**
+   * @returns {Promise<HttpCodeSnippetsElement>}
+   */
   async function basicFixture() {
-    return (await fixture(`<http-code-snippets headers="Content-Type: application/json"
+    return (fixture(`<http-code-snippets headers="Content-Type: application/json"
       method="GET" url="http://domain.com"></http-code-snippets>`));
   }
-
+  /**
+   * @returns {Promise<HttpCodeSnippetsElement>}
+   */
   async function rawFixture() {
-    return (await fixture(`<http-code-snippets selected="1"
+    return (fixture(`<http-code-snippets selected="1"
       headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>`));
   }
-
+  /**
+   * @returns {Promise<HttpCodeSnippetsElement>}
+   */
   async function javascriptFixture() {
-    return (await fixture(`<http-code-snippets selected="2"
+    return (fixture(`<http-code-snippets selected="2"
       headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>`));
   }
-
+  /**
+   * @returns {Promise<HttpCodeSnippetsElement>}
+   */
   async function pythonFixture() {
-    return (await fixture(`<http-code-snippets selected="3"
+    return (fixture(`<http-code-snippets selected="3"
       headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>`));
   }
-
+  /**
+   * @returns {Promise<HttpCodeSnippetsElement>}
+   */
   async function cCurlFixture() {
-    return (await fixture(`<http-code-snippets selected="4"
+    return (fixture(`<http-code-snippets selected="4"
       headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>`));
   }
-
+  /**
+   * @returns {Promise<HttpCodeSnippetsElement>}
+   */
   async function javaFixture() {
-    return (await fixture(`<http-code-snippets selected="5"
+    return (fixture(`<http-code-snippets selected="5"
       headers="Content-Type: application/json" method="GET" url="http://domain.com"></http-code-snippets>`));
   }
-
+  /**
+   * @returns {Promise<HttpCodeSnippetsElement>}
+   */
   async function payloadFixture() {
-    return (await fixture(`<http-code-snippets
+    return (fixture(`<http-code-snippets
       headers="Content-Type: application/json" method="POST"
       url="http://domain.com" payload="test"></http-code-snippets>`));
   }
@@ -55,28 +72,28 @@ describe('<http-code-snippets>', function() {
 
     it('Adds curl snippets by default', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await aTimeout(0);
       const node = element.shadowRoot.querySelector('curl-http-snippet');
       assert.ok(node);
     });
 
     it('url is set on the panel', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await aTimeout(0);
       const panel = element.shadowRoot.querySelector('curl-http-snippet');
       assert.equal(panel.url, 'http://domain.com');
     });
 
     it('method is set on the panel', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await aTimeout(0);
       const panel = element.shadowRoot.querySelector('curl-http-snippet');
       assert.equal(panel.method, 'GET');
     });
 
     it('headers are set on the panel', async () => {
       const element = await basicFixture();
-      await aTimeout();
+      await aTimeout(0);
       const panel = element.shadowRoot.querySelector('curl-http-snippet');
       assert.typeOf(panel.headers, 'array');
       assert.lengthOf(panel.headers, 1);
@@ -84,7 +101,7 @@ describe('<http-code-snippets>', function() {
 
     it('payload is set on the panel', async () => {
       const element = await payloadFixture();
-      await aTimeout();
+      await aTimeout(0);
       const panel = element.shadowRoot.querySelector('curl-http-snippet');
       assert.equal(panel.method, 'POST');
       assert.equal(panel.payload, 'test');
@@ -92,35 +109,35 @@ describe('<http-code-snippets>', function() {
 
     it('Adds raw snippets to the DOM', async () => {
       const element = await rawFixture();
-      await aTimeout();
+      await aTimeout(0);
       const node = element.shadowRoot.querySelector('raw-http-snippet');
       assert.ok(node);
     });
 
     it('Adds javascript snippets to the DOM', async () => {
       const element = await javascriptFixture();
-      await aTimeout();
+      await aTimeout(0);
       const node = element.shadowRoot.querySelector('javascript-http-snippets');
       assert.ok(node);
     });
 
     it('Adds python snippets to the DOM', async () => {
       const element = await pythonFixture();
-      await aTimeout();
+      await aTimeout(0);
       const node = element.shadowRoot.querySelector('python-http-snippets');
       assert.ok(node);
     });
 
     it('Adds c-curl snippet to the DOM', async () => {
       const element = await cCurlFixture();
-      await aTimeout();
+      await aTimeout(0);
       const node = element.shadowRoot.querySelector('c-curl-http-snippet');
       assert.ok(node);
     });
 
     it('Adds java snippet to the DOM', async () => {
       const element = await javaFixture();
-      await aTimeout();
+      await aTimeout(0);
       const node = element.shadowRoot.querySelector('java-http-snippets');
       assert.ok(node);
     });
