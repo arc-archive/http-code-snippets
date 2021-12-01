@@ -68,6 +68,22 @@
         </script>
       </template>
     </arc-demo-helper>
+
+    <h3>Port number request</h3>
+    <arc-demo-helper>
+      <template>
+        <java-http-snippets url="http://127.0.0.1:4242/oauth/token?grant_type=password&amp;username=maex&amp;password=abc123_ABC123" method="GET"></java-http-snippets>
+        <script>
+        {
+          const headers = [{
+            name: 'accept', value: 'application/vnd.github.v3+json'
+          }];
+          const snippet = document.querySelectorAll('java-http-snippets')[4];
+          snippet.headers = headers;
+        }
+        </script>
+      </template>
+    </arc-demo-helper>
   </div>
 </body>
 </html>

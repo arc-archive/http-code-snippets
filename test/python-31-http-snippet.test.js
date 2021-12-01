@@ -19,6 +19,13 @@ describe('<python-31-http-snippet>', () => {
       url="http://domain.com"></python-31-http-snippet>`));
   }
 
+  /**
+   * @returns {Promise<Python31HttpSnippetElement>}
+   */
+  async function portNumberFixture() {
+    return (fixture(html`<python-31-http-snippet method="GET" url="http://127.0.0.1:4242/oauth/token?grant_type=password&amp;username=maex&amp;password=abc123_ABC123"></python-31-http-snippet>`));
+  }
+
   describe('python-31-http-snippet', () => {
     it('Renders code block (full)', async () => {
       const element = await basicFixture();
@@ -37,7 +44,7 @@ describe('<python-31-http-snippet>', () => {
         'body = """test"""',
         '',
         'conn = http.client.HTTPConnection(\'domain.com\')',
-        'conn.request(\'POST\',\'/\', body, headers)',
+        'conn.request(\'POST\', \'/\', body, headers)',
         'res = conn.getresponse()',
         '',
         'data = res.read()',
@@ -65,6 +72,28 @@ describe('<python-31-http-snippet>', () => {
       await oneEvent(element, 'highlighted');
       const code = element._code.innerText;
       assert.equal(code.indexOf('req.write(body)'), -1);
+    });
+
+    it('adds the port number', async () => {
+      const element = await portNumberFixture();
+      const lines = [
+        'import http.client',
+        '',
+        'conn = http.client.HTTPConnection(\'127.0.0.1\', 4242)',
+        'conn.request(\'GET\', \'/oauth/token?grant_type=password&username=maex&password=abc123_ABC123\')',
+        'res = conn.getresponse()',
+        '',
+        'data = res.read()',
+        'print(res.status, res.reason)',
+        'print(data.decode(\'utf-8\'))',
+        'print(res.getheaders())'
+      ];
+      await oneEvent(element, 'highlighted');
+      const code = element._code.innerText;
+      const result = code.split('\n');
+      for (let i = 0; i < result.length; i++) {
+        assert.equal(result[i], lines[i], `Line ${i} matches`);
+      }
     });
   });
 

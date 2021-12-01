@@ -63,6 +63,21 @@
         </script>
       </template>
     </arc-demo-helper>
+
+    <h3>Port number request</h3>
+    <arc-demo-helper>
+      <template>
+        <http-code-snippets url="http://127.0.0.1:4242/oauth/token?grant_type=password&amp;username=maex&amp;password=abc123_ABC123" method="GET"></http-code-snippets>
+        <script>
+        {
+          let headers = 'accept: application/vnd.github.v3+json\\n';
+          headers += 'content-type: application/json';
+          const snippet = document.querySelectorAll('http-code-snippets')[4];
+          snippet.headers = headers;
+        }
+        </script>
+      </template>
+    </arc-demo-helper>
   </div>
 </body>
 </html>

@@ -99,8 +99,12 @@ export class Python31HttpSnippetElement extends BaseCodeSnippet {
     if (data.port === '443') {
       clazz += 'S';
     }
-    let result = `conn = http.client.${clazz}Connection('${data.hostValue}')\n`;
-    result += `conn.request('${method}','${data.path}'`;
+    let result = `conn = http.client.${clazz}Connection('${data.hostValue}'`;
+    if (data.port && !['80', '443'].includes(data.port)) {
+      result += `, ${data.port}`;
+    }
+    result += ')\n';
+    result += `conn.request('${method}', '${data.path}'`;
     if (hasPayload) {
       result += ', body';
     }

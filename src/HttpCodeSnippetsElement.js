@@ -108,7 +108,7 @@ export class HttpCodeSnippetsElement extends LitElement {
    */
   headersToList(headersValue) {
     let headers = headersValue || this.headers;
-    if (!headers || !headers.trim() || typeof headers !== 'string') {
+    if (typeof headers !== 'string' || !headers || !headers.trim()) {
       return [];
     }
     const result = [];

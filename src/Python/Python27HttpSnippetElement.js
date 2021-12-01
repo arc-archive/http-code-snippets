@@ -40,7 +40,7 @@ export class Python27HttpSnippetElement extends BaseCodeSnippet {
       return '';
     }
     let result = 'import httplib\n\n';
-    const hasHeaders = !!(headers && headers instanceof Array && headers.length);
+    const hasHeaders = !!(Array.isArray(headers) && headers.length);
     const hasPayload = !!payload;
 
     if (hasHeaders) {
@@ -99,8 +99,12 @@ export class Python27HttpSnippetElement extends BaseCodeSnippet {
     if (data.port === '443') {
       clazz += 'S';
     }
-    let result = `conn = httplib.${clazz}Connection('${data.hostValue}')\n`;
-    result += `conn.request('${method}','${data.path}'`;
+    let result = `conn = httplib.${clazz}Connection('${data.hostValue}'`;
+    if (data.port && !['80', '443'].includes(data.port)) {
+      result += `, ${data.port}`;
+    }
+    result += ')\n';
+    result += `conn.request('${method}', '${data.path}'`;
     if (hasPayload) {
       result += ', body';
     }
